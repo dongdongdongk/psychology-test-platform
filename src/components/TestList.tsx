@@ -73,6 +73,11 @@ export default function TestList() {
 
   return (
     <div>
+      {/* 메인 타이틀 */}
+      {/* <div className={styles.mainHeader}>
+        <h1 className={styles.mainTitle}>최신 심리 테스트 인기 Top 10</h1>
+      </div> */}
+
       {/* 검색 섹션 */}
       <div className={styles.searchSection}>
         <div className={styles.searchContainer}>
@@ -122,18 +127,16 @@ export default function TestList() {
       ) : (
         <div className={styles.testsGrid}>
           {filteredTests.map((test) => (
-            <div key={test.id} className={styles.testCard}>
+            <div 
+              key={test.id} 
+              className={styles.testCard}
+              onClick={() => handleTestClick(test)}
+            >
               <div className={styles.cardImage}>
                 <img 
                   src={test.thumbnailUrl || '/placeholder-image.jpg'} 
                   alt={test.title}
                 />
-                <div className={styles.categoryBadge}>
-                  {test.category}
-                </div>
-                <div className={`${styles.statusBadge} ${test.isActive ? styles.active : styles.inactive}`}>
-                  {test.isActive ? '이용가능' : '개발중'}
-                </div>
               </div>
               
               <div className={styles.cardContent}>
@@ -145,16 +148,6 @@ export default function TestList() {
                     {test.description}
                   </p>
                 )}
-              </div>
-              
-              <div className={styles.cardFooter}>
-                <button
-                  onClick={() => handleTestClick(test)}
-                  className={styles.startButton}
-                  disabled={!test.isActive}
-                >
-                  {test.isActive ? '테스트 시작하기' : '개발중'}
-                </button>
               </div>
             </div>
           ))}
