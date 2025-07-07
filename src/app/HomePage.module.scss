@@ -214,68 +214,65 @@
 }
 
 .heroSection {
-  padding: 60px 0 80px;
-  text-align: center;
-  color: white;
-  
-  @media (min-width: 768px) {
-    padding: 100px 0 120px;
-  }
+  padding: 40px 16px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 .heroContainer {
-  // 히어로 섹션도 헤더와 동일한 너비로 제한
+  width: 100%;
   max-width: 500px;
-  margin: 0 auto;
-  padding: 0 16px;
+  background: white;
+  border-radius: 25px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  border: 2px solid #e9ecef;
+  padding: 40px 24px;
+  text-align: center;
   
   @media (min-width: 768px) {
-    max-width: 600px;
-  }
-  
-  @media (min-width: 1024px) {
-    max-width: 700px;
+    padding: 60px 40px;
   }
 }
 
 .heroContent {
-  max-width: 800px;
-  margin: 0 auto;
+  width: 100%;
 }
 
 .heroTitle {
-  font-size: 36px;
+  font-size: 28px;
   font-weight: 800;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   letter-spacing: -1px;
+  color: #333;
   
   @media (min-width: 768px) {
-    font-size: 56px;
-    margin-bottom: 24px;
+    font-size: 36px;
+    margin-bottom: 20px;
   }
 }
 
 .heroSubtitle {
-  font-size: 16px;
-  opacity: 0.9;
+  font-size: 14px;
   line-height: 1.6;
-  margin-bottom: 40px;
-  font-weight: 300;
+  margin-bottom: 32px;
+  font-weight: 400;
+  color: #666;
   
   @media (min-width: 768px) {
-    font-size: 20px;
-    margin-bottom: 60px;
+    font-size: 16px;
+    margin-bottom: 40px;
   }
 }
 
 .heroStats {
   display: flex;
   justify-content: center;
-  gap: 40px;
+  gap: 24px;
   flex-wrap: wrap;
   
   @media (min-width: 768px) {
-    gap: 80px;
+    gap: 40px;
   }
 }
 
@@ -285,23 +282,24 @@
   align-items: center;
   
   .statNumber {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 800;
     margin-bottom: 4px;
+    color: #e649d1;
     
     @media (min-width: 768px) {
-      font-size: 32px;
-      margin-bottom: 8px;
+      font-size: 24px;
+      margin-bottom: 6px;
     }
   }
   
   .statLabel {
-    font-size: 12px;
-    opacity: 0.8;
+    font-size: 11px;
     font-weight: 500;
+    color: #666;
     
     @media (min-width: 768px) {
-      font-size: 14px;
+      font-size: 12px;
     }
   }
 }
@@ -309,11 +307,18 @@
 .mainContent {
   background: #f8f9fa;
   min-height: 50vh;
-  padding: 40px 0 80px;
+  padding: 20px 16px 80px;
+  display: flex;
+  justify-content: center;
   
   @media (min-width: 768px) {
-    padding: 60px 0 100px;
+    padding: 40px 16px 100px;
   }
+}
+
+.mainContainer {
+  width: 100%;
+  max-width: 500px;
 }
 
 .loading {
