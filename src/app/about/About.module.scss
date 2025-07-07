@@ -29,7 +29,7 @@
     gap: 8px;
     font-size: 20px;
     font-weight: 700;
-    color: #ec4899;
+    color: #e649d1;
     text-decoration: none;
     
     .logoIcon {
@@ -57,7 +57,7 @@
       
       &:hover,
       &.active {
-        color: #ec4899;
+        color: #e649d1;
       }
       
       @media (min-width: 768px) {
@@ -68,7 +68,7 @@
 }
 
 .heroSection {
-  background: linear-gradient(135deg, #f472b6 0%, #db2777 100%);
+  background: linear-gradient(135deg, #f5a3e8 0%, #d426c4 100%);
   padding: 80px 0;
   text-align: center;
   color: white;
@@ -205,7 +205,7 @@
 .stat {
   text-align: center;
   padding: 40px 20px;
-  background: linear-gradient(135deg, #f472b6 0%, #db2777 100%);
+  background: linear-gradient(135deg, #f5a3e8 0%, #d426c4 100%);
   color: white;
   border-radius: 16px;
   
@@ -224,7 +224,7 @@
 }
 
 .ctaSection {
-  background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 100%);
+  background: linear-gradient(135deg, #fef7ff 0%, #fce3fb 100%);
   border-radius: 20px;
   padding: 60px 40px;
   text-align: center;
@@ -249,7 +249,7 @@
   
   .ctaButton {
     display: inline-block;
-    background: linear-gradient(135deg, #f472b6 0%, #db2777 100%);
+    background: linear-gradient(135deg, #f5a3e8 0%, #d426c4 100%);
     color: white;
     padding: 16px 40px;
     border-radius: 25px;
@@ -257,11 +257,11 @@
     font-weight: 600;
     text-decoration: none;
     transition: all 0.3s ease;
-    box-shadow: 0 8px 25px rgba(244, 114, 182, 0.3);
+    box-shadow: 0 8px 25px rgba(230, 73, 209, 0.3);
     
     &:hover {
       transform: translateY(-2px);
-      box-shadow: 0 12px 35px rgba(244, 114, 182, 0.4);
+      box-shadow: 0 12px 35px rgba(230, 73, 209, 0.4);
     }
   }
 }

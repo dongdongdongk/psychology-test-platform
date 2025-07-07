@@ -26,8 +26,8 @@
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
       
       &:focus {
-        border-color: #f472b6;
-        box-shadow: 0 4px 20px rgba(244, 114, 182, 0.15);
+        border-color: #e649d1;
+        box-shadow: 0 4px 20px rgba(230, 73, 209, 0.15);
       }
       
       &::placeholder {
@@ -67,13 +67,13 @@
       transition: all 0.2s ease;
       
       &:hover {
-        border-color: #f472b6;
-        color: #f472b6;
+        border-color: #e649d1;
+        color: #e649d1;
       }
       
       &.active {
-        background: linear-gradient(135deg, #f472b6 0%, #db2777 100%);
-        border-color: #f472b6;
+        background: linear-gradient(135deg, #f5a3e8 0%, #d426c4 100%);
+        border-color: #e649d1;
         color: white;
       }
     }
@@ -235,7 +235,7 @@
     .startButton {
       width: 100%;
       padding: 10px;
-      background: linear-gradient(135deg, #f472b6 0%, #db2777 100%);
+      background: linear-gradient(135deg, #f5a3e8 0%, #d426c4 100%);
       color: white;
       border: none;
       border-radius: 12px;
@@ -254,7 +254,7 @@
       
       &:hover {
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(244, 114, 182, 0.3);
+        box-shadow: 0 4px 12px rgba(230, 73, 209, 0.3);
       }
       
       &:disabled {
