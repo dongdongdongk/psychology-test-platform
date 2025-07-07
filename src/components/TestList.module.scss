@@ -101,14 +101,14 @@
     gap: 24px;
   }
   
-  // 데스크톱: 4개
+  // 데스크톱: 4개 (최대)
   @media (min-width: 1024px) {
     grid-template-columns: repeat(4, 1fr);
   }
   
-  // 대형 화면: 5개
+  // 대형 화면도 4개 유지
   @media (min-width: 1400px) {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
