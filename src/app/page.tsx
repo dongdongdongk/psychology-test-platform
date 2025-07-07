@@ -1,4 +1,5 @@
 import { Suspense } from 'react'
+import Link from 'next/link'
 import TestList from '@/components/TestList'
 import styles from './HomePage.module.scss'
 
@@ -8,16 +9,25 @@ export default function HomePage() {
       <div className={styles.header}>
         <div className={styles.container}>
           <nav className={styles.nav}>
-            <div className={styles.logo}>
+            <Link href="/" className={styles.logo}>
               <span className={styles.logoIcon}>🧠</span>
               심리테스트 플랫폼
-            </div>
+            </Link>
             <ul className={styles.navLinks}>
               <li>
-                <a href="/" className={styles.navLink}>홈</a>
+                <Link href="/" className={styles.navLink}>홈</Link>
               </li>
               <li>
-                <a href="/admin/login" className={styles.navLink}>관리자</a>
+                <Link href="/about" className={styles.navLink}>소개</Link>
+              </li>
+              <li>
+                <Link href="/faq" className={styles.navLink}>FAQ</Link>
+              </li>
+              <li>
+                <Link href="/contact" className={styles.navLink}>문의</Link>
+              </li>
+              <li>
+                <Link href="/admin/login" className={styles.navLink}>관리자</Link>
               </li>
             </ul>
           </nav>

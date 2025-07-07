@@ -1,6 +1,6 @@
 .main {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #f472b6 0%, #db2777 100%);
 }
 
 .header {
@@ -31,6 +31,7 @@
     font-size: 20px;
     font-weight: 700;
     color: white;
+    text-decoration: none;
     
     .logoIcon {
       font-size: 24px;
@@ -172,7 +173,7 @@
   width: 40px;
   height: 40px;
   border: 3px solid #e9ecef;
-  border-top: 3px solid #667eea;
+  border-top: 3px solid #f472b6;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }

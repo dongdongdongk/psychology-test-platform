@@ -54,11 +54,11 @@ a {
   }
   
   &.btn-primary {
-    background-color: #007bff;
+    background: linear-gradient(135deg, #f472b6 0%, #db2777 100%);
     color: white;
     
     &:hover {
-      background-color: #0056b3;
+      background: linear-gradient(135deg, #ec4899 0%, #be185d 100%);
     }
   }
   
@@ -106,7 +106,7 @@ a {
   .logo {
     font-size: 24px;
     font-weight: bold;
-    color: #007bff;
+    color: #ec4899;
   }
   
   .nav-links {
@@ -120,7 +120,7 @@ a {
       transition: color 0.2s ease;
       
       &:hover {
-        color: #007bff;
+        color: #ec4899;
       }
     }
   }
