@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Header from '@/components/common/Header'
 import styles from './About.module.scss'
 
 export const metadata = {
@@ -9,26 +10,10 @@ export const metadata = {
 export default function AboutPage() {
   return (
     <main className={styles.main}>
-      <div className={styles.header}>
-        <div className={styles.container}>
-          <nav className={styles.nav}>
-            <Link href="/" className={styles.logo}>
-              <span className={styles.logoIcon}>🧠</span>
-              심리테스트 플랫폼
-            </Link>
-            <ul className={styles.navLinks}>
-              <li><Link href="/" className={styles.navLink}>홈</Link></li>
-              <li><Link href="/about" className={`${styles.navLink} ${styles.active}`}>소개</Link></li>
-              <li><Link href="/faq" className={styles.navLink}>FAQ</Link></li>
-              <li><Link href="/contact" className={styles.navLink}>문의</Link></li>
-              <li><Link href="/admin/login" className={styles.navLink}>관리자</Link></li>
-            </ul>
-          </nav>
-        </div>
-      </div>
+      <Header />
 
       <div className={styles.heroSection}>
-        <div className={styles.container}>
+        <div className={styles.heroCard}>
           <h1 className={styles.heroTitle}>나를 알아가는 여행</h1>
           <p className={styles.heroSubtitle}>
             심리테스트 플랫폼과 함께 자신의 내면을 탐험해보세요
@@ -37,7 +22,7 @@ export default function AboutPage() {
       </div>
 
       <div className={styles.content}>
-        <div className={styles.container}>
+        <div className={styles.contentContainer}>
           <section className={styles.missionSection}>
             <div className={styles.sectionContent}>
               <h2 className={styles.sectionTitle}>우리의 미션</h2>

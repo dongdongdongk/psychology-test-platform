@@ -1,12 +1,11 @@
 'use client'
 
 import { Suspense, useState, useEffect } from 'react'
-import Link from 'next/link'
+import Header from '@/components/common/Header'
 import TestList from '@/components/TestList'
 import styles from './HomePage.module.scss'
 
 export default function HomePage() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [currentSlide, setCurrentSlide] = useState(0)
 
   // 슬라이드 이미지와 테스트 정보 배열
@@ -29,9 +28,6 @@ export default function HomePage() {
     }
   ]
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen)
-  }
 
   // 5초마다 자동 슬라이드
   useEffect(() => {
@@ -48,70 +44,7 @@ export default function HomePage() {
   }
   return (
     <main className={styles.main}>
-      <div className={styles.header}>
-        <div className={styles.headerCard}>
-          <div className={styles.container}>
-            <nav className={styles.nav}>
-            <Link href="/" className={styles.logo}>
-              <span className={styles.logoIcon}>🧠</span>
-              심리테스트 플랫폼
-            </Link>
-            {/* Desktop Navigation */}
-            <ul className={styles.navLinks}>
-              <li>
-                <Link href="/" className={styles.navLink}>홈</Link>
-              </li>
-              <li>
-                <Link href="/about" className={styles.navLink}>소개</Link>
-              </li>
-              <li>
-                <Link href="/faq" className={styles.navLink}>FAQ</Link>
-              </li>
-              <li>
-                <Link href="/contact" className={styles.navLink}>문의</Link>
-              </li>
-              <li>
-                <Link href="/admin/login" className={styles.navLink}>관리자</Link>
-              </li>
-            </ul>
-
-            {/* Mobile Menu Button */}
-            <button 
-              className={styles.mobileMenuButton}
-              onClick={toggleMobileMenu}
-              aria-label="메뉴 열기"
-            >
-              <span className={`${styles.hamburger} ${isMobileMenuOpen ? styles.open : ''}`}>
-                <span></span>
-                <span></span>
-                <span></span>
-              </span>
-            </button>
-          </nav>
-
-          {/* Mobile Menu Dropdown */}
-          <div className={`${styles.mobileMenu} ${isMobileMenuOpen ? styles.open : ''}`}>
-            <ul className={styles.mobileNavLinks}>
-              <li>
-                <Link href="/" className={styles.mobileNavLink} onClick={() => setIsMobileMenuOpen(false)}>홈</Link>
-              </li>
-              <li>
-                <Link href="/about" className={styles.mobileNavLink} onClick={() => setIsMobileMenuOpen(false)}>소개</Link>
-              </li>
-              <li>
-                <Link href="/faq" className={styles.mobileNavLink} onClick={() => setIsMobileMenuOpen(false)}>FAQ</Link>
-              </li>
-              <li>
-                <Link href="/contact" className={styles.mobileNavLink} onClick={() => setIsMobileMenuOpen(false)}>문의</Link>
-              </li>
-              <li>
-                <Link href="/admin/login" className={styles.mobileNavLink} onClick={() => setIsMobileMenuOpen(false)}>관리자</Link>
-              </li>
-            </ul>
-          </div>
-          </div>
-        </div>
-      </div>
+      <Header />
       
       <div className={styles.heroSection}>
         <div className={styles.heroContainer}>
