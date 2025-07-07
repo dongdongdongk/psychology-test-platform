@@ -1,15 +1,50 @@
 'use client'
 
-import { Suspense, useState } from 'react'
+import { Suspense, useState, useEffect } from 'react'
 import Link from 'next/link'
 import TestList from '@/components/TestList'
 import styles from './HomePage.module.scss'
 
 export default function HomePage() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [currentSlide, setCurrentSlide] = useState(0)
+
+  // 슬라이드 이미지와 테스트 정보 배열
+  const heroSlides = [
+    {
+      image: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
+      testUrl: '/tests/stress-test'
+    },
+    {
+      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
+      testUrl: '/tests/personality-test'
+    },
+    {
+      image: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
+      testUrl: '/tests/mbti-test'
+    },
+    {
+      image: 'https://images.unsplash.com/photo-1586297135537-94bc9ba060aa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
+      testUrl: '/tests/emotional-test'
+    }
+  ]
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen)
+  }
+
+  // 5초마다 자동 슬라이드
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
+    }, 5000)
+
+    return () => clearInterval(interval)
+  }, [heroSlides.length])
+
+  // 슬라이드 클릭 시 테스트로 이동
+  const handleSlideClick = (testUrl: string) => {
+    window.location.href = testUrl
   }
   return (
     <main className={styles.main}>
@@ -80,29 +115,35 @@ export default function HomePage() {
       
       <div className={styles.heroSection}>
         <div className={styles.heroContainer}>
-          <div className={styles.heroContent}>
-            <h1 className={styles.heroTitle}>
-              나를 알아가는 여행
-            </h1>
-            <p className={styles.heroSubtitle}>
-              다양한 심리테스트를 통해 자신을 더 깊이 이해하고
-              <br />
-              새로운 면을 발견해보세요
-            </p>
-            <div className={styles.heroStats}>
-              <div className={styles.stat}>
-                <span className={styles.statNumber}>100+</span>
-                <span className={styles.statLabel}>심리테스트</span>
-              </div>
-              <div className={styles.stat}>
-                <span className={styles.statNumber}>10K+</span>
-                <span className={styles.statLabel}>참여자</span>
-              </div>
-              <div className={styles.stat}>
-                <span className={styles.statNumber}>98%</span>
-                <span className={styles.statLabel}>만족도</span>
-              </div>
-            </div>
+          {/* 슬라이드 컨테이너 */}
+          <div className={styles.heroSlideContainer}>
+            {heroSlides.map((slide, index) => (
+              <div
+                key={index}
+                className={`${styles.heroSlide} ${
+                  index === currentSlide ? styles.active : ''
+                }`}
+                style={{ 
+                  backgroundImage: `url(${slide.image})`,
+                  transform: `translateX(${(index - currentSlide) * 100}%)`
+                }}
+                onClick={() => handleSlideClick(slide.testUrl)}
+              />
+            ))}
+          </div>
+          
+          {/* 슬라이드 인디케이터 */}
+          <div className={styles.slideIndicators}>
+            {heroSlides.map((_, index) => (
+              <button
+                key={index}
+                className={`${styles.indicator} ${
+                  index === currentSlide ? styles.active : ''
+                }`}
+                onClick={() => setCurrentSlide(index)}
+                aria-label={`슬라이드 ${index + 1}로 이동`}
+              />
+            ))}
           </div>
         </div>
       </div>
