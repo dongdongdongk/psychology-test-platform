@@ -72,7 +72,7 @@ export default function TestList() {
   }
 
   return (
-    <div className={styles.container}>
+    <div>
       {/* 검색 섹션 */}
       <div className={styles.searchSection}>
         <div className={styles.searchContainer}>

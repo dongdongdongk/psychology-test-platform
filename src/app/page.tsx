@@ -108,14 +108,16 @@ export default function HomePage() {
       </div>
       
       <div className={styles.mainContent}>
-        <Suspense fallback={
-          <div className={styles.loading}>
-            <div className={styles.loadingSpinner}></div>
-            <p>테스트 목록을 불러오는 중...</p>
-          </div>
-        }>
-          <TestList />
-        </Suspense>
+        <div className={styles.mainContainer}>
+          <Suspense fallback={
+            <div className={styles.loading}>
+              <div className={styles.loadingSpinner}></div>
+              <p>테스트 목록을 불러오는 중...</p>
+            </div>
+          }>
+            <TestList />
+          </Suspense>
+        </div>
       </div>
     </main>
   )
