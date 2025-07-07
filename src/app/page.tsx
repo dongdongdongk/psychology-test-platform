@@ -14,8 +14,9 @@ export default function HomePage() {
   return (
     <main className={styles.main}>
       <div className={styles.header}>
-        <div className={styles.container}>
-          <nav className={styles.nav}>
+        <div className={styles.headerCard}>
+          <div className={styles.container}>
+            <nav className={styles.nav}>
             <Link href="/" className={styles.logo}>
               <span className={styles.logoIcon}>🧠</span>
               심리테스트 플랫폼
@@ -72,6 +73,7 @@ export default function HomePage() {
                 <Link href="/admin/login" className={styles.mobileNavLink} onClick={() => setIsMobileMenuOpen(false)}>관리자</Link>
               </li>
             </ul>
+          </div>
           </div>
         </div>
       </div>
