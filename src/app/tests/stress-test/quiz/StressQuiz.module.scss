@@ -1,0 +1,169 @@
+.container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+}
+
+.header {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+.progressContainer {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.progressBar {
+  flex: 1;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: white;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.progressText {
+  color: white;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.content {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  min-height: calc(100vh - 160px);
+}
+
+.questionCard {
+  background: white;
+  border-radius: 20px;
+  padding: 60px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  text-align: center;
+}
+
+.questionTitle {
+  font-size: 28px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 40px;
+  line-height: 1.4;
+}
+
+.optionsContainer {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.option {
+  background: #f8f9fa;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  padding: 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  
+  &:hover {
+    background: #e9ecef;
+    border-color: #dee2e6;
+  }
+  
+  &.selected {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-color: #667eea;
+  }
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.backButton {
+  background: none;
+  border: 2px solid #dee2e6;
+  color: #6c757d;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: #f8f9fa;
+    border-color: #adb5bd;
+  }
+}
+
+.nextButton {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 12px 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  margin-left: auto;
+  
+  &:hover:not(.disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+  }
+  
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+  
+  .questionCard {
+    padding: 40px 20px;
+  }
+  
+  .questionTitle {
+    font-size: 22px;
+  }
+  
+  .option {
+    padding: 16px;
+    font-size: 14px;
+  }
+  
+  .navigation {
+    flex-direction: column;
+    gap: 12px;
+    
+    .backButton,
+    .nextButton {
+      width: 100%;
+    }
+  }
+}

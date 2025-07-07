@@ -1,0 +1,259 @@
+.container {
+  min-height: 100vh;
+  padding: 20px;
+  
+  &.low {
+    background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+  }
+  
+  &.medium {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  }
+  
+  &.high {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+  }
+}
+
+.header {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px 0;
+  
+  .homeLink {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    opacity: 0.9;
+    transition: opacity 0.2s ease;
+    
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+.content {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  min-height: calc(100vh - 160px);
+}
+
+.resultCard {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  width: 100%;
+}
+
+.resultHeader {
+  padding: 60px 40px 40px;
+  text-align: center;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  
+  .icon {
+    font-size: 80px;
+    margin-bottom: 20px;
+    display: block;
+  }
+  
+  .resultTitle {
+    font-size: 32px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 30px;
+  }
+}
+
+.scoreContainer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.scoreText {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  min-width: 80px;
+}
+
+.progressBar {
+  flex: 1;
+  height: 12px;
+  background: #e9ecef;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.8s ease;
+}
+
+.container.low .progressFill {
+  background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+}
+
+.container.medium .progressFill {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.container.high .progressFill {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+}
+
+.percentage {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  min-width: 50px;
+  text-align: right;
+}
+
+.resultContent {
+  padding: 40px;
+  
+  section {
+    margin-bottom: 32px;
+    
+    h2 {
+      font-size: 20px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 12px;
+    }
+    
+    p {
+      font-size: 16px;
+      line-height: 1.6;
+      color: #666;
+    }
+  }
+}
+
+.recommendations {
+  .activities {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+  }
+  
+  .activity {
+    background: #f8f9fa;
+    padding: 16px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 14px;
+    color: #333;
+  }
+}
+
+.actions {
+  padding: 40px;
+  background: #f8f9fa;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  
+  .shareButton,
+  .retestButton,
+  .homeButton {
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: none;
+    font-size: 16px;
+  }
+  
+  .shareButton {
+    background: #007bff;
+    color: white;
+    
+    &:hover {
+      background: #0056b3;
+      transform: translateY(-1px);
+    }
+  }
+  
+  .retestButton {
+    background: #6c757d;
+    color: white;
+    
+    &:hover {
+      background: #545b62;
+      transform: translateY(-1px);
+    }
+  }
+  
+  .homeButton {
+    background: white;
+    color: #333;
+    border: 2px solid #dee2e6;
+    
+    &:hover {
+      background: #f8f9fa;
+      border-color: #adb5bd;
+    }
+  }
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 18px;
+  color: #666;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+  
+  .resultHeader {
+    padding: 40px 20px 30px;
+    
+    .icon {
+      font-size: 60px;
+    }
+    
+    .resultTitle {
+      font-size: 24px;
+    }
+  }
+  
+  .scoreContainer {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .resultContent {
+    padding: 30px 20px;
+  }
+  
+  .activities {
+    grid-template-columns: 1fr;
+  }
+  
+  .actions {
+    padding: 30px 20px;
+    flex-direction: column;
+    
+    .shareButton,
+    .retestButton,
+    .homeButton {
+      width: 100%;
+    }
+  }
+}

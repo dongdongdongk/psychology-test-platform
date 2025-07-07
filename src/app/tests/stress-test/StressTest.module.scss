@@ -1,0 +1,178 @@
+.container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+}
+
+.header {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 0;
+  
+  .homeLink {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    opacity: 0.9;
+    transition: opacity 0.2s ease;
+    
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+.content {
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.heroSection {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 60px 40px;
+  text-align: center;
+  
+  .title {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    letter-spacing: -1px;
+  }
+  
+  .subtitle {
+    font-size: 20px;
+    opacity: 0.9;
+    font-weight: 300;
+  }
+}
+
+.description {
+  padding: 40px;
+  
+  h2 {
+    font-size: 24px;
+    margin-bottom: 16px;
+    color: #333;
+  }
+  
+  p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #666;
+    margin-bottom: 32px;
+  }
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.feature {
+  text-align: center;
+  padding: 24px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  
+  h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+    color: #333;
+  }
+  
+  p {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+  }
+}
+
+.testInfo {
+  padding: 0 40px 40px;
+  
+  h2 {
+    font-size: 24px;
+    margin-bottom: 16px;
+    color: #333;
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+    
+    li {
+      padding: 12px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 16px;
+      color: #666;
+      
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+}
+
+.startSection {
+  padding: 40px;
+  text-align: center;
+  background: #f8f9fa;
+  
+  .startButton {
+    display: inline-block;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px 60px;
+    border-radius: 50px;
+    font-size: 18px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+    }
+  }
+  
+  .privacy {
+    margin-top: 24px;
+    font-size: 14px;
+    color: #999;
+    font-style: italic;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+  
+  .heroSection {
+    padding: 40px 20px;
+    
+    .title {
+      font-size: 36px;
+    }
+    
+    .subtitle {
+      font-size: 18px;
+    }
+  }
+  
+  .description, .testInfo, .startSection {
+    padding: 30px 20px;
+  }
+  
+  .features {
+    grid-template-columns: 1fr;
+  }
+}
