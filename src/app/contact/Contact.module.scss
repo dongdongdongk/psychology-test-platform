@@ -3,27 +3,6 @@
   background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
 }
 
-.header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  padding: 0 20px;
-  
-  .headerCard {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px);
-    border-radius: 0 0 24px 24px;
-    border: 1px solid rgba(102, 126, 234, 0.1);
-    border-top: none;
-    width: 100%;
-    max-width: 480px;
-    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.1);
-  }
-}
-
 .container {
   width: 100%;
   padding: 0 20px;
@@ -34,56 +13,6 @@
   max-width: 480px;
   margin: 0 auto;
   padding: 0 20px;
-}
-
-.nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 0;
-  
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 18px;
-    font-weight: 700;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-decoration: none;
-    
-    .logoIcon {
-      font-size: 22px;
-      filter: hue-rotate(200deg);
-    }
-  }
-  
-  .navLinks {
-    display: none;
-    list-style: none;
-    gap: 16px;
-    margin: 0;
-    padding: 0;
-    
-    @media (min-width: 768px) {
-      display: flex;
-    }
-    
-    .navLink {
-      color: #64748b;
-      font-weight: 500;
-      font-size: 14px;
-      transition: color 0.2s ease;
-      text-decoration: none;
-      
-      &:hover,
-      &.active {
-        color: #667eea;
-      }
-    }
-  }
 }
 
 .heroSection {
@@ -97,8 +26,8 @@
     max-width: 480px;
     background: white;
     border-radius: 20px;
-    box-shadow: 0 8px 32px rgba(102, 126, 234, 0.12);
-    border: 1px solid rgba(102, 126, 234, 0.1);
+    box-shadow: 0 8px 32px rgba(247, 188, 183, 0.12);
+    border: 1px solid rgba(247, 188, 183, 0.1);
     padding: 40px 24px;
     text-align: center;
     
@@ -106,7 +35,7 @@
       font-size: 24px;
       font-weight: 800;
       margin-bottom: 16px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, #f7bcb7 0%, #e8958f 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -135,8 +64,8 @@
 .contactInfo {
   background: white;
   border-radius: 20px;
-  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.08);
-  border: 1px solid rgba(102, 126, 234, 0.06);
+  box-shadow: 0 8px 32px rgba(247, 188, 183, 0.08);
+  border: 1px solid rgba(247, 188, 183, 0.06);
   padding: 32px 24px;
   
   .infoTitle {
@@ -145,7 +74,7 @@
     color: #1e293b;
     margin-bottom: 20px;
     text-align: center;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #f7bcb7 0%, #e8958f 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -163,7 +92,7 @@
   align-items: center;
   gap: 16px;
   padding: 16px;
-  background: rgba(102, 126, 234, 0.03);
+  background: rgba(247, 188, 183, 0.03);
   border-radius: 16px;
   
   .infoIcon {
@@ -174,7 +103,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #f7bcb7 0%, #e8958f 100%);
     flex-shrink: 0;
   }
   
@@ -200,8 +129,8 @@
 .contactForm {
   background: white;
   border-radius: 20px;
-  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.08);
-  border: 1px solid rgba(102, 126, 234, 0.06);
+  box-shadow: 0 8px 32px rgba(247, 188, 183, 0.08);
+  border: 1px solid rgba(247, 188, 183, 0.06);
   padding: 32px 24px;
 }
 
@@ -211,7 +140,7 @@
   color: #1e293b;
   margin-bottom: 24px;
   text-align: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #f7bcb7 0%, #e8958f 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -281,7 +210,7 @@
   .textarea {
     width: 100%;
     padding: 12px 16px;
-    border: 2px solid rgba(102, 126, 234, 0.15);
+    border: 2px solid rgba(247, 188, 183, 0.15);
     border-radius: 12px;
     font-size: 14px;
     transition: all 0.3s ease;
@@ -289,8 +218,8 @@
     
     &:focus {
       outline: none;
-      border-color: #667eea;
-      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      border-color: #f7bcb7;
+      box-shadow: 0 0 0 3px rgba(247, 188, 183, 0.1);
     }
     
     &::placeholder {
@@ -313,7 +242,7 @@
 .submitButton {
   width: 100%;
   padding: 16px 24px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #f7bcb7 0%, #e8958f 100%);
   color: white;
   border: none;
   border-radius: 12px;
@@ -321,17 +250,17 @@
   font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 6px 20px rgba(247, 188, 183, 0.3);
   
   &:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 8px 24px rgba(247, 188, 183, 0.4);
   }
   
   &:disabled {
     opacity: 0.7;
     cursor: not-allowed;
     transform: none;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+    box-shadow: 0 4px 15px rgba(247, 188, 183, 0.2);
   }
 }

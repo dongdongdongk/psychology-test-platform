@@ -14,7 +14,7 @@
     color: #1e293b;
     margin: 0;
     text-align: left;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #f7bcb7 0%, #e8958f 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -38,17 +38,17 @@
       width: 100%;
       padding: 16px 24px;
       padding-left: 50px;
-      border: 1px solid rgba(102, 126, 234, 0.2);
+      border: 1px solid rgba(247, 188, 183, 0.3);
       border-radius: 16px;
       font-size: 16px;
       outline: none;
       transition: all 0.3s ease;
       background: white;
-      box-shadow: 0 4px 16px rgba(102, 126, 234, 0.08);
+      box-shadow: 0 4px 16px rgba(247, 188, 183, 0.1);
       
       &:focus {
-        border-color: #667eea;
-        box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+        border-color: #f7bcb7;
+        box-shadow: 0 8px 24px rgba(247, 188, 183, 0.2);
       }
       
       &::placeholder {
@@ -88,13 +88,13 @@
       transition: all 0.2s ease;
       
       &:hover {
-        border-color: #667eea;
-        color: #667eea;
+        border-color: #f7bcb7;
+        color: #f7bcb7;
       }
       
       &.active {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border-color: #667eea;
+        background: linear-gradient(135deg, #f7bcb7 0%, #e8958f 100%);
+        border-color: #f7bcb7;
         color: white;
       }
     }
@@ -119,8 +119,8 @@
   background: white;
   border-radius: 24px;
   overflow: hidden;
-  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.08);
-  border: 1px solid rgba(102, 126, 234, 0.06);
+  box-shadow: 0 8px 32px rgba(247, 188, 183, 0.1);
+  border: 1px solid rgba(247, 188, 183, 0.1);
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: relative;
   display: flex;
@@ -130,8 +130,8 @@
   
   &:hover {
     transform: translateY(-8px);
-    box-shadow: 0 16px 48px rgba(102, 126, 234, 0.16);
-    border-color: rgba(102, 126, 234, 0.12);
+    box-shadow: 0 16px 48px rgba(247, 188, 183, 0.2);
+    border-color: rgba(247, 188, 183, 0.15);
   }
   
   .cardImage {
