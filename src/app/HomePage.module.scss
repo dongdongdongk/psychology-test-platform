@@ -4,27 +4,36 @@
 }
 
 .header {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   position: sticky;
   top: 0;
   z-index: 100;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 0 16px;
+  
+  .headerCard {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 0 0 20px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: none;
+    width: 100%;
+    max-width: 500px;
+    
+    @media (min-width: 768px) {
+      max-width: 600px;
+    }
+    
+    @media (min-width: 1024px) {
+      max-width: 700px;
+    }
+  }
 }
 
 .container {
-  // 데스크톱에서는 TestList searchSection과 비슷한 너비로 제한
-  max-width: 500px;
-  margin: 0 auto;
-  padding: 0 16px;
-  
-  @media (min-width: 768px) {
-    max-width: 600px;
-  }
-  
-  @media (min-width: 1024px) {
-    max-width: 700px;
-  }
+  width: 100%;
+  padding: 0 20px;
 }
 
 .nav {
@@ -155,7 +164,9 @@
   right: 0;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0 0 20px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-top: none;
   transform: translateY(-100%);
   opacity: 0;
   visibility: hidden;
