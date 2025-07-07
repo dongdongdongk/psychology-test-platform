@@ -29,7 +29,7 @@
     gap: 8px;
     font-size: 20px;
     font-weight: 700;
-    color: #ec4899;
+    color: #e649d1;
     text-decoration: none;
     
     .logoIcon {
@@ -57,7 +57,7 @@
       
       &:hover,
       &.active {
-        color: #ec4899;
+        color: #e649d1;
       }
       
       @media (min-width: 768px) {
@@ -68,7 +68,7 @@
 }
 
 .heroSection {
-  background: linear-gradient(135deg, #f472b6 0%, #db2777 100%);
+  background: linear-gradient(135deg, #f5a3e8 0%, #d426c4 100%);
   padding: 80px 0;
   text-align: center;
   color: white;
@@ -124,7 +124,7 @@
   
   .infoIcon {
     font-size: 24px;
-    background: linear-gradient(135deg, #f472b6 0%, #db2777 100%);
+    background: linear-gradient(135deg, #f5a3e8 0%, #d426c4 100%);
     width: 48px;
     height: 48px;
     border-radius: 12px;
@@ -245,8 +245,8 @@
     
     &:focus {
       outline: none;
-      border-color: #f472b6;
-      box-shadow: 0 0 0 3px rgba(244, 114, 182, 0.1);
+      border-color: #e649d1;
+      box-shadow: 0 0 0 3px rgba(230, 73, 209, 0.1);
     }
     
     &::placeholder {
@@ -269,7 +269,7 @@
 .submitButton {
   width: 100%;
   padding: 16px 24px;
-  background: linear-gradient(135deg, #f472b6 0%, #db2777 100%);
+  background: linear-gradient(135deg, #f5a3e8 0%, #d426c4 100%);
   color: white;
   border: none;
   border-radius: 12px;
@@ -277,17 +277,17 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 8px 25px rgba(244, 114, 182, 0.3);
+  box-shadow: 0 8px 25px rgba(230, 73, 209, 0.3);
   
   &:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 12px 35px rgba(244, 114, 182, 0.4);
+    box-shadow: 0 12px 35px rgba(230, 73, 209, 0.4);
   }
   
   &:disabled {
     opacity: 0.7;
     cursor: not-allowed;
     transform: none;
-    box-shadow: 0 4px 15px rgba(244, 114, 182, 0.2);
+    box-shadow: 0 4px 15px rgba(230, 73, 209, 0.2);
   }
 }
