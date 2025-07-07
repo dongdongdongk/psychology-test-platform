@@ -11,6 +11,7 @@ export default function NewTestPage() {
     id: '',
     title: '',
     description: '',
+    category: '일반',
     thumbnailUrl: '',
     testUrl: '',
     isActive: true
@@ -111,6 +112,31 @@ export default function NewTestPage() {
               placeholder="테스트에 대한 간단한 설명을 입력하세요"
               rows={4}
             />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="category" className={styles.label}>
+              카테고리 *
+            </label>
+            <select
+              id="category"
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              className={styles.input}
+              required
+            >
+              <option value="일반">일반</option>
+              <option value="성격분석">성격분석</option>
+              <option value="멘탈헬스">멘탈헬스</option>
+              <option value="연애">연애</option>
+              <option value="진로">진로</option>
+              <option value="취미">취미</option>
+              <option value="라이프스타일">라이프스타일</option>
+            </select>
+            <p className={styles.help}>
+              테스트의 주제에 맞는 카테고리를 선택하세요.
+            </p>
           </div>
 
           <div className={styles.formGroup}>

@@ -2,6 +2,7 @@ export interface Test {
   id: string
   title: string
   description?: string
+  category: string
   thumbnailUrl?: string
   testUrl: string
   isActive: boolean

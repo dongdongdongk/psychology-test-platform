@@ -17,6 +17,7 @@ model Test {
   id           String   @id @db.VarChar(50)
   title        String   @db.VarChar(255)
   description  String?  @db.Text
+  category     String   @default("일반") @db.VarChar(100)
   thumbnailUrl String?  @map("thumbnail_url") @db.VarChar(500)
   testUrl      String   @map("test_url") @db.VarChar(500)
   isActive     Boolean  @default(true) @map("is_active")
