@@ -57,25 +57,27 @@ export default function FAQPage() {
   return (
     <main className={styles.main}>
       <div className={styles.header}>
-        <div className={styles.container}>
-          <nav className={styles.nav}>
-            <Link href="/" className={styles.logo}>
-              <span className={styles.logoIcon}>🧠</span>
-              심리테스트 플랫폼
-            </Link>
-            <ul className={styles.navLinks}>
-              <li><Link href="/" className={styles.navLink}>홈</Link></li>
-              <li><Link href="/about" className={styles.navLink}>소개</Link></li>
-              <li><Link href="/faq" className={`${styles.navLink} ${styles.active}`}>FAQ</Link></li>
-              <li><Link href="/contact" className={styles.navLink}>문의</Link></li>
-              <li><Link href="/admin/login" className={styles.navLink}>관리자</Link></li>
-            </ul>
-          </nav>
+        <div className={styles.headerCard}>
+          <div className={styles.container}>
+            <nav className={styles.nav}>
+              <Link href="/" className={styles.logo}>
+                <span className={styles.logoIcon}>🧠</span>
+                심리테스트 플랫폼
+              </Link>
+              <ul className={styles.navLinks}>
+                <li><Link href="/" className={styles.navLink}>홈</Link></li>
+                <li><Link href="/about" className={styles.navLink}>소개</Link></li>
+                <li><Link href="/faq" className={`${styles.navLink} ${styles.active}`}>FAQ</Link></li>
+                <li><Link href="/contact" className={styles.navLink}>문의</Link></li>
+                <li><Link href="/admin/login" className={styles.navLink}>관리자</Link></li>
+              </ul>
+            </nav>
+          </div>
         </div>
       </div>
 
       <div className={styles.heroSection}>
-        <div className={styles.container}>
+        <div className={styles.heroCard}>
           <h1 className={styles.heroTitle}>자주 묻는 질문</h1>
           <p className={styles.heroSubtitle}>
             궁금한 점이 있으시다면 아래에서 답변을 찾아보세요
@@ -84,7 +86,7 @@ export default function FAQPage() {
       </div>
 
       <div className={styles.content}>
-        <div className={styles.container}>
+        <div className={styles.contentContainer}>
           <div className={styles.faqList}>
             {faqData.map((faq, index) => (
               <div
