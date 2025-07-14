@@ -11,7 +11,7 @@ export default function HomePage() {
   // 슬라이드 이미지와 테스트 정보 배열
   const heroSlides = [
     {
-      image: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
+      image: '/images/lunchSum.png',
       testUrl: '/tests/stress-test'
     },
     {
