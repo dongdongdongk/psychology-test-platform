@@ -57,35 +57,24 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json()
-    const { id, title, description, thumbnailUrl, testUrl, isActive } = body
+    const { title, description, category, thumbnailUrl, detailImageUrl, styleTheme, isActive } = body
 
     // Validate required fields
-    if (!id || !title || !testUrl) {
+    if (!title) {
       return NextResponse.json(
-        { error: 'id, title, and testUrl are required' },
+        { error: 'title is required' },
         { status: 400 }
-      )
-    }
-
-    // Check if test ID already exists
-    const existingTest = await prisma.test.findUnique({
-      where: { id }
-    })
-
-    if (existingTest) {
-      return NextResponse.json(
-        { error: 'Test ID already exists' },
-        { status: 409 }
       )
     }
 
     const test = await prisma.test.create({
       data: {
-        id,
         title,
         description,
+        category: category || '일반',
         thumbnailUrl,
-        testUrl,
+        detailImageUrl,
+        styleTheme: styleTheme || 'modern',
         isActive: isActive ?? true
       }
     })

@@ -19,6 +19,7 @@ export async function GET(
         description: true,
         category: true,
         thumbnailUrl: true,
+        detailImageUrl: true,
         styleTheme: true,
         isActive: true,
         createdAt: true,

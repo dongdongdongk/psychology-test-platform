@@ -8,12 +8,11 @@ import styles from './NewTest.module.scss'
 
 export default function NewTestPage() {
   const [formData, setFormData] = useState({
-    id: '',
     title: '',
     description: '',
     category: '일반',
     thumbnailUrl: '',
-    testUrl: '',
+    detailImageUrl: '',
     styleTheme: 'modern',
     isActive: true
   })
@@ -65,24 +64,6 @@ export default function NewTestPage() {
 
       <div className={styles.content}>
         <form onSubmit={handleSubmit} className={styles.form}>
-          <div className={styles.formGroup}>
-            <label htmlFor="id" className={styles.label}>
-              테스트 ID *
-            </label>
-            <input
-              type="text"
-              id="id"
-              name="id"
-              value={formData.id}
-              onChange={handleChange}
-              className={styles.input}
-              placeholder="예: personality-test (URL에 사용됩니다)"
-              required
-            />
-            <p className={styles.help}>
-              영문, 숫자, 하이픈(-)만 사용 가능합니다. URL 경로에 사용됩니다.
-            </p>
-          </div>
 
           <div className={styles.formGroup}>
             <label htmlFor="title" className={styles.label}>
@@ -175,7 +156,7 @@ export default function NewTestPage() {
               value={formData.thumbnailUrl}
               onChange={handleChange}
               className={styles.input}
-              placeholder="https://example.com/image.jpg"
+              placeholder="https://example.com/thumbnail.jpg"
             />
             <p className={styles.help}>
               이미지 URL을 입력하면 테스트 목록에서 썸네일로 표시됩니다.
@@ -183,23 +164,23 @@ export default function NewTestPage() {
           </div>
 
           <div className={styles.formGroup}>
-            <label htmlFor="testUrl" className={styles.label}>
-              테스트 URL *
+            <label htmlFor="detailImageUrl" className={styles.label}>
+              테스트 상세 이미지 URL
             </label>
             <input
-              type="text"
-              id="testUrl"
-              name="testUrl"
-              value={formData.testUrl}
+              type="url"
+              id="detailImageUrl"
+              name="detailImageUrl"
+              value={formData.detailImageUrl}
               onChange={handleChange}
               className={styles.input}
-              placeholder="예: /tests/personality-test"
-              required
+              placeholder="https://example.com/detail.jpg"
             />
             <p className={styles.help}>
-              테스트 페이지의 경로입니다. /tests/로 시작해야 합니다.
+              테스트 시작 페이지에서 표시될 상세 이미지입니다.
             </p>
           </div>
+
 
           <div className={styles.formGroup}>
             <div className={styles.checkboxGroup}>

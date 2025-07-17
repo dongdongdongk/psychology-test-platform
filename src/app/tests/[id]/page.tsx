@@ -12,6 +12,7 @@ interface TestData {
   description: string
   category: string
   thumbnailUrl: string
+  detailImageUrl: string
   styleTheme: string
   isActive: boolean
 }
@@ -99,7 +100,7 @@ export default function TestPage() {
 
         <div className={styles.thumbnail}>
           <img 
-            src={testData.thumbnailUrl || '/placeholder-image.jpg'} 
+            src={testData.detailImageUrl || testData.thumbnailUrl || '/placeholder-image.jpg'} 
             alt={testData.title}
             className={styles.thumbnailImage}
           />

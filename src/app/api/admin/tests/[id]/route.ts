@@ -61,6 +61,7 @@ export async function PUT(
         description: data.description,
         category: data.category,
         thumbnailUrl: data.thumbnailUrl,
+        detailImageUrl: data.detailImageUrl,
         styleTheme: data.styleTheme,
         isActive: data.isActive
       }
