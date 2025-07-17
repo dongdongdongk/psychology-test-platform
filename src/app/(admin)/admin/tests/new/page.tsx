@@ -14,6 +14,7 @@ export default function NewTestPage() {
     category: '일반',
     thumbnailUrl: '',
     testUrl: '',
+    styleTheme: 'modern',
     isActive: true
   })
   const [isLoading, setIsLoading] = useState(false)
@@ -136,6 +137,30 @@ export default function NewTestPage() {
             </select>
             <p className={styles.help}>
               테스트의 주제에 맞는 카테고리를 선택하세요.
+            </p>
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="styleTheme" className={styles.label}>
+              테마 스타일 *
+            </label>
+            <select
+              id="styleTheme"
+              name="styleTheme"
+              value={formData.styleTheme}
+              onChange={handleChange}
+              className={styles.input}
+              required
+            >
+              <option value="modern">Modern - 모던하고 세련된 스타일</option>
+              <option value="cute">Cute - 귀엽고 사랑스러운 스타일</option>
+              <option value="dark">Dark - 다크하고 시크한 스타일</option>
+              <option value="vibrant">Vibrant - 밝고 활기찬 스타일</option>
+              <option value="minimal">Minimal - 심플하고 미니멀한 스타일</option>
+              <option value="retro">Retro - 복고풍 스타일</option>
+            </select>
+            <p className={styles.help}>
+              테스트 페이지에 적용될 디자인 테마를 선택하세요.
             </p>
           </div>
 

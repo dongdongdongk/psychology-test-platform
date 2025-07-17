@@ -1,0 +1,324 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header {
+  background: white;
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.headerContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+}
+
+.title {
+  h1 {
+    font-size: 24px;
+    margin: 0 0 8px 0;
+    color: #333;
+  }
+  
+  p {
+    margin: 0;
+    color: #666;
+  }
+}
+
+.backButton {
+  background: #6c757d;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 14px;
+  
+  &:hover {
+    background: #5a6268;
+  }
+}
+
+.content {
+  background: white;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.errorMessage {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 24px;
+  border: 1px solid #f5c6cb;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+}
+
+.error {
+  text-align: center;
+  padding: 40px;
+  color: #dc3545;
+}
+
+.questionsContainer {
+  margin-bottom: 32px;
+}
+
+.questionCard {
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+.questionHeader {
+  background: #f8f9fa;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.questionNumber {
+  font-weight: 600;
+  color: #495057;
+}
+
+.questionActions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.typeSelect {
+  padding: 4px 8px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.removeButton {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 4px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  
+  &:hover {
+    background: #c82333;
+  }
+}
+
+.questionContent {
+  padding: 16px;
+}
+
+.questionInput {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 16px;
+  resize: vertical;
+  
+  &:focus {
+    outline: none;
+    border-color: #80bdff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  }
+}
+
+.optionsContainer {
+  padding: 16px;
+  border-top: 1px solid #dee2e6;
+  background: #f8f9fa;
+}
+
+.optionsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  
+  span {
+    font-weight: 600;
+    color: #495057;
+  }
+}
+
+.addOptionButton {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  
+  &:hover {
+    background: #218838;
+  }
+}
+
+.optionRow {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 12px;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.optionNumber {
+  width: 24px;
+  height: 24px;
+  background: #6c757d;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.optionInput {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 14px;
+  
+  &:focus {
+    outline: none;
+    border-color: #80bdff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  }
+}
+
+.scoreInput {
+  width: 80px;
+  padding: 8px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 14px;
+  text-align: center;
+  
+  &:focus {
+    outline: none;
+    border-color: #80bdff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  }
+}
+
+.removeOptionButton {
+  width: 24px;
+  height: 24px;
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  
+  &:hover {
+    background: #c82333;
+  }
+}
+
+.addQuestionButton {
+  width: 100%;
+  padding: 16px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  
+  &:hover {
+    background: #0056b3;
+  }
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  padding-top: 24px;
+  border-top: 1px solid #dee2e6;
+}
+
+.saveButton {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  
+  &:hover {
+    background: #218838;
+  }
+  
+  &:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+  }
+}
+
+// 반응형 디자인
+@media (max-width: 768px) {
+  .container {
+    padding: 16px;
+  }
+  
+  .questionActions {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .optionRow {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .optionInput {
+    min-width: 200px;
+  }
+  
+  .scoreInput {
+    width: 60px;
+  }
+}

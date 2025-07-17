@@ -1,0 +1,359 @@
+.container {
+  min-height: 100vh;
+  background: var(--gradient-background);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.resultContainer {
+  max-width: 600px;
+  width: 100%;
+  background: var(--background-primary);
+  border-radius: var(--border-radius-xl);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.header {
+  text-align: center;
+  padding: 40px 32px 24px;
+  background: linear-gradient(135deg, var(--background-primary) 0%, var(--background-secondary) 100%);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.badge {
+  display: inline-block;
+  background: var(--primary-light);
+  color: var(--primary-color);
+  padding: 8px 16px;
+  border-radius: var(--border-radius-lg);
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  border: 1px solid var(--border-color);
+}
+
+.testTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+
+.resultTitle {
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1.2;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0;
+}
+
+.imageContainer {
+  padding: 32px;
+  display: flex;
+  justify-content: center;
+  background: var(--background-secondary);
+}
+
+.resultImage {
+  width: 100%;
+  max-width: 300px;
+  height: 300px;
+  object-fit: cover;
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-light);
+}
+
+.scoreSection {
+  padding: 32px;
+  background: var(--background-primary);
+  border-top: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.scoreTitle {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+}
+
+.scoreDisplay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.scoreNumber {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--primary-color);
+  text-align: center;
+}
+
+.scoreBar {
+  width: 100%;
+  height: 12px;
+  background: var(--background-tertiary);
+  border-radius: var(--border-radius-sm);
+  overflow: hidden;
+  position: relative;
+}
+
+.scoreProgress {
+  height: 100%;
+  background: var(--gradient-primary);
+  transition: width 1s ease-out;
+  border-radius: var(--border-radius-sm);
+}
+
+.scorePercentage {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.description {
+  padding: 32px;
+  background: var(--background-primary);
+  
+  h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+    text-align: center;
+  }
+}
+
+.descriptionContent {
+  p {
+    font-size: 16px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 16px;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.actions {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: var(--background-primary);
+}
+
+.shareButton {
+  background: var(--gradient-primary);
+  color: var(--background-primary);
+  padding: 16px 32px;
+  border-radius: var(--border-radius-md);
+  font-size: 16px;
+  font-weight: 700;
+  border: 2px solid var(--primary-color);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  
+  &:hover {
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.retryButton {
+  display: block;
+  background: var(--background-secondary);
+  color: var(--text-primary);
+  padding: 14px 28px;
+  border-radius: var(--border-radius-md);
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  border: 1px solid var(--border-light);
+  transition: all var(--transition-normal);
+  
+  &:hover {
+    background: var(--background-tertiary);
+    border-color: var(--border-color);
+    transform: translateY(-1px);
+  }
+}
+
+.homeButton {
+  display: block;
+  background: transparent;
+  color: var(--text-secondary);
+  padding: 12px 24px;
+  border-radius: var(--border-radius-md);
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  border: 1px solid var(--border-light);
+  transition: all var(--transition-normal);
+  
+  &:hover {
+    background: var(--background-secondary);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+  }
+}
+
+.disclaimer {
+  padding: 24px 32px;
+  background: var(--primary-light);
+  border-top: 1px solid var(--border-light);
+  
+  p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin: 0;
+    text-align: center;
+    line-height: 1.5;
+  }
+}
+
+// 로딩 및 에러 상태
+.loading, .error {
+  text-align: center;
+  padding: 60px 32px;
+  background: var(--background-primary);
+  border-radius: var(--border-radius-xl);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-color);
+}
+
+.loading {
+  h2 {
+    font-size: 24px;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+  }
+  
+  p {
+    color: var(--text-secondary);
+    margin-bottom: 0;
+  }
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border-light);
+  border-top: 3px solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 24px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error {
+  h2 {
+    font-size: 24px;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+  }
+  
+  p {
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+    font-size: 16px;
+  }
+}
+
+// 반응형 디자인
+@media (max-width: 768px) {
+  .container {
+    padding: 16px;
+  }
+  
+  .header {
+    padding: 32px 24px 20px;
+  }
+  
+  .resultTitle {
+    font-size: 28px;
+  }
+  
+  .imageContainer {
+    padding: 24px;
+  }
+  
+  .resultImage {
+    height: 250px;
+  }
+  
+  .scoreSection {
+    padding: 24px;
+  }
+  
+  .scoreTitle {
+    font-size: 16px;
+  }
+  
+  .scoreNumber {
+    font-size: 24px;
+  }
+  
+  .scorePercentage {
+    font-size: 18px;
+  }
+  
+  .description {
+    padding: 24px;
+    
+    h2 {
+      font-size: 18px;
+    }
+  }
+  
+  .descriptionContent p {
+    font-size: 15px;
+  }
+  
+  .actions {
+    padding: 24px;
+  }
+  
+  .shareButton {
+    padding: 14px 28px;
+    font-size: 15px;
+  }
+  
+  .retryButton {
+    padding: 12px 24px;
+    font-size: 15px;
+  }
+  
+  .homeButton {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+  
+  .disclaimer {
+    padding: 20px 24px;
+  }
+}
