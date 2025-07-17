@@ -17,7 +17,6 @@ export async function POST(request: NextRequest) {
       optionCount,
       styleTheme,
       questions,
-      resultCount,
       resultTypes
     } = body
 
@@ -47,7 +46,7 @@ export async function POST(request: NextRequest) {
       }
       
       for (const option of question.options) {
-        if (!option.content || typeof option.score !== 'number') {
+        if (!option.content || !option.scores || Object.keys(option.scores).length === 0) {
           return NextResponse.json(
             { error: '선택지 내용 또는 점수가 올바르지 않습니다.' },
             { status: 400 }
@@ -57,9 +56,9 @@ export async function POST(request: NextRequest) {
     }
 
     // 결과 타입 유효성 검사
-    if (!resultTypes || resultTypes.length !== resultCount) {
+    if (!resultTypes || resultTypes.length < 2) {
       return NextResponse.json(
-        { error: '결과 타입 정보가 올바르지 않습니다.' },
+        { error: '최소 2개 이상의 결과 타입이 필요합니다.' },
         { status: 400 }
       )
     }
@@ -91,16 +90,13 @@ export async function POST(request: NextRequest) {
           options: q.options.map((o: any) => ({
             id: o.id,
             content: o.content,
-            score: o.score
+            scores: o.scores
           }))
         })),
-        resultCount,
         resultTypes: resultTypes.map((r: any) => ({
           id: r.id,
           name: r.name,
           description: r.description,
-          minScore: r.minScore,
-          maxScore: r.maxScore,
           imageUrl: r.imageUrl || null,
           textImageUrl: r.textImageUrl || null
         }))

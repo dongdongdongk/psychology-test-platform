@@ -61,7 +61,6 @@ export default function CreateTestPage() {
         optionCount: store.optionCount,
         styleTheme: store.styleTheme,
         questions: store.questions,
-        resultCount: store.resultCount,
         resultTypes: store.resultTypes
       }
       

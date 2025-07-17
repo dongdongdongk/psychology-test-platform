@@ -93,7 +93,7 @@ export default function AdminTestsPage() {
             <p>심리테스트 플랫폼 관리자 페이지</p>
           </div>
           <div className={styles.actions}>
-            <Link href="/admin/tests/new" className={styles.addButton}>
+            <Link href="/admin/tests/create" className={styles.addButton}>
               새 테스트 추가
             </Link>
             <button onClick={handleLogout} className={styles.logoutButton}>
@@ -114,7 +114,7 @@ export default function AdminTestsPage() {
           <div className={styles.empty}>
             <h2>등록된 테스트가 없습니다</h2>
             <p>새로운 테스트를 추가해보세요.</p>
-            <Link href="/admin/tests/new" className={styles.addButton}>
+            <Link href="/admin/tests/create" className={styles.addButton}>
               첫 번째 테스트 추가하기
             </Link>
           </div>
@@ -165,8 +165,8 @@ export default function AdminTestsPage() {
                       <span className={styles.value}>{test.id}</span>
                     </div>
                     <div className={styles.infoItem}>
-                      <span className={styles.label}>URL:</span>
-                      <span className={styles.value}>{test.testUrl}</span>
+                      <span className={styles.label}>테마:</span>
+                      <span className={styles.value}>{test.styleTheme || 'modern'}</span>
                     </div>
                     <div className={styles.infoItem}>
                       <span className={styles.label}>응답 수:</span>
@@ -183,7 +183,7 @@ export default function AdminTestsPage() {
 
                 <div className={styles.cardFooter}>
                   <a
-                    href={test.testUrl}
+                    href={`/tests/${test.id}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={styles.viewButton}

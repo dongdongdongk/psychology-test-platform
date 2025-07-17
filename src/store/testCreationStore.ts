@@ -13,6 +13,15 @@ interface TestCreationData {
   optionCount: number
   styleTheme: string
   
+  // 결과 타입 정의 (1단계에서 미리 정의)
+  resultTypes: {
+    id: string
+    name: string
+    description: string
+    imageUrl: string
+    textImageUrl: string
+  }[]
+  
   // 2단계: 문제 및 선택지
   questions: {
     id: string
@@ -20,20 +29,8 @@ interface TestCreationData {
     options: {
       id: string
       content: string
-      score: number
+      scores: { [resultTypeId: string]: number } // 각 결과 타입별 점수
     }[]
-  }[]
-  
-  // 3단계: 결과 타입
-  resultCount: number
-  resultTypes: {
-    id: string
-    name: string
-    minScore: number
-    maxScore: number
-    imageUrl: string
-    textImageUrl: string
-    description: string
   }[]
   
   // 진행 상태
@@ -49,10 +46,10 @@ interface TestCreationState extends TestCreationData {
   setCurrentStep: (step: number) => void
   resetTestCreation: () => void
   validateStep: (step: number) => boolean
-  getMaxPossibleScore: () => number
-  getMinPossibleScore: () => number
   initializeQuestionsAndOptions: () => void
   initializeResultTypes: () => void
+  addResultType: () => void
+  removeResultType: (id: string) => void
 }
 
 const initialState: TestCreationData = {
@@ -65,7 +62,6 @@ const initialState: TestCreationData = {
   optionCount: 3,
   styleTheme: 'modern',
   questions: [],
-  resultCount: 4,
   resultTypes: [],
   currentStep: 1,
   isComplete: false
@@ -113,49 +109,63 @@ export const useTestCreationStore = create<TestCreationState>()(
         
         switch (step) {
           case 1:
-            return !!(state.title && state.description && state.questionCount > 0 && state.optionCount > 0)
+            return !!(state.title && state.description && state.questionCount > 0 && state.optionCount > 0 && state.resultTypes.length >= 2)
           case 2:
             return state.questions.length === state.questionCount &&
                    state.questions.every(q => 
                      q.content && q.options.length === state.optionCount &&
-                     q.options.every(o => o.content && typeof o.score === 'number')
+                     q.options.every(o => o.content && Object.keys(o.scores).length > 0)
                    )
           case 3:
-            return state.resultTypes.length === state.resultCount &&
+            return state.resultTypes.length >= 2 &&
                    state.resultTypes.every(r => 
-                     r.name && r.description && 
-                     typeof r.minScore === 'number' && typeof r.maxScore === 'number'
+                     r.name && r.description
                    )
           default:
             return false
         }
       },
 
-      getMaxPossibleScore: () => {
+      addResultType: () => {
         const state = get()
-        return state.questions.reduce((total, question) => {
-          const maxOptionScore = Math.max(...question.options.map(o => o.score))
-          return total + maxOptionScore
-        }, 0)
+        const newId = `result_${Date.now()}`
+        const newResultType = {
+          id: newId,
+          name: '',
+          description: '',
+          imageUrl: '',
+          textImageUrl: ''
+        }
+        
+        set((state) => ({
+          ...state,
+          resultTypes: [...state.resultTypes, newResultType]
+        }))
       },
 
-      getMinPossibleScore: () => {
-        const state = get()
-        return state.questions.reduce((total, question) => {
-          const minOptionScore = Math.min(...question.options.map(o => o.score))
-          return total + minOptionScore
-        }, 0)
+      removeResultType: (id) => {
+        set((state) => ({
+          ...state,
+          resultTypes: state.resultTypes.filter(rt => rt.id !== id)
+        }))
       },
 
       initializeQuestionsAndOptions: () => {
         const state = get()
+        
+        // 기본 점수 객체 생성 (모든 결과 타입에 대해 0점으로 초기화)
+        const defaultScores = state.resultTypes.reduce((acc, rt) => {
+          acc[rt.id] = 0
+          return acc
+        }, {} as { [key: string]: number })
+        
         const questions = Array.from({ length: state.questionCount }, (_, i) => ({
           id: `q_${i + 1}`,
           content: '',
           options: Array.from({ length: state.optionCount }, (_, j) => ({
             id: `q_${i + 1}_o_${j + 1}`,
             content: '',
-            score: j // 기본 점수: 0, 1, 2, ...
+            scores: { ...defaultScores } // 각 결과 타입별 점수 객체
           }))
         }))
         
@@ -166,26 +176,19 @@ export const useTestCreationStore = create<TestCreationState>()(
       },
 
       initializeResultTypes: () => {
-        const state = get()
-        const maxScore = state.getMaxPossibleScore()
-        const minScore = state.getMinPossibleScore()
-        const scoreRange = maxScore - minScore
-        const scorePerResult = scoreRange / state.resultCount
-        
-        const resultTypes = Array.from({ length: state.resultCount }, (_, i) => ({
-          id: `result_${i + 1}`,
-          name: '',
-          minScore: Math.floor(minScore + (scorePerResult * i)),
-          maxScore: i === state.resultCount - 1 ? maxScore : Math.floor(minScore + (scorePerResult * (i + 1)) - 1),
-          imageUrl: '',
-          textImageUrl: '',
-          description: ''
-        }))
-        
-        set((state) => ({
-          ...state,
-          resultTypes
-        }))
+        // 기본 결과 타입이 없으면 기본값 설정
+        set((state) => {
+          if (state.resultTypes.length === 0) {
+            const defaultResultTypes = [
+              { id: 'type_A', name: 'A형', description: '', imageUrl: '', textImageUrl: '' },
+              { id: 'type_B', name: 'B형', description: '', imageUrl: '', textImageUrl: '' },
+              { id: 'type_C', name: 'C형', description: '', imageUrl: '', textImageUrl: '' },
+              { id: 'type_D', name: 'D형', description: '', imageUrl: '', textImageUrl: '' }
+            ]
+            return { ...state, resultTypes: defaultResultTypes }
+          }
+          return state
+        })
       }
     }),
     {
@@ -200,7 +203,6 @@ export const useTestCreationStore = create<TestCreationState>()(
         optionCount: state.optionCount,
         styleTheme: state.styleTheme,
         questions: state.questions,
-        resultCount: state.resultCount,
         resultTypes: state.resultTypes,
         currentStep: state.currentStep
       })
