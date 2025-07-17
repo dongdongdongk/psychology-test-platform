@@ -1,0 +1,416 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 24px;
+  
+  h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 8px;
+  }
+  
+  p {
+    color: #666;
+    font-size: 16px;
+    margin-bottom: 16px;
+  }
+}
+
+.progress {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.progressText {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+.progressBar {
+  width: 300px;
+  height: 6px;
+  background: #e9ecef;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #28a745, #20c997);
+  transition: width 0.3s ease;
+}
+
+.scoreInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: #e7f3ff;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  border: 1px solid #bee5eb;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
+.scoreItem {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  
+  span:first-child {
+    font-weight: 500;
+    color: #333;
+  }
+}
+
+.scoreValue {
+  font-weight: 600;
+  color: #007bff;
+}
+
+.resultCountSetting {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  
+  label {
+    font-weight: 500;
+    color: #333;
+  }
+}
+
+.resultCountSelect {
+  padding: 6px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: white;
+  
+  &:focus {
+    outline: none;
+    border-color: #007bff;
+  }
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 24px;
+  margin-bottom: 32px;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sidebar {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  
+  h3 {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 16px;
+  }
+}
+
+.resultList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.resultItem {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  
+  &:hover {
+    background: #f1f3f4;
+  }
+  
+  &.active {
+    background: #28a745;
+    color: white;
+    border-color: #28a745;
+  }
+  
+  &.completed {
+    background: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+    
+    &.active {
+      background: #28a745;
+      color: white;
+    }
+  }
+  
+  &.partial {
+    background: #fff3cd;
+    border-color: #ffeaa7;
+    color: #856404;
+    
+    &.active {
+      background: #ffc107;
+      color: #212529;
+    }
+  }
+}
+
+.resultHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.resultNumber {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.resultStatus {
+  font-size: 12px;
+}
+
+.resultInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.resultName {
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.resultScore {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.main {
+  background: white;
+  border-radius: 8px;
+  padding: 24px;
+  border: 1px solid #dee2e6;
+}
+
+.resultHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #dee2e6;
+  
+  h3 {
+    font-size: 20px;
+    color: #333;
+    margin: 0;
+  }
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+}
+
+.navigation {
+  display: flex;
+  gap: 8px;
+}
+
+.navButton {
+  padding: 8px 16px;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover:not(:disabled) {
+    background: #f8f9fa;
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.resultForm {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.scoreRange {
+  h4 {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 12px;
+  }
+}
+
+.scoreInputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.scoreInput {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  
+  label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+  }
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
+.input, .textarea {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  
+  &:focus {
+    outline: none;
+    border-color: #28a745;
+    box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.25);
+  }
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.help {
+  font-size: 12px;
+  color: #666;
+  margin-top: 4px;
+}
+
+.validationSuccess {
+  padding: 12px;
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+  border-radius: 6px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.footer {
+  background: white;
+  border-radius: 8px;
+  padding: 24px;
+  border: 1px solid #dee2e6;
+}
+
+.totalSummary {
+  h4 {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+}
+
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+}
+
+.summaryItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  border: 1px solid #e9ecef;
+  
+  span:first-child {
+    font-weight: 500;
+    color: #333;
+  }
+}
+
+.summaryValue {
+  font-weight: 600;
+  color: #28a745;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+}
+
+// 반응형 디자인
+@media (max-width: 768px) {
+  .content {
+    grid-template-columns: 1fr;
+  }
+  
+  .sidebar {
+    order: 2;
+  }
+  
+  .main {
+    order: 1;
+  }
+  
+  .resultList {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .resultItem {
+    flex: 0 0 calc(50% - 4px);
+    min-width: 120px;
+  }
+}
