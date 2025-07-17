@@ -1,136 +1,98 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
-import { cookies } from 'next/headers'
+import { PrismaClient } from '@prisma/client'
 
-// Check admin authentication
-function checkAdminAuth(request: NextRequest) {
-  const cookieStore = cookies()
-  const session = cookieStore.get('admin-session')
-  
-  if (!session) {
-    return false
-  }
-  
-  return true
-}
+const prisma = new PrismaClient()
 
+// 관리자용 테스트 상세 조회
 export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  if (!checkAdminAuth(request)) {
-    return NextResponse.json(
-      { error: 'Unauthorized' },
-      { status: 401 }
-    )
-  }
-
   try {
+    const testId = params.id
+
     const test = await prisma.test.findUnique({
-      where: { id: params.id },
+      where: { id: testId },
       include: {
-        _count: {
-          select: {
-            responses: true
-          }
+        questions: {
+          include: {
+            answerOptions: {
+              orderBy: { order: 'asc' }
+            }
+          },
+          orderBy: { order: 'asc' }
+        },
+        resultTypes: {
+          orderBy: { minScore: 'asc' }
         }
       }
     })
 
     if (!test) {
       return NextResponse.json(
-        { error: 'Test not found' },
+        { error: '테스트를 찾을 수 없습니다.' },
         { status: 404 }
       )
     }
 
     return NextResponse.json(test)
   } catch (error) {
-    console.error('Error fetching test:', error)
+    console.error('테스트 조회 실패:', error)
     return NextResponse.json(
-      { error: 'Failed to fetch test' },
+      { error: '테스트 정보를 불러오는데 실패했습니다.' },
       { status: 500 }
     )
   }
 }
 
+// 관리자용 테스트 수정
 export async function PUT(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  if (!checkAdminAuth(request)) {
-    return NextResponse.json(
-      { error: 'Unauthorized' },
-      { status: 401 }
-    )
-  }
-
   try {
-    const body = await request.json()
-    const { title, description, thumbnailUrl, testUrl, isActive } = body
+    const testId = params.id
+    const data = await request.json()
 
-    // Validate required fields
-    if (!title || !testUrl) {
-      return NextResponse.json(
-        { error: 'title and testUrl are required' },
-        { status: 400 }
-      )
-    }
-
-    const test = await prisma.test.update({
-      where: { id: params.id },
+    const updatedTest = await prisma.test.update({
+      where: { id: testId },
       data: {
-        title,
-        description,
-        thumbnailUrl,
-        testUrl,
-        isActive
+        title: data.title,
+        description: data.description,
+        category: data.category,
+        thumbnailUrl: data.thumbnailUrl,
+        styleTheme: data.styleTheme,
+        isActive: data.isActive
       }
     })
 
-    return NextResponse.json(test)
+    return NextResponse.json(updatedTest)
   } catch (error) {
-    console.error('Error updating test:', error)
+    console.error('테스트 수정 실패:', error)
     return NextResponse.json(
-      { error: 'Failed to update test' },
+      { error: '테스트 수정에 실패했습니다.' },
       { status: 500 }
     )
   }
 }
 
+// 관리자용 테스트 삭제
 export async function DELETE(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  if (!checkAdminAuth(request)) {
-    return NextResponse.json(
-      { error: 'Unauthorized' },
-      { status: 401 }
-    )
-  }
-
   try {
-    // Check if test has responses
-    const responseCount = await prisma.userResponse.count({
-      where: { testId: params.id }
-    })
-
-    if (responseCount > 0) {
-      return NextResponse.json(
-        { error: 'Cannot delete test with existing responses' },
-        { status: 400 }
-      )
-    }
+    const testId = params.id
 
     await prisma.test.delete({
-      where: { id: params.id }
+      where: { id: testId }
     })
 
-    return NextResponse.json({ message: 'Test deleted successfully' })
+    return NextResponse.json({ message: '테스트가 삭제되었습니다.' })
   } catch (error) {
-    console.error('Error deleting test:', error)
+    console.error('테스트 삭제 실패:', error)
     return NextResponse.json(
-      { error: 'Failed to delete test' },
+      { error: '테스트 삭제에 실패했습니다.' },
       { status: 500 }
     )
   }

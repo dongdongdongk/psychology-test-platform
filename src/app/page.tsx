@@ -15,16 +15,16 @@ export default function HomePage() {
       testUrl: '/tests/stress-test'
     },
     {
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
-      testUrl: '/tests/personality-test'
+      image: '/images/DemoSum1.png',
+      testUrl: '/tests/stress-test'
     },
     {
-      image: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
-      testUrl: '/tests/mbti-test'
+      image: '/images/DemoSum2.png',
+      testUrl: '/tests/stress-test'
     },
     {
-      image: 'https://images.unsplash.com/photo-1586297135537-94bc9ba060aa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
-      testUrl: '/tests/emotional-test'
+      image: '/images/DemoSum3.png',
+      testUrl: '/tests/stress-test'
     }
   ]
 
@@ -46,51 +46,57 @@ export default function HomePage() {
     <main className={styles.main}>
       <Header />
       
-      <div className={styles.heroSection}>
-        <div className={styles.heroContainer}>
-          {/* 슬라이드 컨테이너 */}
-          <div className={styles.heroSlideContainer}>
-            {heroSlides.map((slide, index) => (
-              <div
-                key={index}
-                className={`${styles.heroSlide} ${
-                  index === currentSlide ? styles.active : ''
-                }`}
-                style={{ 
-                  backgroundImage: `url(${slide.image})`,
-                  transform: `translateX(${(index - currentSlide) * 100}%)`
-                }}
-                onClick={() => handleSlideClick(slide.testUrl)}
-              />
-            ))}
+      <div className={styles.contentWrapper}>
+        <div className={styles.contentContainer}>
+          <div className={styles.heroSection}>
+            <div className={styles.heroContainer}>
+              {/* 슬라이드 컨테이너 */}
+              <div className={styles.heroSlideContainer}>
+                {heroSlides.map((slide, index) => (
+                  <div
+                    key={index}
+                    className={`${styles.heroSlide} ${
+                      index === currentSlide ? styles.active : ''
+                    }`}
+                    style={{ 
+                      backgroundImage: `url(${slide.image})`,
+                      transform: `translateX(${(index - currentSlide) * 100}%)`
+                    }}
+                    onClick={() => handleSlideClick(slide.testUrl)}
+                  />
+                ))}
+              </div>
+              
+              {/* 슬라이드 인디케이터 */}
+              <div className={styles.slideIndicators}>
+                {heroSlides.map((_, index) => (
+                  <button
+                    key={index}
+                    className={`${styles.indicator} ${
+                      index === currentSlide ? styles.active : ''
+                    }`}
+                    onClick={() => setCurrentSlide(index)}
+                    aria-label={`슬라이드 ${index + 1}로 이동`}
+                  />
+                ))}
+              </div>
+            </div>
           </div>
           
-          {/* 슬라이드 인디케이터 */}
-          <div className={styles.slideIndicators}>
-            {heroSlides.map((_, index) => (
-              <button
-                key={index}
-                className={`${styles.indicator} ${
-                  index === currentSlide ? styles.active : ''
-                }`}
-                onClick={() => setCurrentSlide(index)}
-                aria-label={`슬라이드 ${index + 1}로 이동`}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-      
-      <div className={styles.mainContent}>
-        <div className={styles.mainContainer}>
-          <Suspense fallback={
-            <div className={styles.loading}>
-              <div className={styles.loadingSpinner}></div>
-              <p>테스트 목록을 불러오는 중...</p>
+          <div className={styles.mainContent}>
+            <div className={styles.sectionHeader}>
+              <h2 className={styles.sectionTitle}>심리 테스트 컬렉션</h2>
+              <p className={styles.sectionDescription}>과학적으로 검증된 심리 테스트로 나의 숨겨진 성격을 발견해보세요</p>
             </div>
-          }>
-            <TestList />
-          </Suspense>
+            <Suspense fallback={
+              <div className={styles.loading}>
+                <div className={styles.loadingSpinner}></div>
+                <p>테스트 목록을 불러오는 중...</p>
+              </div>
+            }>
+              <TestList />
+            </Suspense>
+          </div>
         </div>
       </div>
     </main>

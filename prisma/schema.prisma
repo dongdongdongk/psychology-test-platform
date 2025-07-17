@@ -21,10 +21,13 @@ model Test {
   category     String   @default("일반") @db.VarChar(100)
   thumbnailUrl String?  @map("thumbnail_url") @db.VarChar(500)
   testUrl      String   @map("test_url") @db.VarChar(500)
+  styleTheme   String   @default("modern") @map("style_theme") @db.VarChar(50)
   isActive     Boolean  @default(true) @map("is_active")
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
 
+  questions Question[]
+  resultTypes ResultType[]
   responses UserResponse[]
 
   @@map("tests")
@@ -40,11 +43,60 @@ model Admin {
   @@map("admins")
 }
 
+model Question {
+  id        String   @id @db.VarChar(50)
+  testId    String   @map("test_id") @db.VarChar(50)
+  content   String   @db.Text
+  order     Int
+  type      String   @default("single") @db.VarChar(50) // single, multiple
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  test Test @relation(fields: [testId], references: [id], onDelete: Cascade)
+  answerOptions AnswerOption[]
+
+  @@map("questions")
+  @@index([testId, order])
+}
+
+model AnswerOption {
+  id         String   @id @db.VarChar(50)
+  questionId String   @map("question_id") @db.VarChar(50)
+  content    String   @db.Text
+  value      String   @db.VarChar(100) // 점수 계산용 값
+  order      Int
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@map("answer_options")
+  @@index([questionId, order])
+}
+
+model ResultType {
+  id          String   @id @db.VarChar(50)
+  testId      String   @map("test_id") @db.VarChar(50)
+  type        String   @db.VarChar(100) // 결과 타입 (예: A, B, C 또는 high, medium, low)
+  title       String   @db.VarChar(255)
+  description String   @db.Text
+  imageUrl    String?  @map("image_url") @db.VarChar(500)
+  minScore    Int?     @map("min_score") // 최소 점수
+  maxScore    Int?     @map("max_score") // 최대 점수
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  test Test @relation(fields: [testId], references: [id], onDelete: Cascade)
+
+  @@map("result_types")
+  @@index([testId, type])
+}
+
 model UserResponse {
   id           String   @id @db.VarChar(50)
   testId       String   @map("test_id") @db.VarChar(50)
-  responseData Json     @map("response_data")
-  resultData   Json?    @map("result_data")
+  responseData Json     @map("response_data") // 답변 데이터
+  resultType   String?  @map("result_type") @db.VarChar(100) // 결과 타입
+  totalScore   Int?     @map("total_score") // 총점
   ipAddress    String?  @map("ip_address") @db.Inet
   userAgent    String?  @map("user_agent") @db.Text
   sessionId    String?  @map("session_id") @db.VarChar(100)
