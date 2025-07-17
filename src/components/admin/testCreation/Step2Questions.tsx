@@ -9,6 +9,7 @@ export default function Step2Questions() {
     questionCount,
     optionCount,
     questions,
+    resultTypes,
     setQuestions
   } = useTestCreationStore()
 
@@ -32,10 +33,19 @@ export default function Step2Questions() {
     setQuestions(updatedQuestions)
   }
 
+  const updateOptionScore = (questionIndex: number, optionIndex: number, resultTypeId: string, score: number) => {
+    const updatedQuestions = [...questions]
+    updatedQuestions[questionIndex].options[optionIndex].scores = {
+      ...updatedQuestions[questionIndex].options[optionIndex].scores,
+      [resultTypeId]: score
+    }
+    setQuestions(updatedQuestions)
+  }
+
   const getCurrentQuestion = () => questions[currentQuestionIndex]
   const getCompletionStatus = () => {
     const completedQuestions = questions.filter(q => 
-      q.content && q.options.every(o => o.content && typeof o.score === 'number')
+      q.content && q.options.every(o => o.content && Object.keys(o.scores).length > 0)
     ).length
     return `${completedQuestions}/${questionCount}`
   }
@@ -58,7 +68,7 @@ export default function Step2Questions() {
 
   const isCurrentQuestionValid = () => {
     const current = getCurrentQuestion()
-    return current?.content && current.options.every(o => o.content && typeof o.score === 'number')
+    return current?.content && current.options.every(o => o.content && Object.keys(o.scores).length > 0)
   }
 
   const getQuestionStatus = (index: number) => {
@@ -67,7 +77,7 @@ export default function Step2Questions() {
     
     const hasContent = question.content.trim() !== ''
     const hasValidOptions = question.options.every(o => 
-      o.content.trim() !== '' && typeof o.score === 'number'
+      o.content.trim() !== '' && Object.keys(o.scores).length > 0
     )
     
     if (hasContent && hasValidOptions) return 'completed'
@@ -163,28 +173,45 @@ export default function Step2Questions() {
               <div className={styles.optionsList}>
                 {getCurrentQuestion()?.options.map((option, optionIndex) => (
                   <div key={option.id} className={styles.optionItem}>
-                    <div className={styles.optionNumber}>
-                      {String.fromCharCode(65 + optionIndex)}
+                    <div className={styles.optionHeader}>
+                      <div className={styles.optionNumber}>
+                        {optionIndex + 1}
+                      </div>
+                      <div className={styles.optionTitle}>
+                        선택지 {optionIndex + 1}
+                      </div>
                     </div>
+                    
                     <div className={styles.optionContent}>
                       <input
                         type="text"
                         value={option.content}
                         onChange={(e) => updateOption(currentQuestionIndex, optionIndex, 'content', e.target.value)}
-                        placeholder={`선택지 ${String.fromCharCode(65 + optionIndex)} 내용`}
+                        placeholder={`선택지 ${optionIndex + 1} 내용을 입력하세요`}
                         className={styles.optionInput}
                       />
                     </div>
-                    <div className={styles.optionScore}>
-                      <label className={styles.scoreLabel}>점수</label>
-                      <input
-                        type="number"
-                        value={option.score}
-                        onChange={(e) => updateOption(currentQuestionIndex, optionIndex, 'score', parseInt(e.target.value) || 0)}
-                        className={styles.scoreInput}
-                        min="0"
-                        max="10"
-                      />
+                    
+                    <div className={styles.optionScores}>
+                      <h5>결과 타입별 점수</h5>
+                      <div className={styles.scoresGrid}>
+                        {resultTypes.map((resultType) => (
+                          <div key={resultType.id} className={styles.scoreItem}>
+                            <label className={styles.scoreLabel}>
+                              {resultType.name || resultType.id}
+                            </label>
+                            <input
+                              type="number"
+                              value={option.scores[resultType.id] || 0}
+                              onChange={(e) => updateOptionScore(currentQuestionIndex, optionIndex, resultType.id, parseInt(e.target.value) || 0)}
+                              className={styles.scoreInput}
+                              min="0"
+                              max="10"
+                              placeholder="0"
+                            />
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -193,15 +220,16 @@ export default function Step2Questions() {
 
             <div className={styles.questionSummary}>
               <div className={styles.summaryItem}>
-                <span>현재 문제 최고 점수:</span>
+                <span>현재 문제 상태:</span>
                 <span className={styles.summaryValue}>
-                  {Math.max(...(getCurrentQuestion()?.options.map(o => o.score) || [0]))}점
+                  {getQuestionStatus(currentQuestionIndex) === 'completed' ? '완료' : 
+                   getQuestionStatus(currentQuestionIndex) === 'partial' ? '진행중' : '미완료'}
                 </span>
               </div>
               <div className={styles.summaryItem}>
-                <span>현재 문제 최저 점수:</span>
+                <span>설정된 타입별 점수:</span>
                 <span className={styles.summaryValue}>
-                  {Math.min(...(getCurrentQuestion()?.options.map(o => o.score) || [0]))}점
+                  {resultTypes.length}개 타입
                 </span>
               </div>
             </div>
@@ -217,24 +245,24 @@ export default function Step2Questions() {
 
       <div className={styles.footer}>
         <div className={styles.totalSummary}>
-          <h4>전체 점수 범위</h4>
+          <h4>전체 진행 상황</h4>
           <div className={styles.summaryGrid}>
-            <div className={styles.summaryItem}>
-              <span>최고 점수:</span>
-              <span className={styles.summaryValue}>
-                {questions.reduce((total, q) => total + Math.max(...(q.options.map(o => o.score) || [0])), 0)}점
-              </span>
-            </div>
-            <div className={styles.summaryItem}>
-              <span>최저 점수:</span>
-              <span className={styles.summaryValue}>
-                {questions.reduce((total, q) => total + Math.min(...(q.options.map(o => o.score) || [0])), 0)}점
-              </span>
-            </div>
             <div className={styles.summaryItem}>
               <span>완료된 문제:</span>
               <span className={styles.summaryValue}>
-                {questions.filter(q => q.content && q.options.every(o => o.content)).length}개
+                {questions.filter(q => q.content && q.options.every(o => o.content && Object.keys(o.scores).length > 0)).length}개
+              </span>
+            </div>
+            <div className={styles.summaryItem}>
+              <span>전체 문제:</span>
+              <span className={styles.summaryValue}>
+                {questionCount}개
+              </span>
+            </div>
+            <div className={styles.summaryItem}>
+              <span>결과 타입:</span>
+              <span className={styles.summaryValue}>
+                {resultTypes.length}개
               </span>
             </div>
           </div>

@@ -6,54 +6,19 @@ import styles from './Step3ResultTypes.module.scss'
 
 export default function Step3ResultTypes() {
   const {
-    resultCount,
     resultTypes,
-    setResultTypes,
-    setBasicInfo,
-    getMaxPossibleScore,
-    getMinPossibleScore
+    setResultTypes
   } = useTestCreationStore()
 
   const [currentResultIndex, setCurrentResultIndex] = useState(0)
 
-  const maxScore = getMaxPossibleScore()
-  const minScore = getMinPossibleScore()
-
-  const updateResultType = (resultIndex: number, field: string, value: string | number) => {
+  const updateResultType = (resultIndex: number, field: string, value: string) => {
     const updatedResults = [...resultTypes]
     updatedResults[resultIndex] = {
       ...updatedResults[resultIndex],
       [field]: value
     }
     setResultTypes(updatedResults)
-  }
-
-  const handleResultCountChange = (newCount: number) => {
-    setBasicInfo({ resultCount: newCount })
-    
-    // 결과 개수 변경 시 결과 타입 재초기화
-    const scoreRange = maxScore - minScore
-    const scorePerResult = scoreRange / newCount
-    
-    const newResultTypes = Array.from({ length: newCount }, (_, i) => {
-      const existingResult = resultTypes[i]
-      return {
-        id: existingResult?.id || `result_${i + 1}`,
-        name: existingResult?.name || '',
-        minScore: Math.floor(minScore + (scorePerResult * i)),
-        maxScore: i === newCount - 1 ? maxScore : Math.floor(minScore + (scorePerResult * (i + 1)) - 1),
-        imageUrl: existingResult?.imageUrl || '',
-        textImageUrl: existingResult?.textImageUrl || '',
-        description: existingResult?.description || ''
-      }
-    })
-    
-    setResultTypes(newResultTypes)
-    
-    // 현재 인덱스 조정
-    if (currentResultIndex >= newCount) {
-      setCurrentResultIndex(Math.max(0, newCount - 1))
-    }
   }
 
   const getCurrentResult = () => resultTypes[currentResultIndex]
@@ -74,7 +39,7 @@ export default function Step3ResultTypes() {
     const completedResults = resultTypes.filter(r => 
       r.name && r.description
     ).length
-    return `${completedResults}/${resultCount}`
+    return `${completedResults}/${resultTypes.length}`
   }
 
   const isCurrentResultValid = () => {
@@ -87,7 +52,7 @@ export default function Step3ResultTypes() {
   }
 
   const goToNextResult = () => {
-    if (currentResultIndex < resultCount - 1) {
+    if (currentResultIndex < resultTypes.length - 1) {
       setCurrentResultIndex(currentResultIndex + 1)
     }
   }
@@ -102,7 +67,7 @@ export default function Step3ResultTypes() {
     return (
       <div className={styles.container}>
         <div className={styles.loading}>
-          <p>결과 타입을 초기화하는 중...</p>
+          <p>결과 타입을 먼저 1단계에서 정의해주세요.</p>
         </div>
       </div>
     )
@@ -111,35 +76,27 @@ export default function Step3ResultTypes() {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h2>3단계: 결과 타입 설정</h2>
-        <p>점수 구간별 결과 타입을 정의해주세요</p>
+        <h2>3단계: 결과 타입 상세 설정</h2>
+        <p>각 결과 타입의 상세 정보를 설정해주세요</p>
         <div className={styles.progress}>
           <span className={styles.progressText}>진행률: {getCompletionStatus()}</span>
           <div className={styles.progressBar}>
             <div 
               className={styles.progressFill}
-              style={{ width: `${(resultTypes.filter(r => r.name && r.description).length / resultCount) * 100}%` }}
+              style={{ width: `${(resultTypes.filter(r => r.name && r.description).length / resultTypes.length) * 100}%` }}
             />
           </div>
         </div>
       </div>
 
-      <div className={styles.scoreInfo}>
-        <div className={styles.scoreItem}>
-          <span>전체 점수 범위:</span>
-          <span className={styles.scoreValue}>{minScore}점 ~ {maxScore}점</span>
+      <div className={styles.typeInfo}>
+        <div className={styles.infoItem}>
+          <span>전체 결과 타입:</span>
+          <span className={styles.infoValue}>{resultTypes.length}개</span>
         </div>
-        <div className={styles.resultCountSetting}>
-          <label>결과 개수:</label>
-          <select
-            value={resultCount}
-            onChange={(e) => handleResultCountChange(parseInt(e.target.value))}
-            className={styles.resultCountSelect}
-          >
-            {[3, 4, 5, 6, 7, 8].map(count => (
-              <option key={count} value={count}>{count}개</option>
-            ))}
-          </select>
+        <div className={styles.infoItem}>
+          <span>완료된 타입:</span>
+          <span className={styles.infoValue}>{resultTypes.filter(r => r.name && r.description).length}개</span>
         </div>
       </div>
 
@@ -166,8 +123,8 @@ export default function Step3ResultTypes() {
                   <div className={styles.resultName}>
                     {result.name || `결과 ${index + 1}`}
                   </div>
-                  <div className={styles.resultScore}>
-                    {result.minScore}~{result.maxScore}점
+                  <div className={styles.resultId}>
+                    {result.id}
                   </div>
                 </div>
               </button>
@@ -177,7 +134,7 @@ export default function Step3ResultTypes() {
 
         <div className={styles.main}>
           <div className={styles.resultHeader}>
-            <h3>결과 타입 {currentResultIndex + 1}</h3>
+            <h3>결과 타입: {getCurrentResult()?.name || `타입 ${currentResultIndex + 1}`}</h3>
             <div className={styles.navigation}>
               <button 
                 onClick={goToPreviousResult}
@@ -188,7 +145,7 @@ export default function Step3ResultTypes() {
               </button>
               <button 
                 onClick={goToNextResult}
-                disabled={currentResultIndex === resultCount - 1}
+                disabled={currentResultIndex === resultTypes.length - 1}
                 className={styles.navButton}
               >
                 다음 →
@@ -197,43 +154,15 @@ export default function Step3ResultTypes() {
           </div>
 
           <div className={styles.resultForm}>
-            <div className={styles.scoreRange}>
-              <h4>점수 범위</h4>
-              <div className={styles.scoreInputs}>
-                <div className={styles.scoreInput}>
-                  <label>최소 점수</label>
-                  <input
-                    type="number"
-                    value={getCurrentResult()?.minScore || 0}
-                    onChange={(e) => updateResultType(currentResultIndex, 'minScore', parseInt(e.target.value) || 0)}
-                    min={minScore}
-                    max={maxScore}
-                    className={styles.input}
-                  />
-                </div>
-                <div className={styles.scoreInput}>
-                  <label>최대 점수</label>
-                  <input
-                    type="number"
-                    value={getCurrentResult()?.maxScore || 0}
-                    onChange={(e) => updateResultType(currentResultIndex, 'maxScore', parseInt(e.target.value) || 0)}
-                    min={minScore}
-                    max={maxScore}
-                    className={styles.input}
-                  />
-                </div>
-              </div>
-            </div>
-
             <div className={styles.formGroup}>
               <label className={styles.label}>
-                결과 이름 *
+                결과 타입 이름 *
               </label>
               <input
                 type="text"
                 value={getCurrentResult()?.name || ''}
                 onChange={(e) => updateResultType(currentResultIndex, 'name', e.target.value)}
-                placeholder="예: 파스타형, 외향적 성격, 높은 스트레스 등"
+                placeholder="예: A형, 외향형, 리더형 등"
                 className={styles.input}
               />
             </div>
@@ -293,8 +222,8 @@ export default function Step3ResultTypes() {
           <h4>전체 결과 설정 요약</h4>
           <div className={styles.summaryGrid}>
             <div className={styles.summaryItem}>
-              <span>결과 개수:</span>
-              <span className={styles.summaryValue}>{resultCount}개</span>
+              <span>결과 타입 수:</span>
+              <span className={styles.summaryValue}>{resultTypes.length}개</span>
             </div>
             <div className={styles.summaryItem}>
               <span>완료된 결과:</span>
@@ -303,8 +232,8 @@ export default function Step3ResultTypes() {
               </span>
             </div>
             <div className={styles.summaryItem}>
-              <span>점수 범위:</span>
-              <span className={styles.summaryValue}>{minScore}~{maxScore}점</span>
+              <span>시스템 방식:</span>
+              <span className={styles.summaryValue}>타입별 점수 방식</span>
             </div>
           </div>
         </div>

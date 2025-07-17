@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect } from 'react'
 import { useTestCreationStore } from '@/store/testCreationStore'
 import styles from './Step1BasicSettings.module.scss'
 
@@ -13,11 +14,30 @@ export default function Step1BasicSettings() {
     questionCount,
     optionCount,
     styleTheme,
-    setBasicInfo
+    resultTypes,
+    setBasicInfo,
+    setResultTypes,
+    addResultType,
+    removeResultType,
+    initializeResultTypes
   } = useTestCreationStore()
+
+  // 컴포넌트가 마운트될 때 기본 결과 타입 초기화
+  useEffect(() => {
+    initializeResultTypes()
+  }, [])
 
   const handleChange = (field: string, value: string | number) => {
     setBasicInfo({ [field]: value })
+  }
+
+  const handleResultTypeChange = (index: number, field: string, value: string) => {
+    const updatedResultTypes = [...resultTypes]
+    updatedResultTypes[index] = {
+      ...updatedResultTypes[index],
+      [field]: value
+    }
+    setResultTypes(updatedResultTypes)
   }
 
   const themes = [
@@ -182,6 +202,63 @@ export default function Step1BasicSettings() {
           </div>
         </div>
 
+        <div className={styles.section}>
+          <h3>결과 타입 설정</h3>
+          <p className={styles.help}>테스트 결과로 나올 수 있는 타입들을 미리 정의해주세요. (최소 2개 이상)</p>
+          
+          <div className={styles.resultTypesContainer}>
+            {resultTypes.map((resultType, index) => (
+              <div key={resultType.id} className={styles.resultTypeItem}>
+                <div className={styles.resultTypeHeader}>
+                  <h4>결과 타입 {index + 1}</h4>
+                  {resultTypes.length > 2 && (
+                    <button 
+                      type="button"
+                      onClick={() => removeResultType(resultType.id)}
+                      className={styles.removeButton}
+                    >
+                      제거
+                    </button>
+                  )}
+                </div>
+                
+                <div className={styles.formRow}>
+                  <div className={styles.formGroup}>
+                    <label className={styles.label}>타입 이름 *</label>
+                    <input
+                      type="text"
+                      value={resultType.name}
+                      onChange={(e) => handleResultTypeChange(index, 'name', e.target.value)}
+                      placeholder="예: A형, 외향형, 리더형 등"
+                      className={styles.input}
+                      required
+                    />
+                  </div>
+                  
+                  <div className={styles.formGroup}>
+                    <label className={styles.label}>타입 설명</label>
+                    <input
+                      type="text"
+                      value={resultType.description}
+                      onChange={(e) => handleResultTypeChange(index, 'description', e.target.value)}
+                      placeholder="간단한 설명"
+                      className={styles.input}
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
+            
+            <button 
+              type="button"
+              onClick={addResultType}
+              className={styles.addButton}
+            >
+              + 결과 타입 추가
+            </button>
+          </div>
+        </div>
+
         <div className={styles.summary}>
           <h3>설정 요약</h3>
           <div className={styles.summaryGrid}>
@@ -196,6 +273,10 @@ export default function Step1BasicSettings() {
             <div className={styles.summaryItem}>
               <span className={styles.summaryLabel}>총 선택지:</span>
               <span className={styles.summaryValue}>{questionCount * optionCount}개</span>
+            </div>
+            <div className={styles.summaryItem}>
+              <span className={styles.summaryLabel}>결과 타입 수:</span>
+              <span className={styles.summaryValue}>{resultTypes.length}개</span>
             </div>
             <div className={styles.summaryItem}>
               <span className={styles.summaryLabel}>테마:</span>
