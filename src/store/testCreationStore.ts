@@ -13,7 +13,7 @@ interface TestCreationData {
   optionCount: number
   styleTheme: string
   
-  // 결과 타입 정의 (1단계에서 미리 정의)
+  // 결과 타입 정의 (질문에서 점수 입력 시 동적 생성)
   resultTypes: {
     id: string
     name: string
@@ -50,6 +50,7 @@ interface TestCreationState extends TestCreationData {
   initializeResultTypes: () => void
   addResultType: () => void
   removeResultType: (id: string) => void
+  generateResultTypesFromQuestions: () => void
 }
 
 const initialState: TestCreationData = {
@@ -80,8 +81,8 @@ export const useTestCreationStore = create<TestCreationState>()(
       },
 
       setQuestions: (questions) => {
-        set((state) => ({
-          ...state,
+        set(() => ({
+          ...get(),
           questions
         }))
       },
@@ -109,18 +110,26 @@ export const useTestCreationStore = create<TestCreationState>()(
         
         switch (step) {
           case 1:
-            return !!(state.title && state.description && state.questionCount > 0 && state.optionCount > 0 && state.resultTypes.length >= 2)
+            return !!(state.title && state.description && state.questionCount > 0 && state.optionCount > 0)
           case 2:
             return state.questions.length === state.questionCount &&
                    state.questions.every(q => 
                      q.content && q.options.length === state.optionCount &&
-                     q.options.every(o => o.content && Object.keys(o.scores).length > 0)
+                     q.options.every(o => o.content && o.scores && Object.keys(o.scores).length > 0)
                    )
           case 3:
-            return state.resultTypes.length >= 2 &&
-                   state.resultTypes.every(r => 
-                     r.name && r.description
-                   )
+            // 질문에서 생성된 결과 타입들이 모두 설정되어야 함
+            const allTypeIds = new Set<string>()
+            state.questions.forEach(q => {
+              q.options.forEach(o => {
+                if (o.scores) {
+                  Object.keys(o.scores).forEach(typeId => allTypeIds.add(typeId))
+                }
+              })
+            })
+            return allTypeIds.size >= 2 &&
+                   state.resultTypes.length >= allTypeIds.size &&
+                   state.resultTypes.every(r => r.name && r.description)
           default:
             return false
         }
@@ -153,21 +162,24 @@ export const useTestCreationStore = create<TestCreationState>()(
       initializeQuestionsAndOptions: () => {
         const state = get()
         
-        // 기본 점수 객체 생성 (모든 결과 타입에 대해 0점으로 초기화)
-        const defaultScores = state.resultTypes.reduce((acc, rt) => {
-          acc[rt.id] = 0
-          return acc
-        }, {} as { [key: string]: number })
-        
-        const questions = Array.from({ length: state.questionCount }, (_, i) => ({
-          id: `q_${i + 1}`,
-          content: '',
-          options: Array.from({ length: state.optionCount }, (_, j) => ({
-            id: `q_${i + 1}_o_${j + 1}`,
-            content: '',
-            scores: { ...defaultScores } // 각 결과 타입별 점수 객체
-          }))
-        }))
+        // 기존 질문이 있으면 유지, 없으면 새로 생성
+        const questions = state.questions.length > 0 
+          ? state.questions.map((q, i) => ({
+              ...q,
+              options: q.options.map((o, j) => ({
+                ...o,
+                scores: o.scores || {} // 기존 데이터에 scores가 없으면 빈 객체로 초기화
+              }))
+            }))
+          : Array.from({ length: state.questionCount }, (_, i) => ({
+              id: `q_${i + 1}`,
+              content: '',
+              options: Array.from({ length: state.optionCount }, (_, j) => ({
+                id: `q_${i + 1}_o_${j + 1}`,
+                content: '',
+                scores: {} // 빈 점수 객체로 시작
+              }))
+            }))
         
         set((state) => ({
           ...state,
@@ -176,19 +188,42 @@ export const useTestCreationStore = create<TestCreationState>()(
       },
 
       initializeResultTypes: () => {
-        // 기본 결과 타입이 없으면 기본값 설정
-        set((state) => {
-          if (state.resultTypes.length === 0) {
-            const defaultResultTypes = [
-              { id: 'type_A', name: 'A형', description: '', imageUrl: '', textImageUrl: '' },
-              { id: 'type_B', name: 'B형', description: '', imageUrl: '', textImageUrl: '' },
-              { id: 'type_C', name: 'C형', description: '', imageUrl: '', textImageUrl: '' },
-              { id: 'type_D', name: 'D형', description: '', imageUrl: '', textImageUrl: '' }
-            ]
-            return { ...state, resultTypes: defaultResultTypes }
-          }
-          return state
+        // 더 이상 기본 결과 타입을 생성하지 않음
+        // 질문에서 점수 입력 시 동적으로 생성됨
+      },
+
+      generateResultTypesFromQuestions: () => {
+        const state = get()
+        const allTypeIds = new Set<string>()
+        
+        // 모든 질문의 선택지에서 사용된 타입 ID 수집
+        state.questions.forEach(q => {
+          q.options.forEach(o => {
+            if (o.scores) {
+              Object.keys(o.scores).forEach(typeId => allTypeIds.add(typeId))
+            }
+          })
         })
+        
+        // 기존 결과 타입 중 여전히 사용되는 것들 유지
+        const existingTypes = state.resultTypes.filter(rt => allTypeIds.has(rt.id))
+        const existingTypeIds = new Set(existingTypes.map(rt => rt.id))
+        
+        // 새로운 타입 ID들에 대해 결과 타입 생성
+        const newTypes = Array.from(allTypeIds)
+          .filter(typeId => !existingTypeIds.has(typeId))
+          .map(typeId => ({
+            id: typeId,
+            name: `${typeId}형`,
+            description: '',
+            imageUrl: '',
+            textImageUrl: ''
+          }))
+        
+        set((state) => ({
+          ...state,
+          resultTypes: [...existingTypes, ...newTypes]
+        }))
       }
     }),
     {

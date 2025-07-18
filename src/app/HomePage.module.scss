@@ -25,14 +25,11 @@
 
 .contentContainer {
   width: 100%;
-  max-width: 480px;
+  max-width: 500px;
   background: linear-gradient(180deg, #ffffff 0%, #fefefe 100%);
   border-radius: 24px;
-  box-shadow: 
-    0 20px 40px rgba(247, 188, 183, 0.12),
-    0 8px 16px rgba(0, 0, 0, 0.08),
-    0 0 0 1px rgba(247, 188, 183, 0.1);
-  margin-top: 24px;
+  box-shadow: 0 4px 20px rgba(247, 188, 183, 0.15);
+  margin-top: 12px;
   overflow: hidden;
   backdrop-filter: blur(10px);
   position: relative;
@@ -70,7 +67,8 @@
   text-align: center;
   position: relative;
   overflow: hidden;
-  min-height: 320px;
+  aspect-ratio: 8/5; /* 960x600 비율 */
+  min-height: 200px;
   border-radius: 24px 24px 0 0;
 }
 
@@ -84,6 +82,24 @@
   overflow: hidden;
   border-radius: 20px;
   z-index: 1;
+}
+
+// 슬라이드 아이콘
+.slideIcon {
+  position: absolute;
+  // top: 10px;
+  left: 0px;
+  z-index: 3;
+  width: 90px;
+  height: 90px;
+  opacity: 0.9;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+  transition: all 0.3s ease;
+  
+  &:hover {
+    opacity: 1;
+    transform: scale(1.1);
+  }
 }
 
 // 개별 슬라이드
@@ -240,11 +256,62 @@
 }
 
 .sectionDescription {
-  font-size: 17px;
+  font-size: 15px;
   color: #64748b;
   margin: 0;
   font-weight: 500;
   line-height: 1.6;
   letter-spacing: -0.01em;
   opacity: 0.9;
+}
+
+// 모바일 반응형 스타일
+@media (max-width: 768px) {
+  .contentWrapper {
+    padding: 0 16px;
+  }
+  
+  .contentContainer {
+    margin-top: 16px;
+  }
+  
+  .heroContainer {
+    aspect-ratio: 8/5; /* 모바일에서도 동일한 비율 유지 */
+    min-height: 200px;
+  }
+  
+  .heroSlide {
+    // 모바일에서도 cover 사용하여 이미지 비율 유지
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .slideIndicators {
+    bottom: 16px;
+    padding: 8px 16px;
+    gap: 8px;
+    
+    .indicator {
+      width: 8px;
+      height: 8px;
+    }
+  }
+  
+  .slideIcon {
+    left: 0px;
+    width: 60px;
+    height: 60px;
+  }
+  
+  .mainContent {
+    padding: 32px 20px 60px;
+  }
+  
+  .sectionTitle {
+    font-size: 24px;
+  }
+  
+  .sectionDescription {
+    font-size: 15px;
+  }
 }

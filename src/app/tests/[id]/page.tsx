@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { useTheme } from '@/hooks/useTheme'
+import Header from '@/components/common/Header'
 import styles from './TestPage.module.scss'
 
 interface TestData {
@@ -53,9 +54,12 @@ export default function TestPage() {
   if (loading) {
     return (
       <div className={styles.container}>
-        <div className={styles.loading}>
-          <div className={styles.spinner}></div>
-          <p>테스트 정보를 불러오는 중...</p>
+        <Header />
+        <div className={styles.content}>
+          <div className={styles.loading}>
+            <div className={styles.spinner}></div>
+            <p>테스트 정보를 불러오는 중...</p>
+          </div>
         </div>
       </div>
     )
@@ -64,12 +68,15 @@ export default function TestPage() {
   if (error || !testData) {
     return (
       <div className={styles.container}>
-        <div className={styles.error}>
-          <h2>오류가 발생했습니다</h2>
-          <p>{error || '테스트를 찾을 수 없습니다'}</p>
-          <Link href="/" className="theme-button">
-            홈으로 돌아가기
-          </Link>
+        <Header />
+        <div className={styles.content}>
+          <div className={styles.error}>
+            <h2>오류가 발생했습니다</h2>
+            <p>{error || '테스트를 찾을 수 없습니다'}</p>
+            <Link href="/" className="theme-button">
+              홈으로 돌아가기
+            </Link>
+          </div>
         </div>
       </div>
     )
@@ -78,12 +85,15 @@ export default function TestPage() {
   if (!testData.isActive) {
     return (
       <div className={styles.container}>
-        <div className={styles.inactive}>
-          <h2>서비스 준비중</h2>
-          <p>이 테스트는 현재 개발 중입니다. 곧 만나보실 수 있어요!</p>
-          <Link href="/" className="theme-button">
-            홈으로 돌아가기
-          </Link>
+        <Header />
+        <div className={styles.content}>
+          <div className={styles.inactive}>
+            <h2>서비스 준비중</h2>
+            <p>이 테스트는 현재 개발 중입니다. 곧 만나보실 수 있어요!</p>
+            <Link href="/" className="theme-button">
+              홈으로 돌아가기
+            </Link>
+          </div>
         </div>
       </div>
     )
@@ -91,50 +101,30 @@ export default function TestPage() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.testIntro}>
-        <div className={styles.header}>
-          <div className={styles.category}>{testData.category}</div>
-          <h1 className={styles.title}>{testData.title}</h1>
-          <p className={styles.description}>{testData.description}</p>
-        </div>
-
-        <div className={styles.thumbnail}>
-          <img 
-            src={testData.detailImageUrl || testData.thumbnailUrl || '/placeholder-image.jpg'} 
-            alt={testData.title}
-            className={styles.thumbnailImage}
-          />
-        </div>
-
-        <div className={styles.features}>
-          <div className={styles.feature}>
-            <div className={styles.featureIcon}>⚡</div>
-            <h3>빠른 진단</h3>
-            <p>5-10분 내에 완료</p>
+      <Header />
+      <div className={styles.content}>
+        <div className={styles.testIntro}>
+          <div className={styles.detailImage}>
+            <img 
+              src={testData.detailImageUrl || testData.thumbnailUrl || '/placeholder-image.jpg'} 
+              alt={testData.title}
+              className={styles.detailImagePhoto}
+            />
           </div>
-          <div className={styles.feature}>
-            <div className={styles.featureIcon}>🎯</div>
-            <h3>정확한 분석</h3>
-            <p>과학적 근거 기반</p>
-          </div>
-          <div className={styles.feature}>
-            <div className={styles.featureIcon}>📊</div>
-            <h3>상세한 결과</h3>
-            <p>맞춤형 피드백 제공</p>
-          </div>
-        </div>
 
-        <div className={styles.actions}>
-          <Link href={`/tests/${testId}/quiz`} className={styles.startButton}>
-            테스트 시작하기
-          </Link>
-          <Link href="/" className={styles.backButton}>
-            다른 테스트 보기
-          </Link>
-        </div>
+          <div className={styles.testDescription}>
+            <h1 className={styles.testTitle}>{testData.title}</h1>
+            <p className={styles.testDescriptionText}>{testData.description}</p>
+          </div>
 
-        <div className={styles.notice}>
-          <p>💡 이 테스트는 자가진단 도구입니다. 전문적인 상담이 필요한 경우 전문가와 상담하세요.</p>
+          <div className={styles.actions}>
+            <Link href={`/tests/${testId}/quiz`} className={styles.startButton}>
+              테스트 시작하기
+            </Link>
+            <Link href="/" className={styles.backButton}>
+              다른 테스트 보기
+            </Link>
+          </div>
         </div>
       </div>
     </div>

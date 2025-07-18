@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { useTheme } from '@/hooks/useTheme'
+import Header from '@/components/common/Header'
 import styles from './ResultPage.module.scss'
 
 interface ResultData {
@@ -12,6 +13,7 @@ interface ResultData {
   title: string
   description: string
   imageUrl: string
+  textImageUrl?: string
   testTitle: string
   styleTheme: string
   totalScore: number
@@ -74,10 +76,13 @@ export default function ResultPage() {
 
   if (loading) {
     return (
-      <div className={styles.container}>
-        <div className={styles.loading}>
-          <div className={styles.spinner}></div>
-          <p>결과를 분석하는 중...</p>
+      <div className={styles.page}>
+        <Header />
+        <div className={styles.container}>
+          <div className={styles.loading}>
+            <div className={styles.spinner}></div>
+            <p>결과를 분석하는 중...</p>
+          </div>
         </div>
       </div>
     )
@@ -85,62 +90,41 @@ export default function ResultPage() {
 
   if (error || !resultData) {
     return (
-      <div className={styles.container}>
-        <div className={styles.error}>
-          <h2>오류가 발생했습니다</h2>
-          <p>{error || '결과를 불러올 수 없습니다'}</p>
-          <Link href="/" className="theme-button">
-            홈으로 돌아가기
-          </Link>
+      <div className={styles.page}>
+        <Header />
+        <div className={styles.container}>
+          <div className={styles.error}>
+            <h2>오류가 발생했습니다</h2>
+            <p>{error || '결과를 불러올 수 없습니다'}</p>
+            <Link href="/" className="theme-button">
+              홈으로 돌아가기
+            </Link>
+          </div>
         </div>
       </div>
     )
   }
 
-  const scorePercentage = (resultData.totalScore / resultData.maxScore) * 100
-
   return (
-    <div className={styles.container}>
-      <div className={styles.resultContainer}>
-        <div className={styles.header}>
-          <div className={styles.badge}>테스트 완료</div>
-          <h1 className={styles.testTitle}>{resultData.testTitle}</h1>
-          <div className={styles.resultTitle}>{resultData.title}</div>
-        </div>
-
-        <div className={styles.imageContainer}>
+    <div className={styles.page}>
+      <Header />
+      <div className={styles.container}>
+        <div className={styles.resultContainer}>
+        <h1 className={styles.title}>테스트 결과</h1>
+        <div className={styles.imagesContainer}>
           <img 
             src={resultData.imageUrl || '/placeholder-result.jpg'} 
-            alt={resultData.title}
+            alt="결과 이미지"
             className={styles.resultImage}
           />
-        </div>
-
-        <div className={styles.scoreSection}>
-          <div className={styles.scoreTitle}>전체 점수</div>
-          <div className={styles.scoreDisplay}>
-            <div className={styles.scoreNumber}>
-              {resultData.totalScore} / {resultData.maxScore}
-            </div>
-            <div className={styles.scoreBar}>
-              <div 
-                className={styles.scoreProgress}
-                style={{ width: `${scorePercentage}%` }}
-              ></div>
-            </div>
-            <div className={styles.scorePercentage}>
-              {Math.round(scorePercentage)}%
-            </div>
-          </div>
-        </div>
-
-        <div className={styles.description}>
-          <h2>결과 해석</h2>
-          <div className={styles.descriptionContent}>
-            {resultData.description.split('\n').map((line, index) => (
-              <p key={index}>{line}</p>
-            ))}
-          </div>
+          
+          {resultData.textImageUrl && (
+            <img 
+              src={resultData.textImageUrl} 
+              alt="결과 텍스트 이미지"
+              className={styles.resultImage}
+            />
+          )}
         </div>
 
         <div className={styles.actions}>
@@ -154,11 +138,8 @@ export default function ResultPage() {
             다른 테스트 보기
           </Link>
         </div>
-
-        <div className={styles.disclaimer}>
-          <p>💡 이 결과는 참고용입니다. 전문적인 상담이 필요한 경우 전문가와 상담하세요.</p>
-        </div>
       </div>
+    </div>
     </div>
   )
 }

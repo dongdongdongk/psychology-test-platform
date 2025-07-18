@@ -195,13 +195,8 @@
       cursor: pointer;
       transition: background 0.2s ease;
       
-      &:hover:not(:disabled) {
+      &:hover {
         background: #c82333;
-      }
-      
-      &:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
       }
     }
   }

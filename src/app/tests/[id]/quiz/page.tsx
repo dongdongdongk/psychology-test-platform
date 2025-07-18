@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useTheme } from '@/hooks/useTheme'
+import Header from '@/components/common/Header'
 import styles from './QuizPage.module.scss'
 
 interface Question {
@@ -74,6 +75,16 @@ export default function QuizPage() {
         ...prev,
         [questionId]: optionId
       }))
+      
+      // 단일 선택 문제에서는 답변 선택 후 자동으로 다음 문제로 이동
+      setTimeout(() => {
+        if (testData && currentQuestion < testData.questions.length - 1) {
+          setCurrentQuestion(prev => prev + 1)
+        } else if (testData && currentQuestion === testData.questions.length - 1) {
+          // 마지막 문제인 경우 자동으로 제출
+          submitAnswers()
+        }
+      }, 300) // 0.3초 딜레이로 사용자가 선택을 확인할 수 있게 함
     } else {
       setAnswers(prev => {
         const currentAnswers = prev[questionId] as string[]
@@ -134,10 +145,13 @@ export default function QuizPage() {
 
   if (loading) {
     return (
-      <div className={styles.container}>
-        <div className={styles.loading}>
-          <div className={styles.spinner}></div>
-          <p>테스트를 준비하는 중...</p>
+      <div className={styles.page}>
+        <Header />
+        <div className={styles.container}>
+          <div className={styles.loading}>
+            <div className={styles.spinner}></div>
+            <p>테스트를 준비하는 중...</p>
+          </div>
         </div>
       </div>
     )
@@ -145,13 +159,16 @@ export default function QuizPage() {
 
   if (error || !testData) {
     return (
-      <div className={styles.container}>
-        <div className={styles.error}>
-          <h2>오류가 발생했습니다</h2>
-          <p>{error || '테스트를 불러올 수 없습니다'}</p>
-          <button onClick={() => router.push(`/tests/${testId}`)} className="theme-button">
-            다시 시도하기
-          </button>
+      <div className={styles.page}>
+        <Header />
+        <div className={styles.container}>
+          <div className={styles.error}>
+            <h2>오류가 발생했습니다</h2>
+            <p>{error || '테스트를 불러올 수 없습니다'}</p>
+            <button onClick={() => router.push(`/tests/${testId}`)} className="theme-button">
+              다시 시도하기
+            </button>
+          </div>
         </div>
       </div>
     )
@@ -165,8 +182,10 @@ export default function QuizPage() {
     : (answers[question.id] as string[]).length > 0
 
   return (
-    <div className={styles.container}>
-      <div className={styles.quizContainer}>
+    <div className={styles.page}>
+      <Header />
+      <div className={styles.container}>
+        <div className={styles.quizContainer}>
         <div className={styles.header}>
           <h1 className={styles.title}>{testData.title}</h1>
           <div className={styles.progress}>
@@ -231,6 +250,7 @@ export default function QuizPage() {
           )}
         </div>
       </div>
+    </div>
     </div>
   )
 }

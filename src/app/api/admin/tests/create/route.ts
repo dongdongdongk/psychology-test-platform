@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
+import { prisma } from '@/lib/prisma'
 
 export async function POST(request: NextRequest) {
   try {
@@ -72,41 +70,62 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // 테스트 데이터 구성
-    const testData = {
-      title,
-      description,
-      category,
-      thumbnailUrl,
-      detailImageUrl,
-      styleTheme,
-      isActive: true,
-      testData: {
-        questionCount,
-        optionCount,
-        questions: questions.map((q: any) => ({
-          id: q.id,
-          content: q.content,
-          options: q.options.map((o: any) => ({
-            id: o.id,
-            content: o.content,
-            scores: o.scores
-          }))
-        })),
-        resultTypes: resultTypes.map((r: any) => ({
-          id: r.id,
-          name: r.name,
-          description: r.description,
-          imageUrl: r.imageUrl || null,
-          textImageUrl: r.textImageUrl || null
-        }))
+    // 데이터베이스에 순차적으로 저장
+    // 1. 테스트 기본 정보 저장
+    const test = await prisma.test.create({
+      data: {
+        title,
+        description,
+        category,
+        thumbnailUrl,
+        detailImageUrl,
+        styleTheme,
+        isActive: true
+      }
+    })
+
+    // 2. 질문들 저장
+    for (let i = 0; i < questions.length; i++) {
+      const question = questions[i]
+      const createdQuestion = await prisma.question.create({
+        data: {
+          testId: test.id,
+          content: question.content,
+          order: i + 1,
+          type: 'single'
+        }
+      })
+
+      // 3. 각 질문의 선택지들 저장
+      for (let j = 0; j < question.options.length; j++) {
+        const option = question.options[j]
+        await prisma.answerOption.create({
+          data: {
+            questionId: createdQuestion.id,
+            content: option.content,
+            value: JSON.stringify(option.scores),
+            order: j + 1
+          }
+        })
       }
     }
 
-    // 데이터베이스에 저장
-    const createdTest = await prisma.test.create({
-      data: testData
-    })
+    // 4. 결과 타입들 저장
+    for (const resultType of resultTypes) {
+      await prisma.resultType.create({
+        data: {
+          testId: test.id,
+          type: resultType.id,
+          title: resultType.name,
+          description: resultType.description + (resultType.textImageUrl ? `\n[TEXT_IMAGE:${resultType.textImageUrl}]` : ''),
+          imageUrl: resultType.imageUrl || null,
+          minScore: null,
+          maxScore: null
+        }
+      })
+    }
+
+    const createdTest = test
 
     return NextResponse.json({
       message: '테스트가 성공적으로 생성되었습니다.',
