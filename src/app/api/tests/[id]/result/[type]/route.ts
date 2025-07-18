@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
+import { prisma } from '@/lib/prisma'
 
 // 테스트 결과 조회
 export async function GET(
@@ -67,12 +65,20 @@ export async function GET(
       results.reduce((max, r) => Math.max(max, r.maxScore || 0), 0)
     )
 
+    // description에서 textImageUrl 추출
+    const textImageMatch = result.description.match(/\[TEXT_IMAGE:([^\]]+)\]/)
+    const textImageUrl = textImageMatch ? textImageMatch[1] : null
+    
+    // description에서 [TEXT_IMAGE:url] 부분 제거
+    const cleanDescription = result.description.replace(/\[TEXT_IMAGE:[^\]]+\]/g, '').trim()
+
     return NextResponse.json({
       id: result.id,
       type: result.type,
       title: result.title,
-      description: result.description,
+      description: cleanDescription,
       imageUrl: result.imageUrl,
+      textImageUrl: textImageUrl,
       testTitle: test.title,
       styleTheme: test.styleTheme,
       totalScore: recentResponse?.totalScore || 0,

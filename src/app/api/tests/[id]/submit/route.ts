@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '@/lib/prisma'
 import { nanoid } from 'nanoid'
-
-const prisma = new PrismaClient()
 
 // 답변 제출 및 결과 계산
 export async function POST(
@@ -42,8 +40,8 @@ export async function POST(
       )
     }
 
-    // 점수 계산
-    let totalScore = 0
+    // 타입별 점수 계산
+    const typeScores: Record<string, number> = {}
     const processedAnswers: Record<string, any> = {}
 
     for (const question of test.questions) {
@@ -52,31 +50,63 @@ export async function POST(
 
       if (question.type === 'single' && typeof answer === 'string') {
         const option = question.answerOptions.find(opt => opt.id === answer)
-        if (option) {
-          totalScore += parseInt(option.value) || 0
+        if (option && option.value) {
+          try {
+            // value는 JSON 문자열로 저장된 점수 객체 (예: {"A": 3, "B": 1})
+            const scores = JSON.parse(option.value)
+            for (const [typeId, score] of Object.entries(scores)) {
+              if (typeof score === 'number') {
+                typeScores[typeId] = (typeScores[typeId] || 0) + score
+              }
+            }
+          } catch (e) {
+            console.error('점수 파싱 오류:', e)
+          }
         }
       } else if (question.type === 'multiple' && Array.isArray(answer)) {
         for (const optionId of answer) {
           const option = question.answerOptions.find(opt => opt.id === optionId)
-          if (option) {
-            totalScore += parseInt(option.value) || 0
+          if (option && option.value) {
+            try {
+              const scores = JSON.parse(option.value)
+              for (const [typeId, score] of Object.entries(scores)) {
+                if (typeof score === 'number') {
+                  typeScores[typeId] = (typeScores[typeId] || 0) + score
+                }
+              }
+            } catch (e) {
+              console.error('점수 파싱 오류:', e)
+            }
           }
         }
       }
     }
 
-    // 결과 타입 결정
+    // 가장 높은 점수를 가진 타입 찾기
     let resultType = 'default'
-    for (const result of test.resultTypes) {
-      if (result.minScore !== null && result.maxScore !== null) {
-        if (totalScore >= result.minScore && totalScore <= result.maxScore) {
-          resultType = result.type
-          break
-        }
+    let maxScore = -1
+    const typeScoreEntries = Object.entries(typeScores)
+    
+    if (typeScoreEntries.length > 0) {
+      // 점수가 높은 순으로 정렬
+      typeScoreEntries.sort((a, b) => b[1] - a[1])
+      
+      // 동점 처리: 가장 높은 점수가 동일한 경우 알파벳 순으로 첫 번째 타입 선택
+      const highestScore = typeScoreEntries[0][1]
+      const tiedTypes = typeScoreEntries.filter(([_, score]) => score === highestScore)
+      
+      if (tiedTypes.length > 1) {
+        // 동점인 경우 알파벳 순으로 정렬하여 첫 번째 선택
+        tiedTypes.sort((a, b) => a[0].localeCompare(b[0]))
+        resultType = tiedTypes[0][0]
+        maxScore = tiedTypes[0][1]
+      } else {
+        resultType = typeScoreEntries[0][0]
+        maxScore = typeScoreEntries[0][1]
       }
     }
 
-    // 기본 결과 타입이 없으면 첫 번째 결과 사용
+    // 결과 타입이 없으면 첫 번째 결과 사용
     if (resultType === 'default' && test.resultTypes.length > 0) {
       resultType = test.resultTypes[0].type
     }
@@ -93,7 +123,7 @@ export async function POST(
         testId,
         responseData: processedAnswers,
         resultType,
-        totalScore,
+        totalScore: maxScore, // 최고 점수를 totalScore로 저장
         ipAddress: ip,
         userAgent,
         sessionId: nanoid()
@@ -103,10 +133,9 @@ export async function POST(
     return NextResponse.json({
       responseId: response.id,
       resultType,
-      totalScore,
-      maxScore: test.resultTypes.reduce((max, result) => 
-        Math.max(max, result.maxScore || 0), 0
-      )
+      typeScores, // 모든 타입별 점수 반환
+      finalScore: maxScore,
+      tiedTypes: Object.entries(typeScores).filter(([_, score]) => score === maxScore).map(([type, _]) => type)
     })
   } catch (error) {
     console.error('답변 제출 실패:', error)

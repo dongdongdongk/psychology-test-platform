@@ -4,7 +4,8 @@ export interface Test {
   description?: string
   category: string
   thumbnailUrl?: string
-  testUrl: string
+  detailImageUrl?: string
+  styleTheme?: string
   isActive: boolean
   createdAt: Date
   updatedAt: Date

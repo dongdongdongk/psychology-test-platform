@@ -1,151 +1,50 @@
-.container {
+.page {
   min-height: 100vh;
   background: var(--gradient-background);
-  padding: 20px;
+}
+
+.container {
+  padding: 24px 20px 20px;
   display: flex;
-  align-items: center;
   justify-content: center;
 }
 
 .resultContainer {
-  max-width: 600px;
+  max-width: 500px;
   width: 100%;
   background: var(--background-primary);
   border-radius: var(--border-radius-xl);
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 4px 20px rgba(247, 188, 183, 0.15);
   border: 1px solid var(--border-color);
   overflow: hidden;
 }
 
-.header {
-  text-align: center;
-  padding: 40px 32px 24px;
-  background: linear-gradient(135deg, var(--background-primary) 0%, var(--background-secondary) 100%);
-  border-bottom: 1px solid var(--border-light);
-}
-
-.badge {
-  display: inline-block;
-  background: var(--primary-light);
-  color: var(--primary-color);
-  padding: 8px 16px;
-  border-radius: var(--border-radius-lg);
-  font-size: 14px;
-  font-weight: 600;
-  margin-bottom: 16px;
-  border: 1px solid var(--border-color);
-}
-
-.testTitle {
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--text-secondary);
-  margin-bottom: 12px;
-}
-
-.resultTitle {
-  font-size: 32px;
+.title {
+  font-size: 28px;
   font-weight: 800;
-  line-height: 1.2;
+  text-align: center;
+  margin: 0;
+  padding: 32px 20px 24px;
   background: var(--gradient-primary);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin-bottom: 0;
 }
 
-.imageContainer {
-  padding: 32px;
+.imagesContainer {
+  padding: 0 20px;
   display: flex;
-  justify-content: center;
-  background: var(--background-secondary);
+  flex-direction: column;
+  gap: 0;
+  background: var(--background-primary);
 }
 
 .resultImage {
   width: 100%;
-  max-width: 300px;
-  height: 300px;
-  object-fit: cover;
-  border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-md);
-  border: 1px solid var(--border-light);
-}
-
-.scoreSection {
-  padding: 32px;
-  background: var(--background-primary);
-  border-top: 1px solid var(--border-light);
-  border-bottom: 1px solid var(--border-light);
-}
-
-.scoreTitle {
-  text-align: center;
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 20px;
-}
-
-.scoreDisplay {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-}
-
-.scoreNumber {
-  font-size: 28px;
-  font-weight: 800;
-  color: var(--primary-color);
-  text-align: center;
-}
-
-.scoreBar {
-  width: 100%;
-  height: 12px;
-  background: var(--background-tertiary);
-  border-radius: var(--border-radius-sm);
-  overflow: hidden;
-  position: relative;
-}
-
-.scoreProgress {
-  height: 100%;
-  background: var(--gradient-primary);
-  transition: width 1s ease-out;
-  border-radius: var(--border-radius-sm);
-}
-
-.scorePercentage {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--text-primary);
-}
-
-.description {
-  padding: 32px;
-  background: var(--background-primary);
-  
-  h2 {
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 16px;
-    text-align: center;
-  }
-}
-
-.descriptionContent {
-  p {
-    font-size: 16px;
-    color: var(--text-secondary);
-    line-height: 1.6;
-    margin-bottom: 16px;
-    
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
 }
 
 .actions {
@@ -287,51 +186,21 @@
 // 반응형 디자인
 @media (max-width: 768px) {
   .container {
-    padding: 16px;
+    padding: 24px 16px 16px;
   }
   
-  .header {
-    padding: 32px 24px 20px;
+  .resultContainer {
+    max-width: 100%;
   }
   
-  .resultTitle {
-    font-size: 28px;
-  }
-  
-  .imageContainer {
-    padding: 24px;
-  }
-  
-  .resultImage {
-    height: 250px;
-  }
-  
-  .scoreSection {
-    padding: 24px;
-  }
-  
-  .scoreTitle {
-    font-size: 16px;
-  }
-  
-  .scoreNumber {
+  .title {
     font-size: 24px;
+    padding: 24px 16px 20px;
   }
   
-  .scorePercentage {
-    font-size: 18px;
-  }
-  
-  .description {
-    padding: 24px;
-    
-    h2 {
-      font-size: 18px;
-    }
-  }
-  
-  .descriptionContent p {
-    font-size: 15px;
+  .imagesContainer {
+    padding: 0 16px;
+    gap: 0;
   }
   
   .actions {
@@ -351,9 +220,5 @@
   .homeButton {
     padding: 10px 20px;
     font-size: 14px;
-  }
-  
-  .disclaimer {
-    padding: 20px 24px;
   }
 }

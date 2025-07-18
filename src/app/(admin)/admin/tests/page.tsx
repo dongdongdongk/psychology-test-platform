@@ -57,14 +57,29 @@ export default function AdminTestsPage() {
   }
 
   const deleteTest = async (testId: string) => {
-    if (!confirm('정말로 이 테스트를 삭제하시겠습니까?')) {
+    const test = tests.find(t => t.id === testId)
+    if (!test) return
+
+    const hasResponses = test._count.responses > 0
+    let confirmMessage = '정말로 이 테스트를 삭제하시겠습니까?'
+    
+    if (hasResponses) {
+      confirmMessage = `이 테스트에는 ${test._count.responses}개의 응답이 있습니다.\n\n모든 응답 데이터는 백업된 후 테스트와 함께 삭제됩니다.\n\n정말로 삭제하시겠습니까?`
+    }
+
+    if (!confirm(confirmMessage)) {
       return
     }
 
     try {
-      await axios.delete(`/api/admin/tests/${testId}`)
+      const response = await axios.delete(`/api/admin/tests/${testId}`)
       setTests(prev => prev.filter(t => t.id !== testId))
-      alert('테스트가 삭제되었습니다.')
+      
+      if (hasResponses) {
+        alert(`테스트가 삭제되었습니다.\n${response.data.backupCount}개의 응답이 백업되었습니다.`)
+      } else {
+        alert('테스트가 삭제되었습니다.')
+      }
     } catch (error: any) {
       alert(error.response?.data?.error || '삭제에 실패했습니다.')
       console.error(error)
@@ -138,7 +153,7 @@ export default function AdminTestsPage() {
                     <button
                       onClick={() => deleteTest(test.id)}
                       className={styles.deleteButton}
-                      disabled={test._count.responses > 0}
+                      title={test._count.responses > 0 ? `${test._count.responses}개의 응답이 백업 후 삭제됩니다` : '테스트를 삭제합니다'}
                     >
                       삭제
                     </button>

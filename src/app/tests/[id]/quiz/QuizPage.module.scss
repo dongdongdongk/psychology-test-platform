@@ -1,14 +1,18 @@
-.container {
+.page {
   min-height: 100vh;
   background: var(--gradient-background);
-  padding: 20px;
+}
+
+.container {
+  padding: 24px 20px;
   display: flex;
-  align-items: center;
+  // align-items: center;
   justify-content: center;
+  min-height: calc(100vh - 900px);
 }
 
 .quizContainer {
-  max-width: 800px;
+  max-width: 500px;
   width: 100%;
   background: var(--background-primary);
   border-radius: var(--border-radius-xl);
@@ -195,6 +199,8 @@
 
 // 로딩 및 에러 상태
 .loading, .error {
+  max-width: 500px;
+  width: 100%;
   text-align: center;
   padding: 60px 32px;
   background: var(--background-primary);
@@ -249,6 +255,10 @@
 @media (max-width: 768px) {
   .container {
     padding: 16px;
+  }
+  
+  .loading, .error {
+    padding: 40px 20px;
   }
   
   .header {

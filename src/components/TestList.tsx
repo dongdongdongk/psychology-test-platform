@@ -47,7 +47,7 @@ export default function TestList() {
 
   const handleTestClick = (test: Test) => {
     if (test.isActive) {
-      window.location.href = test.testUrl
+      window.location.href = `/tests/${test.id}`
     } else {
       alert('이 테스트는 현재 개발 중입니다. 곧 만나보실 수 있어요!')
     }

@@ -65,6 +65,13 @@ export default function HomePage() {
                     onClick={() => handleSlideClick(slide.testUrl)}
                   />
                 ))}
+                
+                {/* 슬라이드 아이콘 */}
+                <img 
+                  src="/images/NewIcon.png" 
+                  alt="New Icon" 
+                  className={styles.slideIcon}
+                />
               </div>
               
               {/* 슬라이드 인디케이터 */}
@@ -85,8 +92,8 @@ export default function HomePage() {
           
           <div className={styles.mainContent}>
             <div className={styles.sectionHeader}>
-              <h2 className={styles.sectionTitle}>심리 테스트 컬렉션</h2>
-              <p className={styles.sectionDescription}>과학적으로 검증된 심리 테스트로 나의 숨겨진 성격을 발견해보세요</p>
+              <h2 className={styles.sectionTitle}>루노 심리 테스트</h2>
+              <p className={styles.sectionDescription}>“1분이면 충분해요. 무료 심리테스트로 하루에 소소한 의미를 더해보세요.”</p>
             </div>
             <Suspense fallback={
               <div className={styles.loading}>

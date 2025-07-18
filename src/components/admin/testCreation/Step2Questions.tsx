@@ -10,10 +10,46 @@ export default function Step2Questions() {
     optionCount,
     questions,
     resultTypes,
-    setQuestions
+    setQuestions,
+    generateResultTypesFromQuestions
   } = useTestCreationStore()
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
+  const [inputValues, setInputValues] = useState<{ [key: string]: string }>({})
+
+  const getInputKey = (questionIndex: number, optionIndex: number) => 
+    `q_${questionIndex}_o_${optionIndex}`
+
+  // 컴포넌트 마운트 시 scores 객체 초기화 확인 및 input values 설정
+  useEffect(() => {
+    if (questions.length > 0) {
+      const needsInitialization = questions.some(q => 
+        q.options.some(o => !o.scores)
+      )
+      
+      if (needsInitialization) {
+        const updatedQuestions = questions.map(q => ({
+          ...q,
+          options: q.options.map(o => ({
+            ...o,
+            scores: o.scores || {} // 빈 객체로 초기화
+          }))
+        }))
+        
+        setQuestions(updatedQuestions)
+      }
+      
+      // input values 초기화
+      const newInputValues: { [key: string]: string } = {}
+      questions.forEach((q, qIndex) => {
+        q.options.forEach((o, oIndex) => {
+          const key = getInputKey(qIndex, oIndex)
+          newInputValues[key] = getScoreString(o)
+        })
+      })
+      setInputValues(newInputValues)
+    }
+  }, [questions])
 
   const updateQuestion = (questionIndex: number, field: string, value: string) => {
     const updatedQuestions = [...questions]
@@ -35,17 +71,84 @@ export default function Step2Questions() {
 
   const updateOptionScore = (questionIndex: number, optionIndex: number, resultTypeId: string, score: number) => {
     const updatedQuestions = [...questions]
-    updatedQuestions[questionIndex].options[optionIndex].scores = {
-      ...updatedQuestions[questionIndex].options[optionIndex].scores,
+    const option = updatedQuestions[questionIndex].options[optionIndex]
+    
+    // scores 객체가 없으면 초기화
+    if (!option.scores) {
+      option.scores = {}
+    }
+    
+    option.scores = {
+      ...option.scores,
       [resultTypeId]: score
     }
+    
     setQuestions(updatedQuestions)
+  }
+
+  const updateOptionScoreString = (questionIndex: number, optionIndex: number, scoreString: string) => {
+    console.log('updateOptionScoreString called:', { questionIndex, optionIndex, scoreString })
+    
+    const updatedQuestions = [...questions]
+    const option = updatedQuestions[questionIndex].options[optionIndex]
+    
+    console.log('Current option:', option)
+    
+    // scores 객체가 없으면 초기화
+    if (!option.scores) {
+      option.scores = {}
+    }
+    
+    // 문자열 파싱: "A:2, B:1, C:0" -> {A: 2, B: 1, C: 0}
+    const scores: { [key: string]: number } = {}
+    
+    if (scoreString.trim()) {
+      const parts = scoreString.split(',').map(s => s.trim())
+      console.log('Parts:', parts)
+      
+      for (const part of parts) {
+        const [typeId, scoreStr] = part.split(':').map(s => s.trim())
+        console.log('Processing part:', { typeId, scoreStr })
+        
+        if (typeId && scoreStr) {
+          const score = parseInt(scoreStr)
+          if (!isNaN(score)) {
+            scores[typeId] = score
+          }
+        }
+      }
+    }
+    
+    console.log('Final scores:', scores)
+    option.scores = scores
+    setQuestions(updatedQuestions)
+    
+    // 점수 입력 시 결과 타입 동적 생성
+    generateResultTypesFromQuestions()
+  }
+
+  const getScoreString = (option: any): string => {
+    console.log('getScoreString called with option:', option)
+    
+    if (!option.scores) {
+      console.log('No scores found')
+      return ''
+    }
+    
+    // 점수가 0인 항목들은 제외하고 실제 점수가 있는 것만 표시
+    const result = Object.entries(option.scores)
+      .filter(([typeId, score]) => score !== 0)
+      .map(([typeId, score]) => `${typeId}:${score}`)
+      .join(', ')
+    
+    console.log('getScoreString result:', result)
+    return result
   }
 
   const getCurrentQuestion = () => questions[currentQuestionIndex]
   const getCompletionStatus = () => {
     const completedQuestions = questions.filter(q => 
-      q.content && q.options.every(o => o.content && Object.keys(o.scores).length > 0)
+      q.content && q.options.every(o => o.content && o.scores && Object.keys(o.scores).length > 0)
     ).length
     return `${completedQuestions}/${questionCount}`
   }
@@ -68,7 +171,7 @@ export default function Step2Questions() {
 
   const isCurrentQuestionValid = () => {
     const current = getCurrentQuestion()
-    return current?.content && current.options.every(o => o.content && Object.keys(o.scores).length > 0)
+    return current?.content && current.options.every(o => o.content && o.scores && Object.keys(o.scores).length > 0)
   }
 
   const getQuestionStatus = (index: number) => {
@@ -77,7 +180,7 @@ export default function Step2Questions() {
     
     const hasContent = question.content.trim() !== ''
     const hasValidOptions = question.options.every(o => 
-      o.content.trim() !== '' && Object.keys(o.scores).length > 0
+      o.content.trim() !== '' && o.scores && Object.keys(o.scores).length > 0
     )
     
     if (hasContent && hasValidOptions) return 'completed'
@@ -194,24 +297,43 @@ export default function Step2Questions() {
                     
                     <div className={styles.optionScores}>
                       <h5>결과 타입별 점수</h5>
-                      <div className={styles.scoresGrid}>
-                        {resultTypes.map((resultType) => (
-                          <div key={resultType.id} className={styles.scoreItem}>
-                            <label className={styles.scoreLabel}>
-                              {resultType.name || resultType.id}
-                            </label>
-                            <input
-                              type="number"
-                              value={option.scores[resultType.id] || 0}
-                              onChange={(e) => updateOptionScore(currentQuestionIndex, optionIndex, resultType.id, parseInt(e.target.value) || 0)}
-                              className={styles.scoreInput}
-                              min="0"
-                              max="10"
-                              placeholder="0"
-                            />
-                          </div>
-                        ))}
+                      <div className={styles.scoreStringInput}>
+                        <input
+                          type="text"
+                          value={inputValues[getInputKey(currentQuestionIndex, optionIndex)] || ''}
+                          onChange={(e) => {
+                            console.log('Input onChange triggered:', e.target.value)
+                            const key = getInputKey(currentQuestionIndex, optionIndex)
+                            const value = e.target.value
+                            setInputValues(prev => ({ ...prev, [key]: value }))
+                            
+                            // 실시간으로 점수 업데이트하지 않고 onBlur에서 처리
+                          }}
+                          onBlur={(e) => {
+                            console.log('Input onBlur triggered:', e.target.value)
+                            updateOptionScoreString(currentQuestionIndex, optionIndex, e.target.value)
+                          }}
+                          placeholder="A:2, B:1, C:0 (타입:점수 형태로 입력)"
+                          className={styles.scoreStringField}
+                        />
+                        <p className={styles.scoreHelp}>
+                          예시: A:3, B:1, C:0 → A타입 3점, B타입 1점, C타입 0점
+                        </p>
                       </div>
+                      
+                      {/* 현재 설정된 점수 표시 */}
+                      {option.scores && Object.keys(option.scores).length > 0 && (
+                        <div className={styles.scorePreview}>
+                          <span>현재 점수:</span>
+                          <div className={styles.scorePreviewItems}>
+                            {Object.entries(option.scores).map(([typeId, score]) => (
+                              <span key={typeId} className={styles.scorePreviewItem}>
+                                {typeId}: {score}점
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -250,7 +372,7 @@ export default function Step2Questions() {
             <div className={styles.summaryItem}>
               <span>완료된 문제:</span>
               <span className={styles.summaryValue}>
-                {questions.filter(q => q.content && q.options.every(o => o.content && Object.keys(o.scores).length > 0)).length}개
+                {questions.filter(q => q.content && q.options.every(o => o.content && o.scores && Object.keys(o.scores).length > 0)).length}개
               </span>
             </div>
             <div className={styles.summaryItem}>

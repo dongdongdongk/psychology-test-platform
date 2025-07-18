@@ -31,7 +31,7 @@ export default function Header() {
                 height={32} 
                 className={styles.logoIcon}
               />
-              심리테스트 플랫폼
+              루노 심리테스트
             </Link>
             
             {/* Desktop Navigation */}

@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '@/lib/prisma'
 import { getServerSession } from 'next-auth'
 import { nanoid } from 'nanoid'
-
-const prisma = new PrismaClient()
 
 // 테스트 질문 목록 조회 (관리자용)
 export async function GET(
