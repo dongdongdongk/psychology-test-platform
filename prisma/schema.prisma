@@ -23,10 +23,10 @@ model Test {
   detailImageUrl String? @map("detail_image_url") @db.VarChar(500)
   styleTheme   String   @default("modern") @map("style_theme") @db.VarChar(50)
   isActive     Boolean  @default(true) @map("is_active")
+  questions    Json?    // JSONB 배열로 질문과 선택지를 함께 저장
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
 
-  questions Question[]
   resultTypes ResultType[]
   responses UserResponse[]
 
@@ -43,35 +43,6 @@ model Admin {
   @@map("admins")
 }
 
-model Question {
-  id        String   @id @default(uuid()) @db.VarChar(50)
-  testId    String   @map("test_id") @db.VarChar(50)
-  content   String   @db.Text
-  order     Int
-  type      String   @default("single") @db.VarChar(50) // single, multiple
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  test Test @relation(fields: [testId], references: [id], onDelete: Cascade)
-  answerOptions AnswerOption[]
-
-  @@map("questions")
-  @@index([testId, order])
-}
-
-model AnswerOption {
-  id         String   @id @default(uuid()) @db.VarChar(50)
-  questionId String   @map("question_id") @db.VarChar(50)
-  content    String   @db.Text
-  value      String   @db.VarChar(100) // 점수 계산용 값
-  order      Int
-  createdAt  DateTime @default(now()) @map("created_at")
-
-  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
-
-  @@map("answer_options")
-  @@index([questionId, order])
-}
 
 model ResultType {
   id          String   @id @default(uuid()) @db.VarChar(50)
@@ -92,34 +63,18 @@ model ResultType {
 }
 
 model UserResponse {
-  id           String   @id @db.VarChar(50)
+  id           String   @id @default(cuid()) @db.VarChar(50)
   testId       String   @map("test_id") @db.VarChar(50)
-  responseData Json     @map("response_data") // 답변 데이터
-  resultType   String?  @map("result_type") @db.VarChar(100) // 결과 타입
-  totalScore   Int?     @map("total_score") // 총점
+  responseData Json     @map("response_data") // 모든 답변과 메타데이터를 포함하는 JSONB
+  resultType   String?  @map("result_type") @db.VarChar(100) // 최종 결과 타입
   ipAddress    String?  @map("ip_address") @db.Inet
   userAgent    String?  @map("user_agent") @db.Text
-  sessionId    String?  @map("session_id") @db.VarChar(100)
+  sessionId    String?  @map("session_id") @db.VarChar(100) // 브라우저 세션 추적용
   createdAt    DateTime @default(now()) @map("created_at")
 
   test Test @relation(fields: [testId], references: [id])
 
   @@map("user_responses")
+  @@index([testId])
 }
 
-model UserResponseBackup {
-  id           String   @id @db.VarChar(50)
-  testId       String   @map("test_id") @db.VarChar(50)
-  testTitle    String   @map("test_title") @db.VarChar(255)
-  responseData Json     @map("response_data") // 답변 데이터
-  resultType   String?  @map("result_type") @db.VarChar(100) // 결과 타입
-  totalScore   Int?     @map("total_score") // 총점
-  ipAddress    String?  @map("ip_address") @db.Inet
-  userAgent    String?  @map("user_agent") @db.Text
-  sessionId    String?  @map("session_id") @db.VarChar(100)
-  originalCreatedAt DateTime @map("original_created_at")
-  backedUpAt   DateTime @default(now()) @map("backed_up_at")
-  deletedBy    String?  @map("deleted_by") @db.VarChar(100) // 삭제한 관리자
-
-  @@map("user_responses_backup")
-}

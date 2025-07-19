@@ -64,7 +64,7 @@ export default function AdminTestsPage() {
     let confirmMessage = '정말로 이 테스트를 삭제하시겠습니까?'
     
     if (hasResponses) {
-      confirmMessage = `이 테스트에는 ${test._count.responses}개의 응답이 있습니다.\n\n모든 응답 데이터는 백업된 후 테스트와 함께 삭제됩니다.\n\n정말로 삭제하시겠습니까?`
+      confirmMessage = `이 테스트에는 ${test._count.responses}개의 응답이 있습니다.\n\n테스트와 모든 응답 데이터가 삭제됩니다.\n\n정말로 삭제하시겠습니까?`
     }
 
     if (!confirm(confirmMessage)) {
@@ -72,14 +72,9 @@ export default function AdminTestsPage() {
     }
 
     try {
-      const response = await axios.delete(`/api/admin/tests/${testId}`)
+      await axios.delete(`/api/admin/tests/${testId}`)
       setTests(prev => prev.filter(t => t.id !== testId))
-      
-      if (hasResponses) {
-        alert(`테스트가 삭제되었습니다.\n${response.data.backupCount}개의 응답이 백업되었습니다.`)
-      } else {
-        alert('테스트가 삭제되었습니다.')
-      }
+      alert('테스트가 삭제되었습니다.')
     } catch (error: any) {
       alert(error.response?.data?.error || '삭제에 실패했습니다.')
       console.error(error)
@@ -144,6 +139,12 @@ export default function AdminTestsPage() {
                     </span>
                   </div>
                   <div className={styles.cardActions}>
+                    <Link
+                      href={`/admin/tests/${test.id}/edit`}
+                      className={styles.editButton}
+                    >
+                      수정
+                    </Link>
                     <button
                       onClick={() => toggleTestStatus(test.id, test.isActive)}
                       className={styles.toggleButton}

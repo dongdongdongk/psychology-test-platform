@@ -10,7 +10,10 @@ export async function GET(
     const testId = params.id
 
     const test = await prisma.test.findUnique({
-      where: { id: testId },
+      where: { 
+        id: testId,
+        isActive: true
+      },
       select: {
         id: true,
         title: true,
@@ -20,6 +23,7 @@ export async function GET(
         detailImageUrl: true,
         styleTheme: true,
         isActive: true,
+        questions: true,
         createdAt: true,
         updatedAt: true
       }

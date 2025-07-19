@@ -4,34 +4,14 @@ import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useTheme } from '@/hooks/useTheme'
 import Header from '@/components/common/Header'
+import { Test, Question, AnswerOption } from '@/types'
 import styles from './QuizPage.module.scss'
-
-interface Question {
-  id: string
-  content: string
-  type: 'single' | 'multiple'
-  answerOptions: AnswerOption[]
-}
-
-interface AnswerOption {
-  id: string
-  content: string
-  value: string
-  order: number
-}
-
-interface TestData {
-  id: string
-  title: string
-  styleTheme: string
-  questions: Question[]
-}
 
 export default function QuizPage() {
   const params = useParams()
   const router = useRouter()
   const testId = params.id as string
-  const [testData, setTestData] = useState<TestData | null>(null)
+  const [testData, setTestData] = useState<Test | null>(null)
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [answers, setAnswers] = useState<Record<string, string | string[]>>({})
   const [loading, setLoading] = useState(true)
@@ -47,7 +27,7 @@ export default function QuizPage() {
 
   const fetchTestData = async () => {
     try {
-      const response = await fetch(`/api/tests/${testId}/questions`)
+      const response = await fetch(`/api/tests/${testId}`)
       if (!response.ok) {
         throw new Error('테스트 데이터를 불러올 수 없습니다')
       }
@@ -58,9 +38,11 @@ export default function QuizPage() {
       
       // 답변 초기화
       const initialAnswers: Record<string, string | string[]> = {}
-      data.questions.forEach((question: Question) => {
-        initialAnswers[question.id] = question.type === 'multiple' ? [] : ''
-      })
+      if (data.questions) {
+        data.questions.forEach((question: Question) => {
+          initialAnswers[question.id] = question.type === 'multiple' ? [] : ''
+        })
+      }
       setAnswers(initialAnswers)
     } catch (err) {
       setError(err instanceof Error ? err.message : '테스트 데이터를 불러오는데 실패했습니다')
@@ -69,18 +51,18 @@ export default function QuizPage() {
     }
   }
 
-  const handleAnswer = (questionId: string, optionId: string, type: 'single' | 'multiple') => {
+  const handleAnswer = (questionId: string, optionIndex: number, type: 'single' | 'multiple') => {
     if (type === 'single') {
       setAnswers(prev => ({
         ...prev,
-        [questionId]: optionId
+        [questionId]: optionIndex.toString()
       }))
       
       // 단일 선택 문제에서는 답변 선택 후 자동으로 다음 문제로 이동
       setTimeout(() => {
-        if (testData && currentQuestion < testData.questions.length - 1) {
+        if (testData && testData.questions && currentQuestion < testData.questions.length - 1) {
           setCurrentQuestion(prev => prev + 1)
-        } else if (testData && currentQuestion === testData.questions.length - 1) {
+        } else if (testData && testData.questions && currentQuestion === testData.questions.length - 1) {
           // 마지막 문제인 경우 자동으로 제출
           submitAnswers()
         }
@@ -88,9 +70,10 @@ export default function QuizPage() {
     } else {
       setAnswers(prev => {
         const currentAnswers = prev[questionId] as string[]
-        const newAnswers = currentAnswers.includes(optionId)
-          ? currentAnswers.filter(id => id !== optionId)
-          : [...currentAnswers, optionId]
+        const optionStr = optionIndex.toString()
+        const newAnswers = currentAnswers.includes(optionStr)
+          ? currentAnswers.filter(id => id !== optionStr)
+          : [...currentAnswers, optionStr]
         
         return {
           ...prev,
@@ -101,7 +84,7 @@ export default function QuizPage() {
   }
 
   const goToNext = () => {
-    if (testData && currentQuestion < testData.questions.length - 1) {
+    if (testData && testData.questions && currentQuestion < testData.questions.length - 1) {
       setCurrentQuestion(prev => prev + 1)
     }
   }
@@ -117,14 +100,86 @@ export default function QuizPage() {
 
     setSubmitting(true)
     try {
-      const response = await fetch(`/api/tests/${testId}/submit`, {
+      // 점수 계산
+      let totalScores: Record<string, number> = {}
+      
+      if (testData.questions) {
+        testData.questions.forEach((question) => {
+          const userAnswer = answers[question.id]
+          if (userAnswer) {
+            if (question.type === 'single') {
+              const optionIndex = parseInt(userAnswer as string)
+              const selectedOption = question.options[optionIndex]
+              if (selectedOption) {
+                Object.entries(selectedOption.value).forEach(([key, value]) => {
+                  totalScores[key] = (totalScores[key] || 0) + value
+                })
+              }
+            } else {
+              const optionIndices = userAnswer as string[]
+              optionIndices.forEach((indexStr) => {
+                const optionIndex = parseInt(indexStr)
+                const selectedOption = question.options[optionIndex]
+                if (selectedOption) {
+                  Object.entries(selectedOption.value).forEach(([key, value]) => {
+                    totalScores[key] = (totalScores[key] || 0) + value
+                  })
+                }
+              })
+            }
+          }
+        })
+      }
+
+      // 가장 높은 점수의 타입 찾기
+      const resultType = Object.entries(totalScores).reduce((a, b) => a[1] > b[1] ? a : b)[0]
+
+      // 새로운 JSONB 구조에 맞게 답변 데이터 변환
+      const now = new Date().toISOString()
+      const answersFormatted: Record<string, any> = {}
+      
+      Object.entries(answers).forEach(([questionId, answer]) => {
+        const question = testData.questions?.find(q => q.id === questionId)
+        if (question && answer) {
+          if (question.type === 'single') {
+            const optionIndex = parseInt(answer as string)
+            const selectedOption = question.options[optionIndex]
+            answersFormatted[questionId] = {
+              answer: selectedOption?.content || '',
+              optionIndex: optionIndex,
+              scores: selectedOption?.value || {},
+              answered_at: now
+            }
+          } else {
+            const optionIndices = answer as string[]
+            const selectedOptions = optionIndices.map(idx => question.options[parseInt(idx)])
+            let combinedScores: Record<string, number> = {}
+            selectedOptions.forEach(option => {
+              if (option) {
+                Object.entries(option.value).forEach(([key, value]) => {
+                  combinedScores[key] = (combinedScores[key] || 0) + value
+                })
+              }
+            })
+            answersFormatted[questionId] = {
+              answer: selectedOptions.map(opt => opt?.content).filter(Boolean),
+              optionIndex: optionIndices.map(idx => parseInt(idx)),
+              scores: combinedScores,
+              answered_at: now
+            }
+          }
+        }
+      })
+
+      const response = await fetch(`/api/responses`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          answers,
-          testId
+          testId,
+          answers: answersFormatted,
+          resultType
         })
       })
 
@@ -132,10 +187,8 @@ export default function QuizPage() {
         throw new Error('답변 제출에 실패했습니다')
       }
 
-      const result = await response.json()
-      
       // 결과 페이지로 이동
-      router.push(`/tests/${testId}/result/${result.resultType}`)
+      router.push(`/tests/${testId}/result/${resultType}`)
     } catch (err) {
       setError(err instanceof Error ? err.message : '답변 제출에 실패했습니다')
     } finally {
@@ -157,7 +210,7 @@ export default function QuizPage() {
     )
   }
 
-  if (error || !testData) {
+  if (error || !testData || !testData.questions || testData.questions.length === 0) {
     return (
       <div className={styles.page}>
         <Header />
@@ -203,15 +256,15 @@ export default function QuizPage() {
           <h2 className={styles.questionText}>{question.content}</h2>
           
           <div className={styles.options}>
-            {question.answerOptions.map((option) => (
+            {question.options.map((option, optionIndex) => (
               <button
-                key={option.id}
+                key={optionIndex}
                 className={`${styles.option} ${
                   question.type === 'single' 
-                    ? answers[question.id] === option.id ? styles.selected : ''
-                    : (answers[question.id] as string[]).includes(option.id) ? styles.selected : ''
+                    ? answers[question.id] === optionIndex.toString() ? styles.selected : ''
+                    : (answers[question.id] as string[]).includes(optionIndex.toString()) ? styles.selected : ''
                 }`}
-                onClick={() => handleAnswer(question.id, option.id, question.type)}
+                onClick={() => handleAnswer(question.id, optionIndex, question.type)}
               >
                 <div className={styles.optionIndicator}>
                   {question.type === 'single' ? '○' : '☐'}
