@@ -100,10 +100,21 @@ export async function POST(request: NextRequest) {
     // 결과 타입들을 JSONB 형태로 변환
     const resultTypesData: Record<string, any> = {}
     resultTypes.forEach((resultType: any) => {
+      // [TEXT_IMAGE:...] 패턴을 파싱해서 description_url로 분리
+      let description = resultType.description || ''
+      let descriptionUrl = resultType.textImageUrl || null
+      
+      // description에서 [TEXT_IMAGE:...] 패턴 추출
+      const textImageMatch = description.match(/\[TEXT_IMAGE:([^\]]+)\]/)
+      if (textImageMatch) {
+        descriptionUrl = textImageMatch[1]
+        description = description.replace(/\[TEXT_IMAGE:[^\]]+\]/g, '').trim()
+      }
+      
       resultTypesData[resultType.id] = {
         title: resultType.name,
-        description: resultType.description,
-        description_url: resultType.textImageUrl || null,
+        description: description,
+        description_url: descriptionUrl,
         image_url: resultType.imageUrl || null
       }
     })
