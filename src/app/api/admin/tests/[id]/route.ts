@@ -11,10 +11,19 @@ export async function GET(
 
     const test = await prisma.test.findUnique({
       where: { id: testId },
-      include: {
-        resultTypes: {
-          orderBy: { minScore: 'asc' }
-        }
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        category: true,
+        thumbnailUrl: true,
+        detailImageUrl: true,
+        styleTheme: true,
+        isActive: true,
+        createdAt: true,
+        updatedAt: true,
+        questions: true,
+        resultTypes: true
       }
     })
 
@@ -54,7 +63,8 @@ export async function PUT(
         detailImageUrl: data.detailImageUrl,
         styleTheme: data.styleTheme,
         isActive: data.isActive,
-        questions: data.questions
+        questions: data.questions,
+        resultTypes: data.resultTypes
       }
     })
 
