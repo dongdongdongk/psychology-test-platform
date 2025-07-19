@@ -1,5 +1,5 @@
 // 테마 프리셋 시스템 - CSS 변수 기반
-// 6개 테마: cute, modern, dark, vibrant, minimal, retro
+// 7개 테마: cute, modern, dark, vibrant, minimal, retro, medical
 
 // 공통 기본 변수
 :root {
@@ -171,6 +171,32 @@
   
   --gradient-primary: linear-gradient(135deg, #7c3aed 0%, #6d28d9 50%, #5b21b6 100%);
   --gradient-background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 50%, #e9d5ff 100%);
+}
+
+// 7. Medical 테마 (병원 같은 깔끔하고 모던한 스타일)
+[data-theme="medical"] {
+  --primary-color: #64748b;
+  --primary-hover: #475569;
+  --primary-light: rgba(100, 116, 139, 0.08);
+  --primary-dark: #334155;
+  
+  --secondary-color: #94a3b8;
+  --secondary-hover: #64748b;
+  --secondary-light: rgba(148, 163, 184, 0.08);
+  
+  --background-primary: #ffffff;
+  --background-secondary: #fafbfc;
+  --background-tertiary: #f8fafc;
+  
+  --text-primary: #1e293b;
+  --text-secondary: #475569;
+  --text-tertiary: #64748b;
+  
+  --border-color: rgba(148, 163, 184, 0.2);
+  --border-light: rgba(148, 163, 184, 0.12);
+  
+  --gradient-primary: linear-gradient(135deg, #64748b 0%, #475569 100%);
+  --gradient-background: linear-gradient(135deg, #ffffff 0%, #fafbfc 50%, #f8fafc 100%);
 }
 
 // 테마별 공통 컴포넌트 스타일
