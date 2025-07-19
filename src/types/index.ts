@@ -73,7 +73,8 @@ export interface TestResultTypes {
 export interface TestResultType {
   title: string
   description: string
-  image_url?: string
+  description_url?: string // 설명 이미지 URL (기존 TEXT_IMAGE)
+  image_url?: string       // 메인 결과 이미지 URL
 }
 
 export interface TestResult {

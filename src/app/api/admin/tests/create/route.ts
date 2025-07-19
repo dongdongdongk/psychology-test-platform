@@ -102,7 +102,8 @@ export async function POST(request: NextRequest) {
     resultTypes.forEach((resultType: any) => {
       resultTypesData[resultType.id] = {
         title: resultType.name,
-        description: resultType.description + (resultType.textImageUrl ? `\n[TEXT_IMAGE:${resultType.textImageUrl}]` : ''),
+        description: resultType.description,
+        description_url: resultType.textImageUrl || null,
         image_url: resultType.imageUrl || null
       }
     })
