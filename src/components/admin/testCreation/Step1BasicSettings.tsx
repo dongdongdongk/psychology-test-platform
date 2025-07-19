@@ -27,7 +27,8 @@ export default function Step1BasicSettings() {
     { value: 'dark', label: 'Dark - 다크하고 시크한 스타일' },
     { value: 'vibrant', label: 'Vibrant - 밝고 활기찬 스타일' },
     { value: 'minimal', label: 'Minimal - 심플하고 미니멀한 스타일' },
-    { value: 'retro', label: 'Retro - 복고풍 스타일' }
+    { value: 'retro', label: 'Retro - 복고풍 스타일' },
+    { value: 'medical', label: 'Medical - 병원 같은 깔끔하고 신뢰감 있는 스타일' }
   ]
 
   return (
