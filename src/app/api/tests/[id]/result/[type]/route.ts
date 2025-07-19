@@ -70,17 +70,9 @@ export async function GET(
     // 최대 점수는 고정값 또는 계산로직으로 처리 (필요시 별도 구현)
     const maxScore = 100 // 기본값
 
-    // 기존 [TEXT_IMAGE:...] 패턴 지원 (호환성 유지)
-    let textImageUrl = result.description_url
-    let cleanDescription = result.description || ''
-    
-    if (!textImageUrl && result.description) {
-      const textImageMatch = result.description.match(/\[TEXT_IMAGE:([^\]]+)\]/)
-      if (textImageMatch) {
-        textImageUrl = textImageMatch[1]
-        cleanDescription = result.description.replace(/\[TEXT_IMAGE:[^\]]+\]/g, '').trim()
-      }
-    }
+    // 깔끔한 구조: description과 description_url 분리
+    const textImageUrl = result.description_url
+    const cleanDescription = result.description || ''
 
     return NextResponse.json({
       id: `${testId}_${resultType}`, // 임시 ID 생성
