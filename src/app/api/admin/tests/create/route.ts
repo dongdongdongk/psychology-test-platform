@@ -70,8 +70,20 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // 데이터베이스에 순차적으로 저장
-    // 1. 테스트 기본 정보 저장
+    // 질문 데이터를 JSONB 형태로 변환
+    const questionsData = questions.map((question: any, index: number) => ({
+      id: `q${index + 1}`,
+      content: question.content,
+      order: index + 1,
+      type: 'single',
+      options: question.options.map((option: any, optionIndex: number) => ({
+        content: option.content,
+        value: option.scores, // 이미 객체 형태
+        order: optionIndex + 1
+      }))
+    }))
+
+    // 테스트 생성 (questions를 JSONB로 저장)
     const test = await prisma.test.create({
       data: {
         title,
@@ -80,37 +92,12 @@ export async function POST(request: NextRequest) {
         thumbnailUrl,
         detailImageUrl,
         styleTheme,
-        isActive: true
+        isActive: true,
+        questions: questionsData
       }
     })
 
-    // 2. 질문들 저장
-    for (let i = 0; i < questions.length; i++) {
-      const question = questions[i]
-      const createdQuestion = await prisma.question.create({
-        data: {
-          testId: test.id,
-          content: question.content,
-          order: i + 1,
-          type: 'single'
-        }
-      })
-
-      // 3. 각 질문의 선택지들 저장
-      for (let j = 0; j < question.options.length; j++) {
-        const option = question.options[j]
-        await prisma.answerOption.create({
-          data: {
-            questionId: createdQuestion.id,
-            content: option.content,
-            value: JSON.stringify(option.scores),
-            order: j + 1
-          }
-        })
-      }
-    }
-
-    // 4. 결과 타입들 저장
+    // 결과 타입들 저장
     for (const resultType of resultTypes) {
       await prisma.resultType.create({
         data: {

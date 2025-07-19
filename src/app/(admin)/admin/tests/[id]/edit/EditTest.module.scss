@@ -1,0 +1,217 @@
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  min-height: 100vh;
+  background: #f8f9fa;
+}
+
+.header {
+  margin-bottom: 2rem;
+  text-align: center;
+  
+  h1 {
+    color: #2d3436;
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  
+  p {
+    color: #636e72;
+    font-size: 1rem;
+  }
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  font-size: 1.1rem;
+  color: #636e72;
+}
+
+.error {
+  text-align: center;
+  padding: 2rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  
+  h2 {
+    color: #e17055;
+    margin-bottom: 1rem;
+  }
+  
+  p {
+    color: #636e72;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.backButton {
+  padding: 0.75rem 1.5rem;
+  background: #74b9ff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  
+  &:hover {
+    background: #0984e3;
+  }
+}
+
+.form {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.section {
+  margin-bottom: 2rem;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+  
+  h2 {
+    color: #2d3436;
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #ddd;
+  }
+}
+
+.formGroup {
+  margin-bottom: 1.5rem;
+  
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #2d3436;
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+  
+  input, textarea, select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+    
+    &:focus {
+      outline: none;
+      border-color: #74b9ff;
+    }
+    
+    &::placeholder {
+      color: #b2bec3;
+    }
+  }
+  
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+}
+
+.checkboxLabel {
+  display: flex !important;
+  align-items: center;
+  cursor: pointer;
+  
+  input[type="checkbox"] {
+    width: auto !important;
+    margin-right: 0.5rem;
+    margin-bottom: 0;
+  }
+}
+
+.helpText {
+  margin-top: 0.5rem;
+  color: #636e72;
+  font-size: 0.9rem;
+}
+
+.imagePreview {
+  margin-top: 1rem;
+  
+  img {
+    max-width: 200px;
+    max-height: 150px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #ddd;
+}
+
+.cancelButton {
+  padding: 0.75rem 2rem;
+  background: #b2bec3;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  
+  &:hover {
+    background: #636e72;
+  }
+}
+
+.saveButton {
+  padding: 0.75rem 2rem;
+  background: #00b894;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  
+  &:hover:not(:disabled) {
+    background: #00a085;
+  }
+  
+  &:disabled {
+    background: #b2bec3;
+    cursor: not-allowed;
+  }
+}
+
+// 반응형 디자인
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+  
+  .form {
+    padding: 1.5rem;
+  }
+  
+  .actions {
+    flex-direction: column;
+    
+    button {
+      width: 100%;
+    }
+  }
+}

@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json()
-    const { title, description, category, thumbnailUrl, detailImageUrl, styleTheme, isActive } = body
+    const { title, description, category, thumbnailUrl, detailImageUrl, styleTheme, isActive, questions } = body
 
     // Validate required fields
     if (!title) {
@@ -75,7 +75,8 @@ export async function POST(request: NextRequest) {
         thumbnailUrl,
         detailImageUrl,
         styleTheme: styleTheme || 'modern',
-        isActive: isActive ?? true
+        isActive: isActive ?? true,
+        questions: questions || []
       }
     })
 
