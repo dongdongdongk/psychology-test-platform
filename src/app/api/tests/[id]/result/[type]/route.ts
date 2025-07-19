@@ -53,9 +53,22 @@ export async function GET(
         createdAt: 'desc'
       },
       select: {
-        totalScore: true
+        responseData: true
       }
     })
+
+    // JSONB에서 점수 계산
+    let totalScore = 0
+    if (recentResponse?.responseData) {
+      const responseData = recentResponse.responseData as any
+      if (responseData.answers) {
+        Object.values(responseData.answers).forEach((answer: any) => {
+          if (answer.scores && answer.scores[resultType]) {
+            totalScore += answer.scores[resultType]
+          }
+        })
+      }
+    }
 
     // 최대 점수 계산
     const maxScore = await prisma.resultType.findMany({
@@ -81,7 +94,7 @@ export async function GET(
       textImageUrl: textImageUrl,
       testTitle: test.title,
       styleTheme: test.styleTheme,
-      totalScore: recentResponse?.totalScore || 0,
+      totalScore: totalScore,
       maxScore: maxScore || 100
     })
   } catch (error) {
