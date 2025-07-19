@@ -19,8 +19,8 @@ model Test {
   isActive       Boolean        @default(true) @map("is_active")
   createdAt      DateTime       @default(now()) @map("created_at")
   updatedAt      DateTime       @updatedAt @map("updated_at")
-  questions      Json?
-  resultTypes    ResultType[]
+  questions      Json?          // 질문과 선택지를 JSONB로 저장
+  resultTypes    Json?          @map("result_types") // 결과 타입들을 JSONB로 저장
   responses      UserResponse[]
 
   @@map("tests")
@@ -36,22 +36,6 @@ model Admin {
   @@map("admins")
 }
 
-model ResultType {
-  id          String   @id @default(uuid()) @db.VarChar(50)
-  testId      String   @map("test_id") @db.VarChar(50)
-  type        String   @db.VarChar(100)
-  title       String   @db.VarChar(255)
-  description String
-  imageUrl    String?  @map("image_url") @db.VarChar(500)
-  minScore    Int?     @map("min_score")
-  maxScore    Int?     @map("max_score")
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
-  test        Test     @relation(fields: [testId], references: [id], onDelete: Cascade)
-
-  @@index([testId, type])
-  @@map("result_types")
-}
 
 model UserResponse {
   id           String   @id @default(cuid()) @db.VarChar(50)

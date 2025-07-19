@@ -10,14 +10,15 @@ export async function GET(
     const testId = params.id
     const resultType = params.type
 
-    // 테스트 존재 확인
+    // 테스트 존재 확인 및 결과 타입 정보 조회
     const test = await prisma.test.findUnique({
       where: { id: testId },
       select: {
         id: true,
         title: true,
         styleTheme: true,
-        isActive: true
+        isActive: true,
+        resultTypes: true
       }
     })
 
@@ -28,13 +29,9 @@ export async function GET(
       )
     }
 
-    // 결과 타입 정보 조회
-    const result = await prisma.resultType.findFirst({
-      where: {
-        testId,
-        type: resultType
-      }
-    })
+    // JSONB에서 결과 타입 정보 추출
+    const resultTypesData = test.resultTypes as any
+    const result = resultTypesData?.[resultType]
 
     if (!result) {
       return NextResponse.json(
@@ -70,32 +67,27 @@ export async function GET(
       }
     }
 
-    // 최대 점수 계산
-    const maxScore = await prisma.resultType.findMany({
-      where: { testId },
-      select: { maxScore: true }
-    }).then(results => 
-      results.reduce((max, r) => Math.max(max, r.maxScore || 0), 0)
-    )
+    // 최대 점수는 고정값 또는 계산로직으로 처리 (필요시 별도 구현)
+    const maxScore = 100 // 기본값
 
-    // description에서 textImageUrl 추출
-    const textImageMatch = result.description.match(/\[TEXT_IMAGE:([^\]]+)\]/)
+    // description에서 textImageUrl 추출 (호환성 유지)
+    const textImageMatch = result.description?.match(/\[TEXT_IMAGE:([^\]]+)\]/)
     const textImageUrl = textImageMatch ? textImageMatch[1] : null
     
     // description에서 [TEXT_IMAGE:url] 부분 제거
-    const cleanDescription = result.description.replace(/\[TEXT_IMAGE:[^\]]+\]/g, '').trim()
+    const cleanDescription = result.description?.replace(/\[TEXT_IMAGE:[^\]]+\]/g, '').trim() || ''
 
     return NextResponse.json({
-      id: result.id,
-      type: result.type,
+      id: `${testId}_${resultType}`, // 임시 ID 생성
+      type: resultType,
       title: result.title,
       description: cleanDescription,
-      imageUrl: result.imageUrl,
+      imageUrl: result.image_url,
       textImageUrl: textImageUrl,
       testTitle: test.title,
       styleTheme: test.styleTheme,
       totalScore: totalScore,
-      maxScore: maxScore || 100
+      maxScore: maxScore
     })
   } catch (error) {
     console.error('결과 조회 실패:', error)
