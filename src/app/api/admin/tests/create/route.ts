@@ -97,22 +97,25 @@ export async function POST(request: NextRequest) {
       }
     })
 
-    // 결과 타입들 저장
-    for (const resultType of resultTypes) {
-      await prisma.resultType.create({
-        data: {
-          testId: test.id,
-          type: resultType.id,
-          title: resultType.name,
-          description: resultType.description + (resultType.textImageUrl ? `\n[TEXT_IMAGE:${resultType.textImageUrl}]` : ''),
-          imageUrl: resultType.imageUrl || null,
-          minScore: null,
-          maxScore: null
-        }
-      })
-    }
+    // 결과 타입들을 JSONB 형태로 변환
+    const resultTypesData: Record<string, any> = {}
+    resultTypes.forEach((resultType: any) => {
+      resultTypesData[resultType.id] = {
+        title: resultType.name,
+        description: resultType.description + (resultType.textImageUrl ? `\n[TEXT_IMAGE:${resultType.textImageUrl}]` : ''),
+        image_url: resultType.imageUrl || null
+      }
+    })
 
-    const createdTest = test
+    // 테스트에 결과 타입 정보 업데이트
+    const updatedTest = await prisma.test.update({
+      where: { id: test.id },
+      data: {
+        resultTypes: resultTypesData
+      }
+    })
+
+    const createdTest = updatedTest
 
     return NextResponse.json({
       message: '테스트가 성공적으로 생성되었습니다.',

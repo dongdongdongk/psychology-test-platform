@@ -8,6 +8,7 @@ export interface Test {
   styleTheme?: string
   isActive: boolean
   questions?: Question[]
+  resultTypes?: TestResultTypes
   createdAt: Date
   updatedAt: Date
 }
@@ -63,6 +64,16 @@ export interface AnswerOption {
   content: string
   value: Record<string, number> // {"A": -1, "B": 3, "C": 1} 형태
   order: number
+}
+
+export interface TestResultTypes {
+  [key: string]: TestResultType // "A", "B", "C" 등의 키로 결과 타입 정의
+}
+
+export interface TestResultType {
+  title: string
+  description: string
+  image_url?: string
 }
 
 export interface TestResult {
