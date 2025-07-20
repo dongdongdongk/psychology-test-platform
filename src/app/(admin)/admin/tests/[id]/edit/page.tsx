@@ -24,6 +24,10 @@ export default function EditTestPage() {
     detailImageUrl: '',
     styleTheme: 'modern',
     isActive: true,
+    enableRadarChart: false,
+    enableBarChart: false,
+    showResultImage: true,
+    showTextImage: true,
     questions: [] as Question[]
   })
 
@@ -45,6 +49,10 @@ export default function EditTestPage() {
         detailImageUrl: testData.detailImageUrl || '',
         styleTheme: testData.styleTheme || 'modern',
         isActive: testData.isActive ?? true,
+        enableRadarChart: testData.enableRadarChart ?? false,
+        enableBarChart: testData.enableBarChart ?? false,
+        showResultImage: testData.showResultImage ?? true,
+        showTextImage: testData.showTextImage ?? true,
         questions: testData.questions || []
       })
     } catch (error: any) {
@@ -378,10 +386,15 @@ export default function EditTestPage() {
               value={formData.styleTheme}
               onChange={handleChange}
             >
-              <option value="modern">Modern</option>
-              <option value="classic">Classic</option>
-              <option value="playful">Playful</option>
-              <option value="elegant">Elegant</option>
+              <option value="modern">Modern - 모던하고 세련된 스타일</option>
+              <option value="cute">Cute - 귀엽고 사랑스러운 스타일</option>
+              <option value="dark">Dark - 다크하고 시크한 스타일</option>
+              <option value="vibrant">Vibrant - 밝고 활기찬 스타일</option>
+              <option value="minimal">Minimal - 심플하고 미니멀한 스타일</option>
+              <option value="retro">Retro - 복고풍 스타일</option>
+              <option value="medical">Medical - 병원 같은 깔끔하고 신뢰감 있는 스타일</option>
+              <option value="soft">Soft - 부드럽고 온화한 파스텔 스타일</option>
+              <option value="values">Values - 가치관 테스트용 지혜롭고 신뢰감 있는 스타일</option>
             </select>
           </div>
 
@@ -398,6 +411,68 @@ export default function EditTestPage() {
             <p className={styles.helpText}>
               비활성화된 테스트는 사용자에게 노출되지 않습니다.
             </p>
+          </div>
+
+          <div className={styles.formGroup}>
+            <label className={styles.checkboxLabel}>
+              <input
+                type="checkbox"
+                name="enableRadarChart"
+                checked={formData.enableRadarChart}
+                onChange={handleChange}
+              />
+              레이더 차트 사용
+            </label>
+            <p className={styles.helpText}>
+              결과 페이지에 레이더 차트를 표시합니다. 4-6개 영역으로 구성된 테스트에 적합합니다.
+            </p>
+          </div>
+
+          <div className={styles.formGroup}>
+            <label className={styles.checkboxLabel}>
+              <input
+                type="checkbox"
+                name="enableBarChart"
+                checked={formData.enableBarChart}
+                onChange={handleChange}
+              />
+              막대 차트 사용
+            </label>
+            <p className={styles.helpText}>
+              결과 페이지에 세로 막대 차트를 표시합니다. ABCD 영역별 점수 비교에 적합합니다.
+            </p>
+          </div>
+
+          <div className={styles.formRow}>
+            <div className={styles.formGroup}>
+              <label className={styles.checkboxLabel}>
+                <input
+                  type="checkbox"
+                  name="showResultImage"
+                  checked={formData.showResultImage}
+                  onChange={handleChange}
+                />
+                결과 이미지 표시
+              </label>
+              <p className={styles.helpText}>
+                결과 페이지에 메인 결과 이미지를 표시합니다.
+              </p>
+            </div>
+
+            <div className={styles.formGroup}>
+              <label className={styles.checkboxLabel}>
+                <input
+                  type="checkbox"
+                  name="showTextImage"
+                  checked={formData.showTextImage}
+                  onChange={handleChange}
+                />
+                텍스트 이미지 표시
+              </label>
+              <p className={styles.helpText}>
+                결과 페이지에 텍스트 설명 이미지를 표시합니다.
+              </p>
+            </div>
           </div>
         </div>
 

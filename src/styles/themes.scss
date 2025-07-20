@@ -1,5 +1,5 @@
 // 테마 프리셋 시스템 - CSS 변수 기반
-// 7개 테마: cute, modern, dark, vibrant, minimal, retro, medical
+// 9개 테마: cute, modern, dark, vibrant, minimal, retro, medical, soft, values
 
 // 공통 기본 변수
 :root {
@@ -199,6 +199,78 @@
   --gradient-background: linear-gradient(135deg, #ffffff 0%, #fafbfc 50%, #f8fafc 100%);
 }
 
+// 8. Soft 테마 (부드럽고 온화한 파스텔 느낌)
+[data-theme="soft"] {
+  --primary-color: #f6dace;
+  --primary-hover: #f4baa5;
+  --primary-light: rgba(246, 218, 206, 0.1);
+  --primary-dark: #e8a68d;
+  
+  --secondary-color: #d4a574;
+  --secondary-hover: #c89660;
+  --secondary-light: rgba(212, 165, 116, 0.1);
+  
+  --background-primary: #fffcfa;
+  --background-secondary: #fef8f4;
+  --background-tertiary: #fdf3ee;
+  
+  --text-primary: #5d4037;
+  --text-secondary: #8d6e63;
+  --text-tertiary: #a1887f;
+  
+  --border-color: rgba(246, 218, 206, 0.3);
+  --border-light: rgba(246, 218, 206, 0.15);
+  
+  --gradient-primary: linear-gradient(135deg, #f6dace 0%, #f4baa5 50%, #e8a68d 100%);
+  --gradient-background: linear-gradient(135deg, #fffcfa 0%, #fef8f4 50%, #fdf3ee 100%);
+}
+
+// 9. Values 테마 (가치관 테스트용 - 지혜롭고 신뢰감 있는 느낌)
+[data-theme="values"] {
+  --primary-color: #4f46e5;
+  --primary-hover: #4338ca;
+  --primary-light: rgba(79, 70, 229, 0.12);
+  --primary-dark: #3730a3;
+  
+  --secondary-color: #059669;
+  --secondary-hover: #047857;
+  --secondary-light: rgba(5, 150, 105, 0.12);
+  
+  --accent-color: #dc2626;
+  --accent-hover: #b91c1c;
+  --accent-light: rgba(220, 38, 38, 0.12);
+  
+  --background-primary: #fefefe;
+  --background-secondary: #f8faf9;
+  --background-tertiary: #f1f5f4;
+  --background-gradient: radial-gradient(ellipse at top, #f8faff 0%, #f1f5f9 50%, #e2e8f0 100%);
+  
+  --text-primary: #1e293b;
+  --text-secondary: #374151;
+  --text-tertiary: #6b7280;
+  --text-accent: #4f46e5;
+  
+  --border-color: rgba(79, 70, 229, 0.15);
+  --border-light: rgba(148, 163, 184, 0.08);
+  --border-accent: rgba(5, 150, 105, 0.2);
+  
+  --gradient-primary: linear-gradient(135deg, #4f46e5 0%, #7c3aed 25%, #059669 75%, #0891b2 100%);
+  --gradient-secondary: linear-gradient(135deg, #e0e7ff 0%, #f0fdf4 50%, #ecfdf5 100%);
+  --gradient-card: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,250,252,0.8) 100%);
+  
+  // 특별한 그라데이션들
+  --gradient-wisdom: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+  --gradient-trust: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 50%, #1e40af 100%);
+  --gradient-growth: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
+  --gradient-passion: linear-gradient(135deg, #ef4444 0%, #dc2626 50%, #b91c1c 100%);
+  
+  // 특별한 그림자
+  --shadow-values-sm: 0 2px 8px rgba(79, 70, 229, 0.08);
+  --shadow-values-md: 0 4px 16px rgba(79, 70, 229, 0.12);
+  --shadow-values-lg: 0 8px 32px rgba(79, 70, 229, 0.16);
+  --shadow-colored: 0 4px 20px rgba(79, 70, 229, 0.25);
+}
+
 // 테마별 공통 컴포넌트 스타일
 .theme-button {
   background: var(--primary-color);
@@ -270,6 +342,228 @@
 
 .theme-text {
   color: var(--text-tertiary);
+}
+
+// Values 테마 전용 컴포넌트 스타일
+[data-theme="values"] {
+  .theme-button {
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius-lg);
+    padding: 14px 28px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    box-shadow: var(--shadow-values-md);
+    position: relative;
+    overflow: hidden;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s ease;
+    }
+    
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-colored);
+      
+      &::before {
+        left: 100%;
+      }
+    }
+    
+    &:active {
+      transform: translateY(-1px);
+    }
+  }
+  
+  .theme-card {
+    background: var(--gradient-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--border-radius-xl);
+    padding: 28px;
+    box-shadow: var(--shadow-values-sm);
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--gradient-primary);
+    }
+    
+    &:hover {
+      box-shadow: var(--shadow-values-lg);
+      transform: translateY(-6px);
+      border-color: var(--border-color);
+    }
+  }
+  
+  .theme-input {
+    background: rgba(255, 255, 255, 0.8);
+    border: 2px solid var(--border-light);
+    border-radius: var(--border-radius-lg);
+    padding: 16px 20px;
+    color: var(--text-primary);
+    font-weight: 500;
+    backdrop-filter: blur(5px);
+    
+    &:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 0 0 4px var(--primary-light), var(--shadow-values-md);
+      transform: translateY(-2px);
+    }
+    
+    &::placeholder {
+      color: var(--text-tertiary);
+      font-weight: 400;
+    }
+  }
+  
+  .theme-title {
+    background: var(--gradient-wisdom);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+  }
+  
+  .theme-subtitle {
+    color: var(--text-secondary);
+    font-weight: 600;
+  }
+  
+  // 가치관별 특별 스타일
+  .values-wisdom {
+    background: var(--gradient-wisdom);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .values-trust {
+    background: var(--gradient-trust);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .values-growth {
+    background: var(--gradient-growth);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .values-passion {
+    background: var(--gradient-passion);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  // 특별한 호버 효과
+  .values-card {
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    &:hover {
+      transform: translateY(-8px) scale(1.02);
+    }
+    
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--gradient-primary);
+      opacity: 0;
+      border-radius: inherit;
+      transition: opacity 0.3s ease;
+      z-index: -1;
+    }
+    
+    &:hover::after {
+      opacity: 0.05;
+    }
+  }
+  
+  // 모바일 친화적 스타일
+  @media (max-width: 768px) {
+    .theme-button {
+      padding: 16px 24px;
+      font-size: 16px;
+      border-radius: var(--border-radius-md);
+      
+      &:hover {
+        transform: translateY(-2px);
+      }
+    }
+    
+    .theme-card {
+      padding: 20px;
+      border-radius: var(--border-radius-lg);
+      
+      &:hover {
+        transform: translateY(-3px);
+      }
+    }
+    
+    .theme-input {
+      padding: 14px 16px;
+      font-size: 16px; // iOS zoom 방지
+      
+      &:focus {
+        transform: translateY(-1px);
+      }
+    }
+    
+    .values-card {
+      &:hover {
+        transform: translateY(-4px) scale(1.01);
+      }
+    }
+  }
+  
+  // 터치 디바이스 최적화
+  @media (hover: none) and (pointer: coarse) {
+    .theme-button {
+      &:active {
+        transform: scale(0.98);
+        transition: transform 0.1s ease;
+      }
+    }
+    
+    .theme-card {
+      &:active {
+        transform: scale(0.98);
+        transition: transform 0.1s ease;
+      }
+    }
+    
+    .values-card {
+      &:active {
+        transform: scale(0.98);
+        transition: transform 0.1s ease;
+      }
+    }
+  }
 }
 
 // 테마 전환 애니메이션
