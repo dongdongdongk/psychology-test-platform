@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import axios from 'axios'
-import { Test, Question, AnswerOption } from '@/types'
+import { Test, Question, AnswerOption, TestResultTypes, TestResultType } from '@/types'
 import styles from './EditTest.module.scss'
 
 export default function EditTestPage() {
@@ -28,7 +28,8 @@ export default function EditTestPage() {
     enableBarChart: false,
     showResultImage: true,
     showTextImage: true,
-    questions: [] as Question[]
+    questions: [] as Question[],
+    resultTypes: {} as TestResultTypes
   })
 
   useEffect(() => {
@@ -53,7 +54,8 @@ export default function EditTestPage() {
         enableBarChart: testData.enableBarChart ?? false,
         showResultImage: testData.showResultImage ?? true,
         showTextImage: testData.showTextImage ?? true,
-        questions: testData.questions || []
+        questions: testData.questions || [],
+        resultTypes: testData.resultTypes || {}
       })
     } catch (error: any) {
       if (error.response?.status === 401) {
@@ -158,12 +160,71 @@ export default function EditTestPage() {
     }))
   }
 
+  const addResultType = () => {
+    const newTypeId = `result_${Date.now()}`
+    setFormData(prev => ({
+      ...prev,
+      resultTypes: {
+        ...prev.resultTypes,
+        [newTypeId]: {
+          title: '',
+          description: '',
+          description_url: '',
+          image_url: ''
+        }
+      }
+    }))
+  }
+
+  const updateResultType = (typeId: string, field: keyof TestResultType, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      resultTypes: {
+        ...prev.resultTypes,
+        [typeId]: {
+          ...prev.resultTypes[typeId],
+          [field]: value
+        }
+      }
+    }))
+  }
+
+  const deleteResultType = (typeId: string) => {
+    setFormData(prev => {
+      const newResultTypes = { ...prev.resultTypes }
+      delete newResultTypes[typeId]
+      return {
+        ...prev,
+        resultTypes: newResultTypes
+      }
+    })
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
     if (!formData.title.trim()) {
       alert('테스트 제목을 입력해주세요.')
       return
+    }
+
+    // 결과 타입 유효성 검사
+    const resultTypeIds = Object.keys(formData.resultTypes)
+    if (resultTypeIds.length === 0) {
+      alert('최소 1개 이상의 결과 타입이 필요합니다.')
+      return
+    }
+
+    // 결과 타입별 필수 정보 확인
+    for (const [typeId, resultType] of Object.entries(formData.resultTypes)) {
+      if (!resultType.title?.trim()) {
+        alert(`결과 타입 "${typeId}"의 이름을 입력해주세요.`)
+        return
+      }
+      if (!resultType.description?.trim()) {
+        alert(`결과 타입 "${typeId}"의 설명을 입력해주세요.`)
+        return
+      }
     }
 
     setSaving(true)
@@ -371,6 +432,83 @@ export default function EditTestPage() {
               className={styles.addQuestionButton}
             >
               질문 추가
+            </button>
+          </div>
+        </div>
+
+        <div className={styles.section}>
+          <h2>결과 타입 관리</h2>
+          <div className={styles.resultTypesContainer}>
+            {Object.entries(formData.resultTypes).map(([typeId, resultType]) => (
+              <div key={typeId} className={styles.resultTypeCard}>
+                <div className={styles.resultTypeHeader}>
+                  <h3>결과 타입: {typeId}</h3>
+                  <button 
+                    type="button" 
+                    onClick={() => deleteResultType(typeId)}
+                    className={styles.deleteButton}
+                  >
+                    삭제
+                  </button>
+                </div>
+                
+                <div className={styles.formGroup}>
+                  <label>결과 타입 이름</label>
+                  <input
+                    type="text"
+                    value={resultType.title}
+                    onChange={(e) => updateResultType(typeId, 'title', e.target.value)}
+                    placeholder="예: 외향적인 타입"
+                  />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label>결과 설명</label>
+                  <textarea
+                    value={resultType.description}
+                    onChange={(e) => updateResultType(typeId, 'description', e.target.value)}
+                    placeholder="결과에 대한 상세한 설명을 입력하세요"
+                    rows={4}
+                  />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label>결과 이미지 URL</label>
+                  <input
+                    type="url"
+                    value={resultType.image_url || ''}
+                    onChange={(e) => updateResultType(typeId, 'image_url', e.target.value)}
+                    placeholder="https://example.com/result-image.jpg"
+                  />
+                  {resultType.image_url && (
+                    <div className={styles.imagePreview}>
+                      <img src={resultType.image_url} alt="결과 이미지 미리보기" />
+                    </div>
+                  )}
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label>설명 이미지 URL</label>
+                  <input
+                    type="url"
+                    value={resultType.description_url || ''}
+                    onChange={(e) => updateResultType(typeId, 'description_url', e.target.value)}
+                    placeholder="https://example.com/description-image.jpg"
+                  />
+                  {resultType.description_url && (
+                    <div className={styles.imagePreview}>
+                      <img src={resultType.description_url} alt="설명 이미지 미리보기" />
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={addResultType}
+              className={styles.addResultTypeButton}
+            >
+              결과 타입 추가
             </button>
           </div>
         </div>
