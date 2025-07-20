@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 
-export type Theme = 'cute' | 'modern' | 'dark' | 'vibrant' | 'minimal' | 'retro'
+export type Theme = 'cute' | 'modern' | 'dark' | 'vibrant' | 'minimal' | 'retro' | 'medical' | 'soft' | 'values'
 
 export function useTheme(initialTheme: Theme = 'modern') {
   const [theme, setTheme] = useState<Theme>(initialTheme)
@@ -15,6 +15,6 @@ export function useTheme(initialTheme: Theme = 'modern') {
   return {
     theme,
     setTheme,
-    themes: ['cute', 'modern', 'dark', 'vibrant', 'minimal', 'retro'] as Theme[]
+    themes: ['cute', 'modern', 'dark', 'vibrant', 'minimal', 'retro', 'medical', 'soft', 'values'] as Theme[]
   }
 }

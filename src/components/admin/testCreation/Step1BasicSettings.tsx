@@ -14,10 +14,14 @@ export default function Step1BasicSettings() {
     questionCount,
     optionCount,
     styleTheme,
+    enableRadarChart,
+    enableBarChart,
+    showResultImage,
+    showTextImage,
     setBasicInfo
   } = useTestCreationStore()
 
-  const handleChange = (field: string, value: string | number) => {
+  const handleChange = (field: string, value: string | number | boolean) => {
     setBasicInfo({ [field]: value })
   }
 
@@ -28,7 +32,9 @@ export default function Step1BasicSettings() {
     { value: 'vibrant', label: 'Vibrant - 밝고 활기찬 스타일' },
     { value: 'minimal', label: 'Minimal - 심플하고 미니멀한 스타일' },
     { value: 'retro', label: 'Retro - 복고풍 스타일' },
-    { value: 'medical', label: 'Medical - 병원 같은 깔끔하고 신뢰감 있는 스타일' }
+    { value: 'medical', label: 'Medical - 병원 같은 깔끔하고 신뢰감 있는 스타일' },
+    { value: 'soft', label: 'Soft - 부드럽고 온화한 파스텔 스타일' },
+    { value: 'values', label: 'Values - 가치관 테스트용 지혜롭고 신뢰감 있는 스타일' }
   ]
 
   return (
@@ -182,6 +188,60 @@ export default function Step1BasicSettings() {
             </select>
             <p className={styles.help}>테스트 페이지에 적용될 디자인 테마</p>
           </div>
+
+          <div className={styles.formGroup}>
+            <label className={styles.checkboxLabel}>
+              <input
+                type="checkbox"
+                checked={enableRadarChart}
+                onChange={(e) => handleChange('enableRadarChart', e.target.checked)}
+                className={styles.checkbox}
+              />
+              레이더 차트 사용
+            </label>
+            <p className={styles.help}>결과 페이지에 레이더 차트를 표시합니다. 4-6개 영역으로 구성된 테스트에 적합합니다.</p>
+          </div>
+
+          <div className={styles.formGroup}>
+            <label className={styles.checkboxLabel}>
+              <input
+                type="checkbox"
+                checked={enableBarChart}
+                onChange={(e) => handleChange('enableBarChart', e.target.checked)}
+                className={styles.checkbox}
+              />
+              막대 차트 사용
+            </label>
+            <p className={styles.help}>결과 페이지에 세로 막대 차트를 표시합니다. ABCD 영역별 점수 비교에 적합합니다.</p>
+          </div>
+
+          <div className={styles.formRow}>
+            <div className={styles.formGroup}>
+              <label className={styles.checkboxLabel}>
+                <input
+                  type="checkbox"
+                  checked={showResultImage}
+                  onChange={(e) => handleChange('showResultImage', e.target.checked)}
+                  className={styles.checkbox}
+                />
+                결과 이미지 표시
+              </label>
+              <p className={styles.help}>결과 페이지에 메인 결과 이미지를 표시합니다.</p>
+            </div>
+
+            <div className={styles.formGroup}>
+              <label className={styles.checkboxLabel}>
+                <input
+                  type="checkbox"
+                  checked={showTextImage}
+                  onChange={(e) => handleChange('showTextImage', e.target.checked)}
+                  className={styles.checkbox}
+                />
+                텍스트 이미지 표시
+              </label>
+              <p className={styles.help}>결과 페이지에 텍스트 설명 이미지를 표시합니다.</p>
+            </div>
+          </div>
         </div>
 
         <div className={styles.section}>
@@ -221,6 +281,14 @@ export default function Step1BasicSettings() {
             <div className={styles.summaryItem}>
               <span className={styles.summaryLabel}>테마:</span>
               <span className={styles.summaryValue}>{styleTheme}</span>
+            </div>
+            <div className={styles.summaryItem}>
+              <span className={styles.summaryLabel}>레이더 차트:</span>
+              <span className={styles.summaryValue}>{enableRadarChart ? '사용' : '미사용'}</span>
+            </div>
+            <div className={styles.summaryItem}>
+              <span className={styles.summaryLabel}>막대 차트:</span>
+              <span className={styles.summaryValue}>{enableBarChart ? '사용' : '미사용'}</span>
             </div>
           </div>
         </div>
