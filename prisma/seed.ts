@@ -33,7 +33,6 @@ async function main() {
       description: '최근 일주일간의 스트레스 수준을 측정하는 심리테스트입니다. 총 10개의 질문을 통해 현재 스트레스 상태를 파악하고 적절한 관리법을 제안받아보세요.',
       category: '멘탈헬스',
       thumbnailUrl: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop',
-      testUrl: '/tests/stress-test',
       isActive: true
     }
   })
@@ -48,7 +47,7 @@ async function main() {
       description: '당신의 성격 유형을 간단하게 알아보는 테스트입니다. (개발 예정)',
       category: '성격분석',
       thumbnailUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop',
-      testUrl: '/tests/personality-preview',
+      enableRadarChart: true,
       isActive: false
     }
   })
@@ -62,7 +61,6 @@ async function main() {
       description: '당신의 연애 스타일과 이상형을 알아보는 테스트입니다. (개발 예정)',
       category: '연애',
       thumbnailUrl: 'https://images.unsplash.com/photo-1518621012420-8ab2803d6da5?w=400&h=300&fit=crop',
-      testUrl: '/tests/love-style-preview',
       isActive: false
     }
   })
@@ -76,7 +74,6 @@ async function main() {
       description: '나에게 맞는 직업과 진로를 찾아보는 테스트입니다. (개발 예정)',
       category: '진로',
       thumbnailUrl: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&h=300&fit=crop',
-      testUrl: '/tests/career-preview',
       isActive: false
     }
   })

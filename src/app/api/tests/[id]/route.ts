@@ -22,6 +22,7 @@ export async function GET(
         thumbnailUrl: true,
         detailImageUrl: true,
         styleTheme: true,
+        enableRadarChart: true,
         isActive: true,
         questions: true,
         createdAt: true,

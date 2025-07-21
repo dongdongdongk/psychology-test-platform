@@ -34,22 +34,22 @@ export async function GET(
       )
     }
 
-    // 질문과 선택지 조회
-    const questions = await prisma.question.findMany({
-      where: { testId },
-      include: {
-        answerOptions: {
-          orderBy: { order: 'asc' }
-        }
-      },
-      orderBy: { order: 'asc' }
+    // 질문 데이터는 Test의 questions JSONB 필드에서 가져옴
+    const testWithQuestions = await prisma.test.findUnique({
+      where: { id: testId },
+      select: {
+        id: true,
+        title: true,
+        styleTheme: true,
+        questions: true
+      }
     })
 
     return NextResponse.json({
-      id: test.id,
-      title: test.title,
-      styleTheme: test.styleTheme,
-      questions
+      id: testWithQuestions?.id,
+      title: testWithQuestions?.title,
+      styleTheme: testWithQuestions?.styleTheme,
+      questions: testWithQuestions?.questions || []
     })
   } catch (error) {
     console.error('질문 조회 실패:', error)

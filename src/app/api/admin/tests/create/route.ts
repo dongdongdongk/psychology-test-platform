@@ -14,6 +14,9 @@ export async function POST(request: NextRequest) {
       questionCount,
       optionCount,
       styleTheme,
+      enableRadarChart,
+      showResultImage,
+      showTextImage,
       questions,
       resultTypes
     } = body
@@ -92,6 +95,9 @@ export async function POST(request: NextRequest) {
         thumbnailUrl,
         detailImageUrl,
         styleTheme,
+        enableRadarChart: enableRadarChart || false,
+        showResultImage: showResultImage ?? true,
+        showTextImage: showTextImage ?? true,
         isActive: true,
         questions: questionsData
       }

@@ -12,6 +12,10 @@ interface TestCreationData {
   questionCount: number
   optionCount: number
   styleTheme: string
+  enableRadarChart: boolean
+  enableBarChart: boolean
+  showResultImage: boolean
+  showTextImage: boolean
   
   // 결과 타입 정의 (질문에서 점수 입력 시 동적 생성)
   resultTypes: {
@@ -62,6 +66,10 @@ const initialState: TestCreationData = {
   questionCount: 15,
   optionCount: 3,
   styleTheme: 'modern',
+  enableRadarChart: false,
+  enableBarChart: false,
+  showResultImage: true,
+  showTextImage: true,
   questions: [],
   resultTypes: [],
   currentStep: 1,
@@ -237,6 +245,9 @@ export const useTestCreationStore = create<TestCreationState>()(
         questionCount: state.questionCount,
         optionCount: state.optionCount,
         styleTheme: state.styleTheme,
+        enableRadarChart: state.enableRadarChart,
+        showResultImage: state.showResultImage,
+        showTextImage: state.showTextImage,
         questions: state.questions,
         resultTypes: state.resultTypes,
         currentStep: state.currentStep

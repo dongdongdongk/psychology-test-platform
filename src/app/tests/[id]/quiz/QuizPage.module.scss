@@ -251,6 +251,73 @@
   }
 }
 
+// 새로운 UX 스타일
+.nextArea {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60px;
+}
+
+.actionSpinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.spinnerText {
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.instruction {
+  color: var(--text-tertiary);
+  font-size: 14px;
+  text-align: center;
+  padding: 16px;
+  background: var(--background-secondary);
+  border-radius: var(--border-radius-md);
+  border: 1px dashed var(--border-light);
+}
+
+// 스피너 애니메이션 개선
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--primary-light);
+  border-top: 3px solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// 선택된 옵션 애니메이션 개선
+.option.selected {
+  animation: selectPulse 0.3s ease-out;
+}
+
+@keyframes selectPulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 var(--primary-color);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 0 0 8px rgba(var(--primary-color), 0.3);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 var(--primary-color);
+  }
+}
+
 // 반응형 디자인
 @media (max-width: 768px) {
   .container {
@@ -289,18 +356,29 @@
   .actions {
     padding: 24px 20px;
     flex-direction: column;
+    gap: 16px;
     
     .prevButton {
       order: 2;
     }
     
-    .nextButton, .submitButton {
+    .nextArea {
       order: 1;
+      min-height: 50px;
     }
   }
   
   .prevButton, .nextButton, .submitButton {
     padding: 12px 24px;
     font-size: 15px;
+  }
+  
+  .instruction {
+    font-size: 13px;
+    padding: 12px;
+  }
+  
+  .spinnerText {
+    font-size: 13px;
   }
 }

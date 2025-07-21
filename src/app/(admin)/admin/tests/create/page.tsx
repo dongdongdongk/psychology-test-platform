@@ -60,6 +60,7 @@ export default function CreateTestPage() {
         questionCount: store.questionCount,
         optionCount: store.optionCount,
         styleTheme: store.styleTheme,
+        enableRadarChart: store.enableRadarChart,
         questions: store.questions,
         resultTypes: store.resultTypes
       }

@@ -1,0 +1,212 @@
+.demoContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: inherit;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 12px;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.description {
+  font-size: 1.125rem;
+  opacity: 0.9;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.controls {
+  margin-bottom: 40px;
+  
+  h2 {
+    font-size: 1.5rem;
+    color: #2d3748;
+    margin-bottom: 16px;
+  }
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.demoButton {
+  padding: 12px 24px;
+  background: #f7fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  color: #4a5568;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: #edf2f7;
+    border-color: #cbd5e0;
+  }
+  
+  &.active {
+    background: #3182ce;
+    border-color: #3182ce;
+    color: white;
+  }
+}
+
+.chartSection {
+  margin-bottom: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+.codeExample {
+  margin-bottom: 40px;
+  
+  h2 {
+    font-size: 1.5rem;
+    color: #2d3748;
+    margin-bottom: 16px;
+  }
+}
+
+.codeBlock {
+  background: #2d3748;
+  color: #e2e8f0;
+  padding: 20px;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-family: 'Fira Code', 'Consolas', monospace;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.propsInfo {
+  h2 {
+    font-size: 1.5rem;
+    color: #2d3748;
+    margin-bottom: 16px;
+  }
+}
+
+.propsTable {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  
+  th, td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  
+  th {
+    background: #f7fafc;
+    font-weight: 600;
+    color: #2d3748;
+  }
+  
+  td {
+    color: #4a5568;
+    
+    &:first-child {
+      font-family: 'Fira Code', 'Consolas', monospace;
+      font-weight: 500;
+      color: #3182ce;
+    }
+    
+    &:nth-child(2) {
+      font-family: 'Fira Code', 'Consolas', monospace;
+      font-size: 0.875rem;
+      color: #805ad5;
+    }
+    
+    &:nth-child(3) {
+      text-align: center;
+      color: #38a169;
+    }
+  }
+  
+  tr:last-child {
+    th, td {
+      border-bottom: none;
+    }
+  }
+}
+
+// 반응형 디자인
+@media (max-width: 768px) {
+  .demoContainer {
+    padding: 16px;
+  }
+  
+  .header {
+    padding: 30px 16px;
+  }
+  
+  .title {
+    font-size: 2rem;
+  }
+  
+  .description {
+    font-size: 1rem;
+  }
+  
+  .buttonGroup {
+    justify-content: center;
+  }
+  
+  .demoButton {
+    flex: 1;
+    min-width: 120px;
+  }
+  
+  .codeBlock {
+    font-size: 0.75rem;
+    padding: 16px;
+  }
+  
+  .propsTable {
+    font-size: 0.875rem;
+    
+    th, td {
+      padding: 8px 12px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 1.75rem;
+  }
+  
+  .buttonGroup {
+    flex-direction: column;
+  }
+  
+  .demoButton {
+    width: 100%;
+  }
+  
+  .propsTable {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
