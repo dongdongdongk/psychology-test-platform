@@ -161,19 +161,41 @@ export default function EditTestPage() {
   }
 
   const addResultType = () => {
-    const newTypeId = `result_${Date.now()}`
-    setFormData(prev => ({
-      ...prev,
-      resultTypes: {
-        ...prev.resultTypes,
-        [newTypeId]: {
-          title: '',
-          description: '',
-          description_url: '',
-          image_url: ''
+    setFormData(prev => {
+      // 사용 가능한 기본 ID 찾기 (A, B, C, ...)
+      const existingIds = Object.keys(prev.resultTypes)
+      let newTypeId = 'A'
+      
+      for (let i = 0; i < 26; i++) {
+        const id = String.fromCharCode(65 + i) // A부터 Z까지
+        if (!existingIds.includes(id)) {
+          newTypeId = id
+          break
         }
       }
-    }))
+      
+      // A-Z가 모두 사용된 경우
+      if (existingIds.includes(newTypeId)) {
+        let counter = 1
+        while (existingIds.includes(`TYPE${counter}`)) {
+          counter++
+        }
+        newTypeId = `TYPE${counter}`
+      }
+      
+      return {
+        ...prev,
+        resultTypes: {
+          ...prev.resultTypes,
+          [newTypeId]: {
+            title: '',
+            description: '',
+            description_url: '',
+            image_url: ''
+          }
+        }
+      }
+    })
   }
 
   const updateResultType = (typeId: string, field: keyof TestResultType, value: string) => {
@@ -200,6 +222,29 @@ export default function EditTestPage() {
     })
   }
 
+  const updateResultTypeId = (oldId: string, newId: string) => {
+    if (oldId === newId) return
+    
+    setFormData(prev => {
+      const newResultTypes = { ...prev.resultTypes }
+      
+      // 새 ID가 이미 존재하는지 확인
+      if (newResultTypes[newId]) {
+        alert(`결과 타입 ID "${newId}"가 이미 존재합니다.`)
+        return prev
+      }
+      
+      // 기존 데이터를 새 ID로 이동
+      newResultTypes[newId] = { ...newResultTypes[oldId] }
+      delete newResultTypes[oldId]
+      
+      return {
+        ...prev,
+        resultTypes: newResultTypes
+      }
+    })
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
@@ -217,6 +262,11 @@ export default function EditTestPage() {
 
     // 결과 타입별 필수 정보 확인
     for (const [typeId, resultType] of Object.entries(formData.resultTypes)) {
+      // 결과 타입 ID 형식 검사
+      if (!/^[A-Z0-9_]+$/.test(typeId)) {
+        alert(`결과 타입 ID "${typeId}"는 영문 대문자, 숫자, 언더스코어만 사용 가능합니다.`)
+        return
+      }
       if (!resultType.title?.trim()) {
         alert(`결과 타입 "${typeId}"의 이름을 입력해주세요.`)
         return
@@ -442,7 +492,7 @@ export default function EditTestPage() {
             {Object.entries(formData.resultTypes).map(([typeId, resultType]) => (
               <div key={typeId} className={styles.resultTypeCard}>
                 <div className={styles.resultTypeHeader}>
-                  <h3>결과 타입: {typeId}</h3>
+                  <h3>결과 타입 ID: {typeId}</h3>
                   <button 
                     type="button" 
                     onClick={() => deleteResultType(typeId)}
@@ -453,7 +503,30 @@ export default function EditTestPage() {
                 </div>
                 
                 <div className={styles.formGroup}>
-                  <label>결과 타입 이름</label>
+                  <label>결과 타입 ID *</label>
+                  <input
+                    type="text"
+                    value={typeId}
+                    onChange={(e) => {
+                      // 입력값을 대문자로 변환하고 허용된 문자만 필터링
+                      const value = e.target.value.toUpperCase().replace(/[^A-Z0-9_]/g, '')
+                      if (value !== typeId && value.length > 0) {
+                        updateResultTypeId(typeId, value)
+                      }
+                    }}
+                    placeholder="예: A, B, C, INTRO, EXTRO 등"
+                    maxLength={20}
+                    style={{
+                      borderColor: /^[A-Z0-9_]+$/.test(typeId) ? '' : '#e74c3c'
+                    }}
+                  />
+                  <p className={styles.helpText}>
+                    영문 대문자, 숫자, 언더스코어만 사용 가능 (예: A, B, C, TYPE1, INTRO_TYPE)
+                  </p>
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label>결과 타입 이름 *</label>
                   <input
                     type="text"
                     value={resultType.title}
@@ -532,6 +605,7 @@ export default function EditTestPage() {
               <option value="retro">Retro - 복고풍 스타일</option>
               <option value="medical">Medical - 병원 같은 깔끔하고 신뢰감 있는 스타일</option>
               <option value="soft">Soft - 부드럽고 온화한 파스텔 스타일</option>
+              <option value="green">Green - 자연스럽고 편안한 녹색 스타일</option>
               <option value="values">Values - 가치관 테스트용 지혜롭고 신뢰감 있는 스타일</option>
             </select>
           </div>

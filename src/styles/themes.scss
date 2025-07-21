@@ -225,7 +225,33 @@
   --gradient-background: linear-gradient(135deg, #fffcfa 0%, #fef8f4 50%, #fdf3ee 100%);
 }
 
-// 9. Values 테마 (가치관 테스트용 - 지혜롭고 신뢰감 있는 느낌)
+// 9. Green 테마 (자연스럽고 편안한 녹색 느낌)
+[data-theme="green"] {
+  --primary-color: #acd5a1;
+  --primary-hover: #9bc890;
+  --primary-light: rgba(172, 213, 161, 0.1);
+  --primary-dark: #7fb372;
+  
+  --secondary-color: #57a17b;
+  --secondary-hover: #4a8c68;
+  --secondary-light: rgba(87, 161, 123, 0.1);
+  
+  --background-primary: #fafefb;
+  --background-secondary: #f4fbf2;
+  --background-tertiary: #eef7ea;
+  
+  --text-primary: #2d5a3d;
+  --text-secondary: #4a7c59;
+  --text-tertiary: #6b9475;
+  
+  --border-color: rgba(172, 213, 161, 0.3);
+  --border-light: rgba(172, 213, 161, 0.15);
+  
+  --gradient-primary: linear-gradient(135deg, #acd5a1 0%, #9bc890 50%, #7fb372 100%);
+  --gradient-background: linear-gradient(135deg, #fafefb 0%, #f4fbf2 50%, #eef7ea 100%);
+}
+
+// 10. Values 테마 (가치관 테스트용 - 지혜롭고 신뢰감 있는 느낌)
 [data-theme="values"] {
   --primary-color: #4f46e5;
   --primary-hover: #4338ca;
