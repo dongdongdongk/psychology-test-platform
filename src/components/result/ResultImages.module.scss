@@ -1,0 +1,23 @@
+.imagesContainer {
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background: var(--background-primary);
+}
+
+.resultImage {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+// 반응형 디자인
+@media (max-width: 768px) {
+  .imagesContainer {
+    padding: 0 16px;
+    gap: 0;
+  }
+}

@@ -1,0 +1,15 @@
+.barChartSection {
+  width: 100%;
+  // margin: 24px 0;
+  
+  .barChart {
+    width: 100%;
+  }
+}
+
+// 모바일 반응형
+@media (max-width: 768px) {
+  .barChartSection {
+    margin: 16px 0;
+  }
+}
