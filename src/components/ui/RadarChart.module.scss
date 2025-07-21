@@ -1,0 +1,204 @@
+.radarChartContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 12px;
+  // box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 20px 0;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.chartWrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.centerText {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.centerLabel {
+  font-size: 0.875rem;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.centerValue {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2d3748;
+}
+
+.tooltip {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 8px 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.tooltipLabel {
+  font-weight: 600;
+  color: #2d3748;
+  margin: 0 0 4px 0;
+  font-size: 0.875rem;
+}
+
+.tooltipValue {
+  color: #4a5568;
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+.angleAxis {
+  font-family: inherit;
+}
+
+.radiusAxis {
+  font-family: inherit;
+}
+
+.summary {
+  margin-top: 20px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.averageScore {
+  text-align: center;
+  font-size: 1.125rem;
+  color: #2d3748;
+  margin-bottom: 16px;
+}
+
+.scoreValue {
+  font-weight: 700;
+  color: #3182ce;
+}
+
+.scoreRange {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 12px;
+  background: #f7fafc;
+  border-radius: 8px;
+}
+
+.rangeItem {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  color: #4a5568;
+}
+
+.colorBox {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+}
+
+// 반응형 디자인
+@media (max-width: 768px) {
+  .radarChartContainer {
+    padding: 16px;
+    margin: 16px 0;
+  }
+  
+  .title {
+    font-size: 1.25rem;
+  }
+  
+  .scoreRange {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .rangeItem {
+    flex: 1;
+    min-width: calc(50% - 4px);
+  }
+}
+
+@media (max-width: 480px) {
+  .radarChartContainer {
+    padding: 12px;
+  }
+  
+  .title {
+    font-size: 1.125rem;
+  }
+  
+  .averageScore {
+    font-size: 1rem;
+  }
+  
+  .rangeItem {
+    min-width: 100%;
+    justify-content: center;
+  }
+}
+
+// 다크 테마 지원 (옵션)
+.radarChartContainer.dark {
+  background: #2d3748;
+  color: #e2e8f0;
+  
+  .title {
+    color: #e2e8f0;
+  }
+  
+  .centerLabel {
+    color: #a0aec0;
+  }
+  
+  .centerValue {
+    color: #e2e8f0;
+  }
+  
+  .tooltip {
+    background: rgba(45, 55, 72, 0.95);
+    border-color: #4a5568;
+    color: #e2e8f0;
+  }
+  
+  .tooltipLabel {
+    color: #e2e8f0;
+  }
+  
+  .tooltipValue {
+    color: #a0aec0;
+  }
+  
+  .averageScore {
+    color: #e2e8f0;
+  }
+  
+  .scoreRange {
+    background: #4a5568;
+  }
+  
+  .rangeItem {
+    color: #a0aec0;
+  }
+}
