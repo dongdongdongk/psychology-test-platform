@@ -34,6 +34,7 @@ export default function Step1BasicSettings() {
     { value: 'retro', label: 'Retro - 복고풍 스타일' },
     { value: 'medical', label: 'Medical - 병원 같은 깔끔하고 신뢰감 있는 스타일' },
     { value: 'soft', label: 'Soft - 부드럽고 온화한 파스텔 스타일' },
+    { value: 'green', label: 'Green - 자연스럽고 편안한 녹색 스타일' },
     { value: 'values', label: 'Values - 가치관 테스트용 지혜롭고 신뢰감 있는 스타일' }
   ]
 
