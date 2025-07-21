@@ -14,15 +14,12 @@ export async function POST(
     // 테스트 존재 확인
     const test = await prisma.test.findUnique({
       where: { id: testId },
-      include: {
-        questions: {
-          include: {
-            answerOptions: true
-          }
-        },
-        resultTypes: {
-          orderBy: { minScore: 'asc' }
-        }
+      select: {
+        id: true,
+        title: true,
+        isActive: true,
+        questions: true,
+        resultTypes: true
       }
     })
 
@@ -40,42 +37,35 @@ export async function POST(
       )
     }
 
-    // 타입별 점수 계산
+    // 타입별 점수 계산 (JSONB 구조)
     const typeScores: Record<string, number> = {}
     const processedAnswers: Record<string, any> = {}
+    const questionsData = test.questions as any[]
 
-    for (const question of test.questions) {
+    for (const question of questionsData) {
       const answer = answers[question.id]
       processedAnswers[question.id] = answer
 
       if (question.type === 'single' && typeof answer === 'string') {
-        const option = question.answerOptions.find(opt => opt.id === answer)
+        const option = question.options.find((opt: any) => opt.order === parseInt(answer))
         if (option && option.value) {
-          try {
-            // value는 JSON 문자열로 저장된 점수 객체 (예: {"A": 3, "B": 1})
-            const scores = JSON.parse(option.value)
+          // value는 이미 객체 형태 (예: {"A": 3, "B": 1})
+          const scores = option.value
+          for (const [typeId, score] of Object.entries(scores)) {
+            if (typeof score === 'number') {
+              typeScores[typeId] = (typeScores[typeId] || 0) + score
+            }
+          }
+        }
+      } else if (question.type === 'multiple' && Array.isArray(answer)) {
+        for (const optionIndex of answer) {
+          const option = question.options.find((opt: any) => opt.order === parseInt(optionIndex))
+          if (option && option.value) {
+            const scores = option.value
             for (const [typeId, score] of Object.entries(scores)) {
               if (typeof score === 'number') {
                 typeScores[typeId] = (typeScores[typeId] || 0) + score
               }
-            }
-          } catch (e) {
-            console.error('점수 파싱 오류:', e)
-          }
-        }
-      } else if (question.type === 'multiple' && Array.isArray(answer)) {
-        for (const optionId of answer) {
-          const option = question.answerOptions.find(opt => opt.id === optionId)
-          if (option && option.value) {
-            try {
-              const scores = JSON.parse(option.value)
-              for (const [typeId, score] of Object.entries(scores)) {
-                if (typeof score === 'number') {
-                  typeScores[typeId] = (typeScores[typeId] || 0) + score
-                }
-              }
-            } catch (e) {
-              console.error('점수 파싱 오류:', e)
             }
           }
         }
@@ -106,9 +96,10 @@ export async function POST(
       }
     }
 
-    // 결과 타입이 없으면 첫 번째 결과 사용
-    if (resultType === 'default' && test.resultTypes.length > 0) {
-      resultType = test.resultTypes[0].type
+    // 결과 타입이 없으면 첫 번째 결과 사용 (JSONB 구조)
+    const resultTypesData = test.resultTypes as any
+    if (resultType === 'default' && resultTypesData && Object.keys(resultTypesData).length > 0) {
+      resultType = Object.keys(resultTypesData)[0]
     }
 
     // 사용자 IP 및 User-Agent 추출
@@ -123,7 +114,6 @@ export async function POST(
         testId,
         responseData: processedAnswers,
         resultType,
-        totalScore: maxScore, // 최고 점수를 totalScore로 저장
         ipAddress: ip,
         userAgent,
         sessionId: nanoid()

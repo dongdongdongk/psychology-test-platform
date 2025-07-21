@@ -40,10 +40,7 @@ export async function POST(request: NextRequest) {
           message,
           submittedAt: new Date().toISOString()
         },
-        resultData: {
-          type: 'contact-inquiry',
-          status: 'new'
-        },
+        resultType: 'contact-inquiry',
         ipAddress: ip,
         userAgent: userAgent,
         sessionId: `contact-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`

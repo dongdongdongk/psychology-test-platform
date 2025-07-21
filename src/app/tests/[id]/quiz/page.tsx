@@ -16,6 +16,7 @@ export default function QuizPage() {
   const [answers, setAnswers] = useState<Record<string, string | string[]>>({})
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
+  const [transitioning, setTransitioning] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const { setTheme } = useTheme()
 
@@ -59,14 +60,17 @@ export default function QuizPage() {
       }))
       
       // 단일 선택 문제에서는 답변 선택 후 자동으로 다음 문제로 이동
-      setTimeout(() => {
-        if (testData && testData.questions && currentQuestion < testData.questions.length - 1) {
+      if (currentQuestion === testData!.questions!.length - 1) {
+        // 마지막 문제인 경우 바로 제출
+        submitAnswers()
+      } else {
+        // 다음 문제로 이동
+        setTransitioning(true)
+        setTimeout(() => {
           setCurrentQuestion(prev => prev + 1)
-        } else if (testData && testData.questions && currentQuestion === testData.questions.length - 1) {
-          // 마지막 문제인 경우 자동으로 제출
-          submitAnswers()
-        }
-      }, 300) // 0.3초 딜레이로 사용자가 선택을 확인할 수 있게 함
+          setTransitioning(false)
+        }, 800)
+      }
     } else {
       setAnswers(prev => {
         const currentAnswers = prev[questionId] as string[]
@@ -75,17 +79,38 @@ export default function QuizPage() {
           ? currentAnswers.filter(id => id !== optionStr)
           : [...currentAnswers, optionStr]
         
-        return {
+        const updatedAnswers = {
           ...prev,
           [questionId]: newAnswers
         }
+        
+        // 다중 선택 + 마지막 문제 + 답변이 있을 때 자동 제출
+        if (currentQuestion === testData!.questions!.length - 1 && newAnswers.length > 0) {
+          setTimeout(() => {
+            submitAnswers()
+          }, 500) // 약간의 딜레이로 사용자가 선택을 확인할 수 있게
+        }
+        
+        return updatedAnswers
       })
     }
   }
 
   const goToNext = () => {
     if (testData && testData.questions && currentQuestion < testData.questions.length - 1) {
-      setCurrentQuestion(prev => prev + 1)
+      setTransitioning(true)
+      setTimeout(() => {
+        setCurrentQuestion(prev => prev + 1)
+        setTransitioning(false)
+      }, 400)
+    }
+  }
+
+  const handleMultipleSubmit = () => {
+    if (isLastQuestion) {
+      submitAnswers()
+    } else {
+      goToNext()
     }
   }
 
@@ -171,6 +196,9 @@ export default function QuizPage() {
         }
       })
 
+      // 원시 응답 데이터를 localStorage에 저장 (백업용)
+      localStorage.setItem('testResponses', JSON.stringify(answers))
+      
       const response = await fetch(`/api/responses`, {
         method: 'POST',
         headers: {
@@ -187,8 +215,19 @@ export default function QuizPage() {
         throw new Error('답변 제출에 실패했습니다')
       }
 
-      // 결과 페이지로 이동
-      router.push(`/tests/${testId}/result/${resultType}`)
+      const responseData = await response.json()
+      const responseId = responseData.id // API에서 'id'로 반환
+
+      console.log('API 응답 데이터:', responseData)
+      console.log('추출한 responseId:', responseId)
+
+      // 결과 페이지로 이동 (responseId 포함)
+      if (responseId) {
+        router.push(`/tests/${testId}/result/${resultType}?responseId=${responseId}`)
+      } else {
+        // 백업: responseId가 없으면 기존 방식
+        router.push(`/tests/${testId}/result/${resultType}`)
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : '답변 제출에 실패했습니다')
     } finally {
@@ -233,6 +272,7 @@ export default function QuizPage() {
   const hasAnswer = question.type === 'single' 
     ? answers[question.id] !== ''
     : (answers[question.id] as string[]).length > 0
+  const showSpinner = transitioning || submitting
 
   return (
     <div className={styles.page}>
@@ -278,29 +318,33 @@ export default function QuizPage() {
         <div className={styles.actions}>
           <button
             onClick={goToPrevious}
-            disabled={currentQuestion === 0}
+            disabled={currentQuestion === 0 || showSpinner}
             className={styles.prevButton}
           >
             이전
           </button>
           
-          {isLastQuestion ? (
-            <button
-              onClick={submitAnswers}
-              disabled={!hasAnswer || submitting}
-              className={styles.submitButton}
-            >
-              {submitting ? '제출 중...' : '결과 보기'}
-            </button>
-          ) : (
-            <button
-              onClick={goToNext}
-              disabled={!hasAnswer}
-              className={styles.nextButton}
-            >
-              다음
-            </button>
-          )}
+          <div className={styles.nextArea}>
+            {showSpinner ? (
+              <div className={styles.actionSpinner}>
+                <div className={styles.spinner}></div>
+                <span className={styles.spinnerText}>
+                  {submitting ? '제출 중...' : '다음 문제 준비 중...'}
+                </span>
+              </div>
+            ) : (
+              <>
+                {question.type === 'multiple' && hasAnswer && !isLastQuestion && (
+                  <button
+                    onClick={handleMultipleSubmit}
+                    className={styles.nextButton}
+                  >
+                    다음
+                  </button>
+                )}
+              </>
+            )}
+          </div>
         </div>
       </div>
     </div>
