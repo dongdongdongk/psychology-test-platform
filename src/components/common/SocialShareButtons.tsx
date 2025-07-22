@@ -113,18 +113,25 @@ export default function SocialShareButtons({
       tempButton.style.display = 'none';
       document.body.appendChild(tempButton);
       
+      // 카카오톡 공유 콘텐츠 설정
+      const shareContent: any = {
+        title: title,
+        description: description,
+        link: {
+          mobileWebUrl: url,
+          webUrl: url,
+        },
+      };
+
+      // 이미지가 있고 유효할 때만 imageUrl 속성 추가
+      if (imageUrl && imageUrl.trim() && !imageUrl.includes('/icon.png')) {
+        shareContent.imageUrl = imageUrl;
+      }
+
       window.Kakao.Share.createDefaultButton({
         container: '#' + tempButtonId,
         objectType: 'feed',
-        content: {
-          title: title,
-          description: description,
-          imageUrl: imageUrl || `${window.location.origin}/icon.png`,
-          link: {
-            mobileWebUrl: url,
-            webUrl: url,
-          },
-        },
+        content: shareContent,
         buttons: [
           {
             title: '테스트하러 가기',
