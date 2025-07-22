@@ -48,9 +48,6 @@ export default function Header() {
               <li>
                 <Link href="/contact" className={`${styles.navLink} ${isActive('/contact') ? styles.active : ''}`}>문의</Link>
               </li>
-              <li>
-                <Link href="/admin/login" className={styles.navLink}>관리자</Link>
-              </li>
             </ul>
 
             {/* Mobile Menu Button */}
@@ -81,9 +78,6 @@ export default function Header() {
               </li>
               <li>
                 <Link href="/contact" className={styles.mobileNavLink} onClick={() => setIsMobileMenuOpen(false)}>문의</Link>
-              </li>
-              <li>
-                <Link href="/admin/login" className={styles.mobileNavLink} onClick={() => setIsMobileMenuOpen(false)}>관리자</Link>
               </li>
             </ul>
           </div>

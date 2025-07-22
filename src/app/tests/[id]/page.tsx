@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { useTheme } from '@/hooks/useTheme'
 import Header from '@/components/common/Header'
+import PageLoader from '@/components/common/PageLoader'
 import styles from './TestPage.module.scss'
 
 interface TestData {
@@ -52,51 +53,21 @@ export default function TestPage() {
   }
 
   if (loading) {
-    return (
-      <div className={styles.container}>
-        <Header />
-        <div className={styles.content}>
-          <div className={styles.loading}>
-            <div className={styles.spinner}></div>
-            <p>테스트 정보를 불러오는 중...</p>
-          </div>
-        </div>
-      </div>
-    )
+    return <PageLoader type="loading" message="테스트 정보를 불러오는 중..." />
   }
 
   if (error || !testData) {
     return (
-      <div className={styles.container}>
-        <Header />
-        <div className={styles.content}>
-          <div className={styles.error}>
-            <h2>오류가 발생했습니다</h2>
-            <p>{error || '테스트를 찾을 수 없습니다'}</p>
-            <Link href="/" className="theme-button">
-              홈으로 돌아가기
-            </Link>
-          </div>
-        </div>
-      </div>
+      <PageLoader 
+        type="error" 
+        title="테스트를 찾을 수 없습니다"
+        message={error || '요청하신 테스트가 존재하지 않습니다'}
+      />
     )
   }
 
   if (!testData.isActive) {
-    return (
-      <div className={styles.container}>
-        <Header />
-        <div className={styles.content}>
-          <div className={styles.inactive}>
-            <h2>서비스 준비중</h2>
-            <p>이 테스트는 현재 개발 중입니다. 곧 만나보실 수 있어요!</p>
-            <Link href="/" className="theme-button">
-              홈으로 돌아가기
-            </Link>
-          </div>
-        </div>
-      </div>
-    )
+    return <PageLoader type="inactive" />
   }
 
   return (

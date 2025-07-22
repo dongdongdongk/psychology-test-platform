@@ -28,7 +28,19 @@ export async function GET(request: NextRequest) {
       orderBy: {
         createdAt: 'desc'
       },
-      include: {
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        category: true,
+        thumbnailUrl: true,
+        detailImageUrl: true,
+        styleTheme: true,
+        isActive: true,
+        completionCount: true,
+        shareCount: true,
+        createdAt: true,
+        updatedAt: true,
         _count: {
           select: {
             responses: true

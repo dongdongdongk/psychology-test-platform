@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useTheme } from '@/hooks/useTheme'
 import Header from '@/components/common/Header'
+import PageLoader from '@/components/common/PageLoader'
 import { Test, Question, AnswerOption } from '@/types'
 import styles from './QuizPage.module.scss'
 
@@ -236,33 +237,22 @@ export default function QuizPage() {
   }
 
   if (loading) {
-    return (
-      <div className={styles.page}>
-        <Header />
-        <div className={styles.container}>
-          <div className={styles.loading}>
-            <div className={styles.spinner}></div>
-            <p>테스트를 준비하는 중...</p>
-          </div>
-        </div>
-      </div>
-    )
+    return <PageLoader type="loading" message="테스트를 준비하는 중..." />
   }
 
   if (error || !testData || !testData.questions || testData.questions.length === 0) {
     return (
-      <div className={styles.page}>
-        <Header />
-        <div className={styles.container}>
-          <div className={styles.error}>
-            <h2>오류가 발생했습니다</h2>
-            <p>{error || '테스트를 불러올 수 없습니다'}</p>
-            <button onClick={() => router.push(`/tests/${testId}`)} className="theme-button">
-              다시 시도하기
-            </button>
-          </div>
-        </div>
-      </div>
+      <PageLoader 
+        type="error" 
+        title="테스트를 불러올 수 없습니다"
+        message={error || '테스트 문제를 가져오는데 실패했습니다'}
+        customAction={
+          <button onClick={() => router.push(`/tests/${testId}`)} className="theme-button">
+            다시 시도하기
+          </button>
+        }
+        showHomeButton={false}
+      />
     )
   }
 

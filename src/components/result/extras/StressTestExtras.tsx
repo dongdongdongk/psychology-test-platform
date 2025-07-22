@@ -1,10 +1,10 @@
 'use client'
 
-import { TestResultData } from '@/types'
+import { ResultData } from '@/hooks/useTestResult'
 import styles from './StressTestExtras.module.scss'
 
 interface StressTestExtrasProps {
-  resultData: TestResultData
+  resultData: ResultData
 }
 
 export default function StressTestExtras({ resultData }: StressTestExtrasProps) {

@@ -3,6 +3,7 @@
 import { useParams, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import Header from '@/components/common/Header'
+import PageLoader from '@/components/common/PageLoader'
 import { useTestResult } from '@/hooks/useTestResult'
 import { useResultTitle } from '@/hooks/useResultTitle'
 import { shouldShowTitle } from '@/lib/testConfig'
@@ -27,6 +28,15 @@ export default function ResultPage() {
   const shareResult = async () => {
     if (!resultData) return
     
+    // 공유 카운트 증가
+    try {
+      await fetch(`/api/tests/${testId}/share`, {
+        method: 'POST'
+      })
+    } catch (error) {
+      console.error('공유 카운트 업데이트 실패:', error)
+    }
+    
     if (navigator.share) {
       try {
         await navigator.share({
@@ -49,33 +59,16 @@ export default function ResultPage() {
   }
 
   if (loading) {
-    return (
-      <div className={styles.page}>
-        <Header />
-        <div className={styles.container}>
-          <div className={styles.loading}>
-            <div className={styles.spinner}></div>
-            <p>결과를 분석하는 중...</p>
-          </div>
-        </div>
-      </div>
-    )
+    return <PageLoader type="loading" message="결과를 분석하는 중..." />
   }
 
   if (error || !resultData) {
     return (
-      <div className={styles.page}>
-        <Header />
-        <div className={styles.container}>
-          <div className={styles.error}>
-            <h2>오류가 발생했습니다</h2>
-            <p>{error || '결과를 불러올 수 없습니다'}</p>
-            <Link href="/" className="theme-button">
-              홈으로 돌아가기
-            </Link>
-          </div>
-        </div>
-      </div>
+      <PageLoader 
+        type="error" 
+        title="결과를 불러올 수 없습니다"
+        message={error || '테스트 결과를 가져오는데 실패했습니다'}
+      />
     )
   }
 

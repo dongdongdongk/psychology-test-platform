@@ -59,6 +59,16 @@ export async function POST(request: NextRequest) {
       }
     })
 
+    // 테스트 완료 카운트 증가
+    await prisma.test.update({
+      where: { id: testId },
+      data: {
+        completionCount: {
+          increment: 1
+        }
+      }
+    })
+
     return NextResponse.json({
       id: userResponse.id,
       resultType,

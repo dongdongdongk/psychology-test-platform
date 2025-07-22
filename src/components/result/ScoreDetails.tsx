@@ -193,7 +193,7 @@ export default function ScoreDetails({ resultData, testId }: ScoreDetailsProps) 
         <h4>영역별 상세 분석</h4>
         <div className={styles.areaGrid}>
           {Object.entries(stressAreaDetails).map(([key, area]) => {
-            const score = scores[key as keyof typeof scores]
+            const score = scores[key as keyof typeof scores] || 0
             const level = getAreaStressLevel(score)
             
             return (

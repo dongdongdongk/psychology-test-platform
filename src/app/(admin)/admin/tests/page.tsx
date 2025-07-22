@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import axios from 'axios'
+import PageLoader from '@/components/common/PageLoader'
 import { Test } from '@/types'
 import styles from './AdminTests.module.scss'
 
@@ -10,6 +11,8 @@ interface TestWithCount extends Test {
   _count: {
     responses: number
   }
+  completionCount: number
+  shareCount: number
 }
 
 export default function AdminTestsPage() {
@@ -91,7 +94,7 @@ export default function AdminTestsPage() {
   }
 
   if (loading) {
-    return <div className={styles.loading}>로딩 중...</div>
+    return <PageLoader type="loading" message="테스트 목록을 불러오는 중..." showHeader={false} />
   }
 
   return (
@@ -187,6 +190,14 @@ export default function AdminTestsPage() {
                     <div className={styles.infoItem}>
                       <span className={styles.label}>응답 수:</span>
                       <span className={styles.value}>{test._count.responses}개</span>
+                    </div>
+                    <div className={styles.infoItem}>
+                      <span className={styles.label}>완료 수:</span>
+                      <span className={styles.value}>{test.completionCount || 0}명</span>
+                    </div>
+                    <div className={styles.infoItem}>
+                      <span className={styles.label}>공유 수:</span>
+                      <span className={styles.value}>{test.shareCount || 0}회</span>
                     </div>
                     <div className={styles.infoItem}>
                       <span className={styles.label}>생성일:</span>
