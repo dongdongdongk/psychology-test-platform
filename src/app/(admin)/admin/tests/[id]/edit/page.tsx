@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import axios from 'axios'
+import PageLoader from '@/components/common/PageLoader'
 import { Test, Question, AnswerOption, TestResultTypes, TestResultType } from '@/types'
 import styles from './EditTest.module.scss'
 
@@ -297,18 +298,23 @@ export default function EditTestPage() {
   }
 
   if (loading) {
-    return <div className={styles.loading}>로딩 중...</div>
+    return <PageLoader type="loading" message="테스트 정보를 불러오는 중..." showHeader={false} />
   }
 
   if (error) {
     return (
-      <div className={styles.error}>
-        <h2>오류가 발생했습니다</h2>
-        <p>{error}</p>
-        <button onClick={() => router.push('/admin/tests')} className={styles.backButton}>
-          목록으로 돌아가기
-        </button>
-      </div>
+      <PageLoader 
+        type="error" 
+        title="테스트를 불러올 수 없습니다"
+        message={error}
+        customAction={
+          <button onClick={() => router.push('/admin/tests')} className="theme-button">
+            목록으로 돌아가기
+          </button>
+        }
+        showHeader={false}
+        showHomeButton={false}
+      />
     )
   }
 

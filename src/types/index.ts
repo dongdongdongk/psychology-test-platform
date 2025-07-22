@@ -7,6 +7,8 @@ export interface Test {
   detailImageUrl?: string
   styleTheme?: string
   isActive: boolean
+  completionCount?: number
+  shareCount?: number
   questions?: Question[]
   resultTypes?: TestResultTypes
   createdAt: Date
@@ -83,4 +85,15 @@ export interface TestResult {
   description: string
   score?: number
   percentage?: number
+}
+
+export interface TestResultData {
+  testTitle: string
+  title: string
+  description: string
+  type: string
+  testId: string
+  resultType: string
+  detailedScores?: Record<string, number>
+  resultTypes?: TestResultTypes
 }

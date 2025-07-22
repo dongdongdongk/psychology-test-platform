@@ -21,6 +21,8 @@ model Test {
   showResultImage  Boolean        @default(true) @map("show_result_image")
   showTextImage    Boolean        @default(true) @map("show_text_image")
   isActive         Boolean        @default(true) @map("is_active")
+  completionCount  Int            @default(0) @map("completion_count")
+  shareCount       Int            @default(0) @map("share_count")
   createdAt        DateTime       @default(now()) @map("created_at")
   updatedAt        DateTime       @updatedAt @map("updated_at")
   questions        Json?

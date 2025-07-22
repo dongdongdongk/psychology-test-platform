@@ -1,10 +1,10 @@
 'use client'
 
-import { TestResultData } from '@/types'
+import { ResultData } from '@/hooks/useTestResult'
 import styles from './ValuesTestExtras.module.scss'
 
 interface ValuesTestExtrasProps {
-  resultData: TestResultData
+  resultData: ResultData
 }
 
 export default function ValuesTestExtras({ resultData }: ValuesTestExtrasProps) {

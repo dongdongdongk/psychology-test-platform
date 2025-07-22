@@ -12,6 +12,11 @@ export interface DetailedScores {
   emotionalPercent: number
   physicalPercent: number
   behavioralPercent: number
+  // 재정 테스트용 ABCD 점수 필드 추가
+  A?: number
+  B?: number
+  C?: number
+  D?: number
 }
 
 export interface ResultData {
@@ -31,6 +36,7 @@ export interface ResultData {
   maxScore: number
   detailedScores?: DetailedScores
   resultTypes?: any // result_types JSONB 데이터
+  resultType?: string // 개별 결과 타입 (A, B, C, D 등)
 }
 
 export function useTestResult(testId: string, resultType: string, responseId?: string) {

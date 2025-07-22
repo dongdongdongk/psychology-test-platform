@@ -58,40 +58,40 @@ export default function FAQPage() {
   return (
     <main className={styles.main}>
       <Header />
-
-      <div className={styles.heroSection}>
-        <div className={styles.heroCard}>
-          <h1 className={styles.heroTitle}>자주 묻는 질문</h1>
-          <p className={styles.heroSubtitle}>
-            궁금한 점이 있으시다면 아래에서 답변을 찾아보세요
-          </p>
-        </div>
-      </div>
-
-      <div className={styles.content}>
+      
+      <div className={styles.contentWrapper}>
         <div className={styles.contentContainer}>
-          <div className={styles.faqList}>
-            {faqData.map((faq, index) => (
-              <div
-                key={index}
-                className={`${styles.faqItem} ${
-                  openIndex === index ? styles.open : ''
-                }`}
-              >
-                <button
-                  className={styles.faqQuestion}
-                  onClick={() => toggleFAQ(index)}
+          <div className={styles.heroSection}>
+            <h1 className={styles.heroTitle}>자주 묻는 질문</h1>
+            <p className={styles.heroSubtitle}>
+              궁금한 점이 있으시다면 아래에서 답변을 찾아보세요
+            </p>
+          </div>
+
+          <div className={styles.faqSection}>
+            <div className={styles.faqList}>
+              {faqData.map((faq, index) => (
+                <div
+                  key={index}
+                  className={`${styles.faqItem} ${
+                    openIndex === index ? styles.open : ''
+                  }`}
                 >
-                  <span className={styles.questionText}>{faq.question}</span>
-                  <span className={styles.toggleIcon}>
-                    {openIndex === index ? '−' : '+'}
-                  </span>
-                </button>
-                <div className={styles.faqAnswer}>
-                  <p>{faq.answer}</p>
+                  <button
+                    className={styles.faqQuestion}
+                    onClick={() => toggleFAQ(index)}
+                  >
+                    <span className={styles.questionText}>{faq.question}</span>
+                    <span className={styles.toggleIcon}>
+                      {openIndex === index ? '−' : '+'}
+                    </span>
+                  </button>
+                  <div className={styles.faqAnswer}>
+                    <p>{faq.answer}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
 
           <div className={styles.contactSection}>

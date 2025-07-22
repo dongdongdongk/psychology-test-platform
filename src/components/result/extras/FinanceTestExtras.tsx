@@ -1,6 +1,6 @@
 'use client'
 
-import { TestResultData } from '@/types'
+import { ResultData } from '@/hooks/useTestResult'
 import styles from './FinanceTestExtras.module.scss'
 import { 
   FaCreditCard, 
@@ -19,7 +19,7 @@ import {
 } from 'react-icons/fa'
 
 interface FinanceTestExtrasProps {
-  resultData: TestResultData
+  resultData: ResultData
 }
 
 export default function FinanceTestExtras({ resultData }: FinanceTestExtrasProps) {

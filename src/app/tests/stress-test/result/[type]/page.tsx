@@ -48,6 +48,15 @@ export default function StressResultPage({ params }: Props) {
   }, [params.type])
 
   const handleShare = async () => {
+    // 공유 카운트 증가
+    try {
+      await fetch('/api/tests/stresscheck001test2025/share', {
+        method: 'POST'
+      })
+    } catch (error) {
+      console.error('공유 카운트 업데이트 실패:', error)
+    }
+    
     if (navigator.share) {
       try {
         await navigator.share({
