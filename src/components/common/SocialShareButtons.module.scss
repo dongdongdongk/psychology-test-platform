@@ -1,0 +1,154 @@
+.shareContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.mainShareButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(45deg, #fee500, #ffeb3b);
+  color: #3a1d1d;
+  border: none;
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(254, 229, 0, 0.3);
+  min-width: 200px;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(254, 229, 0, 0.4);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  .kakaoIcon {
+    font-size: 1.2rem;
+  }
+}
+
+.snsIcons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.snsButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.instagram {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  color: white;
+
+  &:hover {
+    box-shadow: 0 4px 15px rgba(225, 48, 108, 0.4);
+  }
+}
+
+.facebook {
+  background: #1877f2;
+  color: white;
+
+  &:hover {
+    background: #166fe5;
+    box-shadow: 0 4px 15px rgba(24, 119, 242, 0.4);
+  }
+}
+
+.twitter {
+  background: #000000;
+  color: white;
+
+  &:hover {
+    background: #1a1a1a;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  }
+}
+
+// 모바일 반응형
+@media (max-width: 768px) {
+  .shareContainer {
+    margin-top: 1.5rem;
+  }
+
+  .mainShareButton {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    min-width: 180px;
+  }
+
+  .snsIcons {
+    gap: 0.8rem;
+  }
+
+  .snsButton {
+    width: 44px;
+    height: 44px;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .shareContainer {
+    margin-top: 1rem;
+  }
+
+  .mainShareButton {
+    padding: 0.7rem 1.2rem;
+    font-size: 0.9rem;
+    min-width: 160px;
+  }
+
+  .snsIcons {
+    gap: 0.6rem;
+  }
+
+  .snsButton {
+    width: 40px;
+    height: 40px;
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+}

@@ -4,6 +4,7 @@ import { useParams, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import Header from '@/components/common/Header'
 import PageLoader from '@/components/common/PageLoader'
+import SocialShareButtons from '@/components/common/SocialShareButtons'
 import { useTestResult } from '@/hooks/useTestResult'
 import { useResultTitle } from '@/hooks/useResultTitle'
 import { shouldShowTitle } from '@/lib/testConfig'
@@ -25,36 +26,14 @@ export default function ResultPage() {
   const { resultData, loading, error } = useTestResult(testId, resultType, responseId)
   const resultTitle = useResultTitle(resultData, testId)
 
-  const shareResult = async () => {
-    if (!resultData) return
-    
-    // 공유 카운트 증가
+  // 공유 카운트 증가 API 호출을 위한 함수
+  const updateShareCount = async () => {
     try {
       await fetch(`/api/tests/${testId}/share`, {
         method: 'POST'
       })
     } catch (error) {
       console.error('공유 카운트 업데이트 실패:', error)
-    }
-    
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: `${resultData.testTitle} 결과`,
-          text: `나의 ${resultData.testTitle} 결과: ${resultData.title}`,
-          url: window.location.href
-        })
-      } catch (err) {
-        console.log('공유 취소됨')
-      }
-    } else {
-      // 클립보드 복사
-      try {
-        await navigator.clipboard.writeText(window.location.href)
-        alert('링크가 클립보드에 복사되었습니다!')
-      } catch (err) {
-        console.error('클립보드 복사 실패:', err)
-      }
     }
   }
 
@@ -106,10 +85,16 @@ export default function ResultPage() {
             <FinanceTestExtras resultData={resultData} />
           )}
 
+          {/* 새로운 소셜 공유 버튼들 */}
+          <SocialShareButtons
+            url={typeof window !== 'undefined' ? window.location.href : ''}
+            title={`${resultData.testTitle} 결과`}
+            description={`나의 ${resultData.testTitle} 결과: ${resultData.title}`}
+            imageUrl={resultData.imageUrl || `${typeof window !== 'undefined' ? window.location.origin : ''}/icon.png`}
+            onShare={updateShareCount}
+          />
+
           <div className={styles.actions}>
-            <button onClick={shareResult} className={styles.shareButton}>
-              결과 공유하기
-            </button>
             <Link href={`/tests/${testId}`} className={styles.retryButton}>
               다시 테스트하기
             </Link>
