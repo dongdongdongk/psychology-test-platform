@@ -361,6 +361,7 @@ export default function EditTestPage() {
           </div>
         </div>
 
+
         <div className={styles.section}>
           <h2>이미지 설정</h2>
           
@@ -606,6 +607,7 @@ export default function EditTestPage() {
               <option value="medical">Medical - 병원 같은 깔끔하고 신뢰감 있는 스타일</option>
               <option value="soft">Soft - 부드럽고 온화한 파스텔 스타일</option>
               <option value="green">Green - 자연스럽고 편안한 녹색 스타일</option>
+              <option value="brown">Brown - 따뜻하고 자연스러운 브라운 스타일</option>
               <option value="values">Values - 가치관 테스트용 지혜롭고 신뢰감 있는 스타일</option>
             </select>
           </div>

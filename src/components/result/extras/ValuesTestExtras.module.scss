@@ -1,0 +1,412 @@
+.valuesExtras {
+  width: 100%;
+  margin-top: 40px;
+}
+
+.valueDetail {
+  margin-bottom: 32px;
+  text-align: center;
+
+  h3 {
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+  }
+}
+
+.valueCard {
+  background: var(--background-secondary);
+  border-radius: var(--border-radius-lg);
+  padding: 32px;
+  border-top: 4px solid;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+
+  &:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-4px);
+  }
+}
+
+.valueIcon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  font-size: 1.5rem;
+  color: white;
+}
+
+.valueCard h4 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.valueDescription {
+  color: var(--text-secondary);
+  font-size: 1.125rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.characteristicsSection {
+  background: var(--background-secondary);
+  border-radius: var(--border-radius-lg);
+  padding: 32px;
+  margin-bottom: 32px;
+
+  h3 {
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+}
+
+.characteristicsList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.characteristicItem {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: var(--background-primary);
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-light);
+  transition: all var(--transition-normal);
+
+  &:hover {
+    box-shadow: var(--shadow-sm);
+    transform: translateX(8px);
+  }
+
+  span {
+    color: var(--text-primary);
+    font-weight: 500;
+    line-height: 1.6;
+  }
+}
+
+.checkIcon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.growthSection {
+  background: var(--background-secondary);
+  border-radius: var(--border-radius-lg);
+  padding: 32px;
+  margin-bottom: 32px;
+
+  h3 {
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+}
+
+.growthTips {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.growthTip {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px;
+  background: var(--background-primary);
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-light);
+  transition: all var(--transition-normal);
+
+  &:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  p {
+    color: var(--text-primary);
+    line-height: 1.6;
+    margin: 0;
+    flex: 1;
+  }
+}
+
+.tipNumber {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 0.875rem;
+  flex-shrink: 0;
+}
+
+.practiceSection {
+  margin-bottom: 32px;
+
+  h3 {
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+}
+
+.practiceGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.practiceCard {
+  background: var(--background-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--border-radius-lg);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all var(--transition-normal);
+
+  &:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+    border-color: var(--primary-color);
+  }
+
+  span {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+}
+
+.practiceIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 0.875rem;
+  flex-shrink: 0;
+}
+
+.roadmapSection {
+  background: var(--background-secondary);
+  border-radius: var(--border-radius-lg);
+  padding: 32px;
+  margin-bottom: 32px;
+
+  h3 {
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 32px;
+    text-align: center;
+  }
+}
+
+.roadmapContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.roadmapStep {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 24px;
+  background: var(--background-primary);
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--border-light);
+  transition: all var(--transition-normal);
+
+  &:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateX(8px);
+  }
+}
+
+.stepNumber {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.stepContent {
+  flex: 1;
+
+  h4 {
+    color: var(--text-primary);
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+  }
+}
+
+.quoteSection {
+  margin-bottom: 32px;
+
+  h3 {
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+}
+
+.quoteCard {
+  background: var(--background-secondary);
+  border-left: 4px solid;
+  border-radius: var(--border-radius-md);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+.quoteText {
+  color: var(--text-primary);
+  font-size: 1.125rem;
+  font-style: italic;
+  line-height: 1.7;
+  text-align: center;
+}
+
+// Values 테마 전용 스타일
+[data-theme="values"] {
+  .valueCard,
+  .characteristicsSection,
+  .growthSection,
+  .roadmapSection {
+    background: var(--gradient-secondary);
+  }
+
+  .characteristicItem,
+  .growthTip,
+  .roadmapStep {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(5px);
+  }
+
+  .practiceCard,
+  .quoteCard {
+    background: var(--gradient-card);
+    backdrop-filter: blur(10px);
+  }
+}
+
+// 모바일 반응형
+@media (max-width: 768px) {
+  .valuesExtras {
+    margin-top: 24px;
+  }
+
+  .valueCard,
+  .characteristicsSection,
+  .growthSection,
+  .roadmapSection {
+    padding: 24px 20px;
+    margin-bottom: 24px;
+  }
+
+  .valueIcon {
+    width: 50px;
+    height: 50px;
+    font-size: 1.25rem;
+  }
+
+  .characteristicItem,
+  .growthTip {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .roadmapStep {
+    padding: 20px;
+    gap: 16px;
+  }
+
+  .stepNumber {
+    width: 36px;
+    height: 36px;
+    font-size: 0.875rem;
+  }
+
+  .practiceGrid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .practiceCard {
+    padding: 16px;
+  }
+
+  .practiceIcon {
+    width: 28px;
+    height: 28px;
+    font-size: 0.75rem;
+  }
+
+  .quoteCard {
+    padding: 20px;
+  }
+
+  .quoteText {
+    font-size: 1rem;
+  }
+}
+
+// 다크 테마 지원
+[data-theme="dark"] {
+  .characteristicItem,
+  .growthTip,
+  .roadmapStep,
+  .practiceCard,
+  .quoteCard {
+    background: var(--background-tertiary);
+    border-color: var(--border-color);
+  }
+}

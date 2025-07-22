@@ -6,6 +6,26 @@
   background: var(--background-primary);
 }
 
+// 메인 결과 이미지 (상단 패딩 적용)
+.mainResultImage {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  padding-top: 24px;
+}
+
+// 텍스트 결과 이미지 (패딩 없음)
+.textResultImage {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+// 하위 호환성을 위한 기존 클래스 유지
 .resultImage {
   width: 100%;
   max-width: 100%;
@@ -19,5 +39,9 @@
   .imagesContainer {
     padding: 0 16px;
     gap: 0;
+  }
+  
+  .mainResultImage {
+    padding-top: 16px; // 모바일에서는 조금 더 작은 패딩
   }
 }
