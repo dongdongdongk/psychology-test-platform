@@ -80,17 +80,22 @@ a {
   text-align: center;
   transition: all 0.2s ease;
   
-  &:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  // 터치 디바이스에서 호버 효과 비활성화
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
   }
   
   &.btn-primary {
     background: linear-gradient(135deg, #f5a3e8 0%, #d426c4 100%);
     color: white;
     
-    &:hover {
-      background: linear-gradient(135deg, #e649d1 0%, #b820a8 100%);
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        background: linear-gradient(135deg, #e649d1 0%, #b820a8 100%);
+      }
     }
   }
   

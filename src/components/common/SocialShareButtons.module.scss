@@ -23,9 +23,11 @@
   box-shadow: 0 4px 15px rgba(254, 229, 0, 0.3);
   min-width: 200px;
 
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(254, 229, 0, 0.4);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(254, 229, 0, 0.4);
+    }
   }
 
   &:active {
@@ -56,9 +58,11 @@
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
   }
 
   &:active {
@@ -75,8 +79,10 @@
   background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
   color: white;
 
-  &:hover {
-    box-shadow: 0 4px 15px rgba(225, 48, 108, 0.4);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      box-shadow: 0 4px 15px rgba(225, 48, 108, 0.4);
+    }
   }
 }
 
@@ -84,9 +90,11 @@
   background: #1877f2;
   color: white;
 
-  &:hover {
-    background: #166fe5;
-    box-shadow: 0 4px 15px rgba(24, 119, 242, 0.4);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background: #166fe5;
+      box-shadow: 0 4px 15px rgba(24, 119, 242, 0.4);
+    }
   }
 }
 
@@ -94,9 +102,11 @@
   background: #000000;
   color: white;
 
-  &:hover {
-    background: #1a1a1a;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background: #1a1a1a;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    }
   }
 }
 

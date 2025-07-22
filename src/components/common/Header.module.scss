@@ -68,9 +68,14 @@
       transition: color 0.2s ease;
       text-decoration: none;
       
-      &:hover,
       &.active {
         color: #f7bcb7;
+      }
+      
+      @media (hover: hover) and (pointer: fine) {
+        &:hover {
+          color: #f7bcb7;
+        }
       }
     }
   }

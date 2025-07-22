@@ -103,11 +103,13 @@
   transition: all var(--transition-normal);
   text-align: left;
   
-  &:hover {
-    background: var(--background-tertiary);
-    border-color: var(--border-color);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-sm);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background: var(--background-tertiary);
+      border-color: var(--border-color);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
   }
   
   &.selected {
@@ -166,10 +168,12 @@
   color: var(--text-primary);
   border-color: var(--border-light);
   
-  &:hover:not(:disabled) {
-    background: var(--background-primary);
-    border-color: var(--border-color);
-    transform: translateY(-1px);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover:not(:disabled) {
+      background: var(--background-primary);
+      border-color: var(--border-color);
+      transform: translateY(-1px);
+    }
   }
 }
 
@@ -178,10 +182,12 @@
   color: var(--background-primary);
   border-color: var(--primary-color);
   
-  &:hover:not(:disabled) {
-    filter: brightness(1.1);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover:not(:disabled) {
+      filter: brightness(1.1);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
   }
   
   &:active:not(:disabled) {
@@ -192,8 +198,10 @@
 .submitButton {
   background: var(--gradient-primary);
   
-  &:hover:not(:disabled) {
-    filter: brightness(1.15);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover:not(:disabled) {
+      filter: brightness(1.15);
+    }
   }
 }
 
