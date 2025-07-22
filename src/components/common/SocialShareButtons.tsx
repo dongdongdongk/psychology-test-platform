@@ -28,30 +28,56 @@ export default function SocialShareButtons({
 
   useEffect(() => {
     // 카카오 SDK 초기화
-    if (typeof window !== 'undefined' && window.Kakao && !window.Kakao.isInitialized()) {
-      // TODO: 실제 카카오 JavaScript 키로 교체 필요
+    if (typeof window !== 'undefined') {
+      console.log('🔍 카카오 SDK 디버그:');
+      console.log('- window.Kakao 존재:', !!window.Kakao);
+      console.log('- Kakao 이미 초기화됨:', window.Kakao?.isInitialized?.());
+      
       const KAKAO_KEY = process.env.NEXT_PUBLIC_KAKAO_KEY || 'YOUR_KAKAO_KEY';
-      if (KAKAO_KEY !== 'YOUR_KAKAO_KEY') {
-        window.Kakao.init(KAKAO_KEY);
+      console.log('- 카카오 키:', KAKAO_KEY);
+      console.log('- 현재 도메인:', window.location.hostname);
+      
+      if (window.Kakao && !window.Kakao.isInitialized()) {
+        if (KAKAO_KEY !== 'YOUR_KAKAO_KEY') {
+          try {
+            window.Kakao.init(KAKAO_KEY);
+            console.log('✅ 카카오 SDK 초기화 성공');
+            setIsKakaoInitialized(true);
+          } catch (error) {
+            console.error('❌ 카카오 SDK 초기화 실패:', error);
+          }
+        } else {
+          console.warn('⚠️ 카카오 키가 설정되지 않음');
+        }
+      } else if (window.Kakao?.isInitialized?.()) {
+        console.log('✅ 카카오 SDK 이미 초기화됨');
         setIsKakaoInitialized(true);
+      } else {
+        console.warn('❌ 카카오 SDK를 찾을 수 없음');
       }
     }
   }, []);
 
   // 카카오톡 공유
   const shareToKakao = async () => {
-    // 공유 카운트 증가
-    if (onShare) {
-      await onShare();
-    }
-
+    console.log('🚀 공유 버튼 클릭됨');
+    console.log('- isKakaoInitialized:', isKakaoInitialized);
+    console.log('- window.Kakao 존재:', !!window.Kakao);
+    
     if (!isKakaoInitialized || !window.Kakao) {
-      // 카카오 SDK가 없을 경우 폴백 - Web Share API 또는 클립보드 복사
+      console.log('🔄 카카오 SDK 없음 - 폴백 실행');
+      // 사용자 제스처를 유지하기 위해 비동기 작업 전에 공유 실행
       shareNative();
+      
+      // 공유 카운트는 백그라운드에서 비동기 실행
+      if (onShare) {
+        onShare().catch(console.error);
+      }
       return;
     }
 
     try {
+      console.log('📤 카카오톡 공유 시도 중...');
       window.Kakao.Share.sendDefault({
         objectType: 'feed',
         content: {
@@ -73,10 +99,21 @@ export default function SocialShareButtons({
           },
         ],
       });
+      console.log('✅ 카카오톡 공유 성공');
+      
+      // 성공 시에만 공유 카운트 증가
+      if (onShare) {
+        onShare().catch(console.error);
+      }
     } catch (error) {
-      console.error('카카오톡 공유 실패:', error);
+      console.error('❌ 카카오톡 공유 실패:', error);
       // 실패 시 폴백
       shareNative();
+      
+      // 공유 카운트는 백그라운드에서 비동기 실행
+      if (onShare) {
+        onShare().catch(console.error);
+      }
     }
   };
 
@@ -108,26 +145,49 @@ export default function SocialShareButtons({
   };
 
   // 페이스북 공유
-  const shareToFacebook = () => {
+  const shareToFacebook = async () => {
+    // 공유 카운트 증가 (백그라운드)
+    if (onShare) {
+      onShare().catch(console.error);
+    }
+    
     const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
     window.open(shareUrl, '_blank', 'width=600,height=400');
   };
 
   // X (트위터) 공유
-  const shareToTwitter = () => {
+  const shareToTwitter = async () => {
+    // 공유 카운트 증가 (백그라운드)
+    if (onShare) {
+      onShare().catch(console.error);
+    }
+    
     const text = `${title}\n${description}`;
     const shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
     window.open(shareUrl, '_blank', 'width=600,height=400');
   };
 
   // 인스타그램 공유 (모바일에서만 동작)
-  const shareToInstagram = () => {
+  const shareToInstagram = async () => {
+    // 공유 카운트 증가 (백그라운드)
+    if (onShare) {
+      onShare().catch(console.error);
+    }
+    
     // 인스타그램은 직접 링크 공유가 불가능하므로 클립보드 복사 후 안내
-    navigator.clipboard.writeText(url).then(() => {
+    try {
+      await navigator.clipboard.writeText(url);
       alert('링크가 복사되었습니다! 인스타그램 앱에서 붙여넣기 해주세요.');
-    }).catch(() => {
-      alert('인스타그램 앱에서 직접 공유해주세요: ' + url);
-    });
+    } catch (error) {
+      // 클립보드 복사 실패시 수동 복사 안내
+      const textArea = document.createElement('textarea');
+      textArea.value = url;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      alert('링크가 복사되었습니다! 인스타그램 앱에서 붙여넣기 해주세요.');
+    }
   };
 
   return (
