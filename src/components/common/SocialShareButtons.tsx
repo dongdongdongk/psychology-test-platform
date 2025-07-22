@@ -27,33 +27,60 @@ export default function SocialShareButtons({
   const [isKakaoInitialized, setIsKakaoInitialized] = useState(false);
 
   useEffect(() => {
-    // 카카오 SDK 초기화
+    // 카카오 SDK 상태 확인 및 수동 초기화 시도
     if (typeof window !== 'undefined') {
-      console.log('🔍 카카오 SDK 디버그:');
+      console.log('🔍 카카오 SDK 상태 확인:');
       console.log('- window.Kakao 존재:', !!window.Kakao);
-      console.log('- Kakao 이미 초기화됨:', window.Kakao?.isInitialized?.());
-      
-      const KAKAO_KEY = process.env.NEXT_PUBLIC_KAKAO_KEY || 'YOUR_KAKAO_KEY';
-      console.log('- 카카오 키:', KAKAO_KEY);
+      console.log('- Kakao 초기화됨:', window.Kakao?.isInitialized?.());
       console.log('- 현재 도메인:', window.location.hostname);
       
-      if (window.Kakao && !window.Kakao.isInitialized()) {
-        if (KAKAO_KEY !== 'YOUR_KAKAO_KEY') {
-          try {
-            window.Kakao.init(KAKAO_KEY);
-            console.log('✅ 카카오 SDK 초기화 성공');
-            setIsKakaoInitialized(true);
-          } catch (error) {
-            console.error('❌ 카카오 SDK 초기화 실패:', error);
-          }
-        } else {
-          console.warn('⚠️ 카카오 키가 설정되지 않음');
-        }
-      } else if (window.Kakao?.isInitialized?.()) {
-        console.log('✅ 카카오 SDK 이미 초기화됨');
+      if (window.Kakao?.isInitialized?.()) {
         setIsKakaoInitialized(true);
+        console.log('✅ 카카오 SDK 사용 가능');
+      } else if (window.Kakao) {
+        // SDK는 로드되었지만 초기화되지 않은 경우 수동 초기화 시도
+        console.log('🔧 카카오 SDK 수동 초기화 시도');
+        const KAKAO_KEY = process.env.NEXT_PUBLIC_KAKAO_KEY || 'db6a0626702613f3bd014a0cf06a12a5';
+        try {
+          window.Kakao.init(KAKAO_KEY);
+          console.log('✅ 카카오 SDK 수동 초기화 성공');
+          setIsKakaoInitialized(true);
+        } catch (error) {
+          console.error('❌ 카카오 SDK 수동 초기화 실패:', error);
+          // 재시도
+          setTimeout(() => {
+            try {
+              if (window.Kakao && !window.Kakao.isInitialized()) {
+                window.Kakao.init(KAKAO_KEY);
+                console.log('✅ 카카오 SDK 지연 초기화 성공');
+                setIsKakaoInitialized(true);
+              }
+            } catch (retryError) {
+              console.error('❌ 카카오 SDK 재시도 실패:', retryError);
+            }
+          }, 1000);
+        }
       } else {
-        console.warn('❌ 카카오 SDK를 찾을 수 없음');
+        console.log('⏳ 카카오 SDK 아직 로드되지 않음 - 잠시 후 재시도');
+        // 1초 후 재시도 (스크립트 로딩 대기)
+        setTimeout(() => {
+          if (window.Kakao?.isInitialized?.()) {
+            setIsKakaoInitialized(true);
+            console.log('✅ 카카오 SDK 지연 로딩 완료');
+          } else if (window.Kakao) {
+            // 로드되었지만 초기화 안됨
+            const KAKAO_KEY = process.env.NEXT_PUBLIC_KAKAO_KEY || 'db6a0626702613f3bd014a0cf06a12a5';
+            try {
+              window.Kakao.init(KAKAO_KEY);
+              console.log('✅ 카카오 SDK 지연 초기화 성공');
+              setIsKakaoInitialized(true);
+            } catch (error) {
+              console.error('❌ 카카오 SDK 지연 초기화 실패:', error);
+            }
+          } else {
+            console.warn('❌ 카카오 SDK 사용 불가 - 폴백 모드');
+          }
+        }, 1000);
       }
     }
   }, []);
@@ -78,7 +105,16 @@ export default function SocialShareButtons({
 
     try {
       console.log('📤 카카오톡 공유 시도 중...');
-      window.Kakao.Share.sendDefault({
+      
+      // 임시 버튼 생성하여 즉시 클릭하는 방식
+      const tempButtonId = 'temp-kakao-share-btn-' + Date.now();
+      const tempButton = document.createElement('div');
+      tempButton.id = tempButtonId;
+      tempButton.style.display = 'none';
+      document.body.appendChild(tempButton);
+      
+      window.Kakao.Share.createDefaultButton({
+        container: '#' + tempButtonId,
         objectType: 'feed',
         content: {
           title: title,
@@ -99,6 +135,15 @@ export default function SocialShareButtons({
           },
         ],
       });
+      
+      // 임시 버튼 클릭으로 공유 실행
+      tempButton.click();
+      
+      // 임시 버튼 정리
+      setTimeout(() => {
+        document.body.removeChild(tempButton);
+      }, 100);
+      
       console.log('✅ 카카오톡 공유 성공');
       
       // 성공 시에만 공유 카운트 증가
