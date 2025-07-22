@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { StressResult } from '@/data/stress-test'
+import SocialShareButtons from '@/components/common/SocialShareButtons'
 import styles from './StressResult.module.scss'
 
 interface Props {
@@ -47,37 +48,14 @@ export default function StressResultPage({ params }: Props) {
     setResult(mockResults[params.type])
   }, [params.type])
 
-  const handleShare = async () => {
-    // 공유 카운트 증가
+  // 공유 카운트 증가 API 호출을 위한 함수
+  const updateShareCount = async () => {
     try {
       await fetch('/api/tests/stresscheck001test2025/share', {
         method: 'POST'
       })
     } catch (error) {
       console.error('공유 카운트 업데이트 실패:', error)
-    }
-    
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: '스트레스 지수 테스트 결과',
-          text: `나의 스트레스 지수는 "${result?.title}"입니다. 여러분도 테스트해보세요!`,
-          url: window.location.origin
-        })
-      } catch (error) {
-        console.log('공유 실패:', error)
-      }
-    } else {
-      // Fallback for browsers that don't support Web Share API
-      const url = window.location.origin
-      const text = `나의 스트레스 지수는 "${result?.title}"입니다. 여러분도 테스트해보세요! ${url}`
-      
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(text)
-        alert('링크가 클립보드에 복사되었습니다!')
-      } else {
-        alert('공유 기능이 지원되지 않는 브라우저입니다.')
-      }
     }
   }
 
@@ -158,14 +136,17 @@ export default function StressResultPage({ params }: Props) {
               </div>
             </section>
           </div>
+
+          {/* 새로운 소셜 공유 버튼들 */}
+          <SocialShareButtons
+            url={typeof window !== 'undefined' ? window.location.href : ''}
+            title="스트레스 지수 테스트 결과"
+            description={`나의 스트레스 지수는 "${result?.title}"입니다. 여러분도 테스트해보세요!`}
+            imageUrl={`${typeof window !== 'undefined' ? window.location.origin : ''}/icon.png`}
+            onShare={updateShareCount}
+          />
           
           <div className={styles.actions}>
-            <button 
-              className={styles.shareButton}
-              onClick={handleShare}
-            >
-              결과 공유하기
-            </button>
             <Link href="/tests/stress-test" className={styles.retestButton}>
               다시 테스트하기
             </Link>
