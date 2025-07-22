@@ -27,6 +27,7 @@ export interface ResultData {
   imageUrl: string
   textImageUrl?: string
   testTitle: string
+  thumbnailUrl?: string // 테스트 썸네일 URL 추가
   styleTheme: string
   enableRadarChart: boolean
   enableBarChart: boolean

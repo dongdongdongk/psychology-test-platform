@@ -21,6 +21,7 @@ export async function POST(
       select: {
         id: true,
         title: true,
+        thumbnailUrl: true,
         styleTheme: true,
         enableRadarChart: true,
         enableBarChart: true,
@@ -105,6 +106,7 @@ export async function POST(
       imageUrl: result.image_url,
       textImageUrl: textImageUrl,
       testTitle: test.title,
+      thumbnailUrl: test.thumbnailUrl, // 테스트 썸네일 URL 추가
       styleTheme: test.styleTheme,
       enableRadarChart: test.enableRadarChart ?? false,
       enableBarChart: test.enableBarChart ?? false,
@@ -147,6 +149,7 @@ export async function GET(
       select: {
         id: true,
         title: true,
+        thumbnailUrl: true,
         styleTheme: true,
         enableRadarChart: true,
         enableBarChart: true,
@@ -187,6 +190,7 @@ export async function GET(
       imageUrl: result.image_url,
       textImageUrl: textImageUrl,
       testTitle: test.title,
+      thumbnailUrl: test.thumbnailUrl, // 테스트 썸네일 URL 추가
       styleTheme: test.styleTheme,
       enableRadarChart: test.enableRadarChart ?? false,
       enableBarChart: test.enableBarChart ?? false,

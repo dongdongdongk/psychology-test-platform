@@ -90,7 +90,7 @@ export default function ResultPage() {
             url={typeof window !== 'undefined' ? window.location.href : ''}
             title={`${resultData.testTitle} 결과`}
             description={`나의 ${resultData.testTitle} 결과: ${resultData.title}`}
-            imageUrl={resultData.imageUrl || `${typeof window !== 'undefined' ? window.location.origin : ''}/icon.png`}
+            imageUrl={resultData.thumbnailUrl || resultData.imageUrl}
             onShare={updateShareCount}
           />
 
