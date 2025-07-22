@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import KakaoScript from '@/components/common/KakaoScript'
 import './globals.scss'
 
 export const metadata: Metadata = {
@@ -26,12 +27,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
-      <head>
-        <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js"
-          integrity="sha384-DKYJZ8NLiK8MN4/C5P2dtSmLQ4KwPaoqAfyA/DfmEc1VDxu4yyQXcy2VVI6gLl0t" 
-          crossOrigin="anonymous"></script>
-      </head>
       <body>
+        {/* 카카오 JavaScript SDK */}
+        <KakaoScript />
         <div id="root">
           {children}
         </div>

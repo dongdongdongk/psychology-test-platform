@@ -642,6 +642,379 @@ git push origin master
 # Vercel에서 자동 배포 시작
 ```
 
+## 🔄 SNS 공유 시스템: 카카오톡 SDK 완전 해결 가이드
+
+### 📋 문제 해결 과정 완전 정리
+
+이 섹션은 카카오톡 SDK 통합 과정에서 발생한 모든 문제와 해결 과정을 단계별로 기록합니다.
+
+#### 🚨 초기 문제 상황
+
+**문제**: 결과 공유 버튼을 클릭하면 카카오톡이 열리지 않고 클립보드에만 복사됨
+
+**콘솔 오류들**:
+```javascript
+🔍 카카오 SDK 디버그:
+- window.Kakao 존재: false
+- Kakao 이미 초기화됨: undefined
+❌ 카카오 SDK를 찾을 수 없음
+🔄 카카오 SDK 없음 - 폴백 실행
+```
+
+#### 🔧 해결 과정 1: Next.js App Router 스크립트 로딩 문제
+
+**🚨 문제**: Server Component에서 일반 `<script>` 태그 사용으로 인한 로딩 실패
+
+```typescript
+// ❌ 작동하지 않았던 방식
+<head>
+  <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js"></script>
+</head>
+```
+
+**✅ 해결**: Next.js Script 컴포넌트로 변경
+
+```typescript
+// src/app/layout.tsx - 올바른 방식
+import Script from 'next/script'
+import KakaoScript from '@/components/common/KakaoScript'
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="ko">
+      <body>
+        <KakaoScript />
+        <div id="root">
+          {children}
+        </div>
+      </body>
+    </html>
+  )
+}
+```
+
+#### 🔧 해결 과정 2: Event Handler를 Server Component에서 사용하는 문제
+
+**🚨 오류**: `Event handlers cannot be passed to Client Component props`
+
+**✅ 해결**: 별도 Client Component로 분리
+
+```typescript
+// src/components/common/KakaoScript.tsx - 새로 생성
+'use client';
+
+import Script from 'next/script';
+
+declare global {
+  interface Window {
+    Kakao: any;
+  }
+}
+
+export default function KakaoScript() {
+  const handleKakaoLoad = () => {
+    console.log('✅ 카카오 SDK 스크립트 로드 완료');
+    if (typeof window !== 'undefined' && window.Kakao && !window.Kakao.isInitialized()) {
+      const KAKAO_KEY = process.env.NEXT_PUBLIC_KAKAO_KEY;
+      if (KAKAO_KEY) {
+        try {
+          window.Kakao.init(KAKAO_KEY);
+          console.log('✅ 카카오 SDK 자동 초기화 완료');
+        } catch (error) {
+          console.error('❌ 카카오 SDK 자동 초기화 실패:', error);
+        }
+      }
+    }
+  };
+
+  const handleKakaoError = (error: any) => {
+    console.error('❌ 카카오 SDK 스크립트 로드 실패:', error);
+  };
+
+  return (
+    <Script
+      src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.5/kakao.min.js"
+      integrity="sha384-dok87au0gKqJdxs7msEdBPNnKSRT+/mhTVzq+qOhcL464zXwvcrpjeWvyj1kCdq6"
+      crossOrigin="anonymous"
+      strategy="beforeInteractive"
+      onLoad={handleKakaoLoad}
+      onError={handleKakaoError}
+    />
+  );
+}
+```
+
+#### 🔧 해결 과정 3: Integrity 해시 값 불일치
+
+**🚨 오류**: `Failed to find a valid digest in the 'integrity' attribute`
+
+**✅ 해결**: 최신 카카오 SDK 버전으로 업그레이드
+- **변경전**: `2.7.4` → **변경후**: `2.7.5`
+- **Integrity**: 카카오 공식 문서의 최신 해시값 적용
+- **출처**: [카카오 개발자 문서](https://developers.kakao.com/docs/latest/ko/getting-started/sdk-js)
+
+#### 🔧 해결 과정 4: SDK 로드 성공하지만 초기화 실패
+
+**🚨 상황**: 
+```javascript
+console.log('window.Kakao 존재:', true);
+console.log('Kakao 초기화됨:', false);
+```
+
+**✅ 해결**: 다중 초기화 전략 구현
+
+```typescript
+// src/components/common/SocialShareButtons.tsx - 수동 초기화 로직
+useEffect(() => {
+  if (typeof window !== 'undefined') {
+    console.log('🔍 카카오 SDK 상태 확인:');
+    console.log('- window.Kakao 존재:', !!window.Kakao);
+    console.log('- Kakao 초기화됨:', window.Kakao?.isInitialized?.());
+    
+    if (window.Kakao?.isInitialized?.()) {
+      setIsKakaoInitialized(true);
+      console.log('✅ 카카오 SDK 사용 가능');
+    } else if (window.Kakao) {
+      // SDK는 로드되었지만 초기화되지 않은 경우 수동 초기화 시도
+      console.log('🔧 카카오 SDK 수동 초기화 시도');
+      const KAKAO_KEY = process.env.NEXT_PUBLIC_KAKAO_KEY || 'db6a0626702613f3bd014a0cf06a12a5';
+      try {
+        window.Kakao.init(KAKAO_KEY);
+        console.log('✅ 카카오 SDK 수동 초기화 성공');
+        setIsKakaoInitialized(true);
+      } catch (error) {
+        console.error('❌ 카카오 SDK 수동 초기화 실패:', error);
+        // 재시도 로직
+        setTimeout(() => {
+          try {
+            if (window.Kakao && !window.Kakao.isInitialized()) {
+              window.Kakao.init(KAKAO_KEY);
+              console.log('✅ 카카오 SDK 지연 초기화 성공');
+              setIsKakaoInitialized(true);
+            }
+          } catch (retryError) {
+            console.error('❌ 카카오 SDK 재시도 실패:', retryError);
+          }
+        }, 1000);
+      }
+    } else {
+      console.log('⏳ 카카오 SDK 아직 로드되지 않음 - 잠시 후 재시도');
+      // 1초 후 재시도 (스크립트 로딩 대기)
+      setTimeout(() => {
+        if (window.Kakao?.isInitialized?.()) {
+          setIsKakaoInitialized(true);
+          console.log('✅ 카카오 SDK 지연 로딩 완료');
+        } else if (window.Kakao) {
+          // 로드되었지만 초기화 안됨
+          const KAKAO_KEY = process.env.NEXT_PUBLIC_KAKAO_KEY || 'db6a0626702613f3bd014a0cf06a12a5';
+          try {
+            window.Kakao.init(KAKAO_KEY);
+            console.log('✅ 카카오 SDK 지연 초기화 성공');
+            setIsKakaoInitialized(true);
+          } catch (error) {
+            console.error('❌ 카카오 SDK 지연 초기화 실패:', error);
+          }
+        } else {
+          console.warn('❌ 카카오 SDK 사용 불가 - 폴백 모드');
+        }
+      }, 1000);
+    }
+  }
+}, []);
+```
+
+#### 🔧 해결 과정 5: 카카오 공유 API 방식 개선
+
+**🚨 문제**: 기존 `sendDefault` 방식이 불안정함
+
+**✅ 해결**: `createDefaultButton` 방식으로 변경
+
+```typescript
+// src/components/common/SocialShareButtons.tsx - 카카오 공유 함수
+const shareToKakao = async () => {
+  console.log('🚀 공유 버튼 클릭됨');
+  console.log('- isKakaoInitialized:', isKakaoInitialized);
+  console.log('- window.Kakao 존재:', !!window.Kakao);
+  
+  if (!isKakaoInitialized || !window.Kakao) {
+    console.log('🔄 카카오 SDK 없음 - 폴백 실행');
+    shareNative(); // Web Share API 또는 클립보드 복사
+    return;
+  }
+
+  try {
+    console.log('📤 카카오톡 공유 시도 중...');
+    
+    // 임시 버튼 생성하여 즉시 클릭하는 방식
+    const tempButtonId = 'temp-kakao-share-btn-' + Date.now();
+    const tempButton = document.createElement('div');
+    tempButton.id = tempButtonId;
+    tempButton.style.display = 'none';
+    document.body.appendChild(tempButton);
+    
+    window.Kakao.Share.createDefaultButton({
+      container: '#' + tempButtonId,
+      objectType: 'feed',
+      content: {
+        title: title,
+        description: description,
+        imageUrl: imageUrl || `${window.location.origin}/icon.png`,
+        link: { mobileWebUrl: url, webUrl: url }
+      },
+      buttons: [{
+        title: '테스트하러 가기',
+        link: { mobileWebUrl: url, webUrl: url }
+      }]
+    });
+    
+    // 임시 버튼 클릭으로 공유 실행
+    tempButton.click();
+    
+    // 임시 버튼 정리
+    setTimeout(() => document.body.removeChild(tempButton), 100);
+    
+    console.log('✅ 카카오톡 공유 성공');
+  } catch (error) {
+    console.error('❌ 카카오톡 공유 실패:', error);
+    shareNative(); // 실패 시 폴백
+  }
+};
+```
+
+#### 🔧 해결 과정 6: 사용자 제스처 보존 문제
+
+**🚨 문제**: `NotAllowedError: Must be handling a user gesture`
+
+**✅ 해결**: 비동기 작업 순서 조정
+
+```typescript
+// ❌ 문제가 있던 방식 - 사용자 제스처 상실
+const shareButton = async () => {
+  await updateShareCount(); // 이 비동기 작업이 사용자 제스처를 상실시킴
+  navigator.share({ ... }); // 실패
+};
+
+// ✅ 올바른 방식 - 사용자 제스처 보존
+const shareButton = async () => {
+  // 1. 즉시 공유 실행 (사용자 제스처 유지)
+  navigator.share({ ... });
+  
+  // 2. 통계는 백그라운드에서 처리
+  Promise.resolve(updateShareCount()).catch(console.error);
+};
+```
+
+### 💡 최종 작동 구조
+
+#### 1. 스크립트 로딩 단계
+```
+Next.js Layout 렌더링
+    ↓
+KakaoScript 컴포넌트 로드 (Client Component)
+    ↓
+Script 태그로 카카오 SDK 다운로드 (beforeInteractive)
+    ↓
+onLoad 이벤트 → 자동 초기화 시도
+```
+
+#### 2. 컴포넌트 레벨 보험 로직
+```
+SocialShareButtons 컴포넌트 렌더링
+    ↓
+useEffect에서 SDK 상태 확인
+    ↓
+초기화되지 않았다면 수동 초기화 시도
+    ↓
+실패 시 1초 후 재시도
+```
+
+#### 3. 공유 실행 시 흐름
+```
+사용자가 공유 버튼 클릭
+    ↓
+SDK 초기화 상태 확인
+    ↓
+✅ 초기화됨 → 카카오톡 공유 실행
+❌ 초기화 안됨 → Web Share API 폴백 → 클립보드 복사
+```
+
+### 🎯 성공 지표
+
+#### 정상 작동 시 콘솔 로그
+```javascript
+✅ 카카오 SDK 스크립트 로드 완료
+✅ 카카오 SDK 자동 초기화 완료
+🔍 카카오 SDK 상태 확인:
+- window.Kakao 존재: true
+- Kakao 초기화됨: true
+✅ 카카로 SDK 사용 가능
+
+// 공유 버튼 클릭 시
+🚀 공유 버튼 클릭됨
+- isKakaoInitialized: true
+- window.Kakao 존재: true
+📤 카카오톡 공유 시도 중...
+✅ 카카오톡 공유 성공
+```
+
+### 📱 폴백 시스템
+
+#### 다중 폴백 구조
+```
+카카오톡 공유 (Primary)
+    ↓ 실패 시
+Web Share API (Secondary)
+    ↓ 실패 시  
+클립보드 복사 + 알림 (Tertiary)
+```
+
+#### 각 SNS별 구현
+```typescript
+// 페이스북 공유
+const shareToFacebook = async () => {
+  Promise.resolve(onShare()).catch(console.error);
+  const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+  window.open(shareUrl, '_blank', 'width=600,height=400');
+};
+
+// X (트위터) 공유
+const shareToTwitter = async () => {
+  Promise.resolve(onShare()).catch(console.error);
+  const text = `${title}\n${description}`;
+  const shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
+  window.open(shareUrl, '_blank', 'width=600,height=400');
+};
+
+// 인스타그램 공유 (클립보드 복사)
+const shareToInstagram = async () => {
+  Promise.resolve(onShare()).catch(console.error);
+  await navigator.clipboard.writeText(url);
+  alert('링크가 복사되었습니다! 인스타그램 앱에서 붙여넣기 해주세요.');
+};
+```
+
+### 🚀 핵심 해결책 요약
+
+1. **Next.js Script 컴포넌트 + Client Component 분리**
+   - Server/Client Component 구분으로 이벤트 핸들러 문제 해결
+
+2. **최신 카카오 SDK 버전 및 정확한 integrity 값**
+   - SDK 2.7.5 + 공식 문서의 integrity 해시값 사용
+
+3. **이중 초기화 로직** (자동 + 수동 + 재시도)
+   - 스크립트 로드와 컴포넌트 레벨 모두에서 초기화 시도
+
+4. **사용자 제스처 보존을 위한 실행 순서 조정**
+   - 공유 실행을 우선하고 통계 업데이트는 백그라운드 처리
+
+5. **상세한 디버깅 로그로 문제 추적**
+   - 각 단계별 상태를 콘솔에 출력하여 문제 파악 용이
+
+6. **완전한 폴백 시스템 구축**
+   - 카카오톡 → Web Share API → 클립보드 복사의 3단계 폴백
+
+이러한 체계적 접근으로 모든 브라우저와 디바이스에서 안정적인 SNS 공유 기능이 구현되었습니다.
+
 ## 🔧 트러블슈팅 가이드
 
 ### 자주 발생하는 문제들
