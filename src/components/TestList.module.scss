@@ -87,9 +87,11 @@
       cursor: pointer;
       transition: all 0.2s ease;
       
-      &:hover {
-        border-color: #f7bcb7;
-        color: #f7bcb7;
+      @media (hover: hover) and (pointer: fine) {
+        &:hover {
+          border-color: #f7bcb7;
+          color: #f7bcb7;
+        }
       }
       
       &.active {
@@ -128,10 +130,12 @@
   cursor: pointer;
   height: auto;
   
-  &:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 16px 48px rgba(247, 188, 183, 0.2), 0 8px 16px rgba(0, 0, 0, 0.04);
-    border-color: rgba(247, 188, 183, 0.15);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 16px 48px rgba(247, 188, 183, 0.2), 0 8px 16px rgba(0, 0, 0, 0.04);
+      border-color: rgba(247, 188, 183, 0.15);
+    }
   }
   
   .cardImage {
@@ -150,8 +154,10 @@
       transition: transform 0.5s ease;
     }
     
-    &:hover img {
-      transform: scale(1.05);
+    @media (hover: hover) and (pointer: fine) {
+      &:hover img {
+        transform: scale(1.05);
+      }
     }
   }
   
