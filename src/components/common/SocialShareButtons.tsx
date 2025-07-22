@@ -148,7 +148,7 @@ export default function SocialShareButtons({
   const shareToFacebook = async () => {
     // 공유 카운트 증가 (백그라운드)
     if (onShare) {
-      onShare().catch(console.error);
+      Promise.resolve(onShare()).catch(console.error);
     }
     
     const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
@@ -159,7 +159,7 @@ export default function SocialShareButtons({
   const shareToTwitter = async () => {
     // 공유 카운트 증가 (백그라운드)
     if (onShare) {
-      onShare().catch(console.error);
+      Promise.resolve(onShare()).catch(console.error);
     }
     
     const text = `${title}\n${description}`;
@@ -171,7 +171,7 @@ export default function SocialShareButtons({
   const shareToInstagram = async () => {
     // 공유 카운트 증가 (백그라운드)
     if (onShare) {
-      onShare().catch(console.error);
+      Promise.resolve(onShare()).catch(console.error);
     }
     
     // 인스타그램은 직접 링크 공유가 불가능하므로 클립보드 복사 후 안내
