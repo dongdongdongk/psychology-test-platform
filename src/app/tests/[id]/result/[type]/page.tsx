@@ -5,9 +5,13 @@ import Link from 'next/link'
 import Header from '@/components/common/Header'
 import { useTestResult } from '@/hooks/useTestResult'
 import { useResultTitle } from '@/hooks/useResultTitle'
+import { shouldShowTitle } from '@/lib/testConfig'
 import ResultImages from '@/components/result/ResultImages'
 import RadarChartSection from '@/components/result/RadarChartSection'
 import BarChartSection from '@/components/result/BarChartSection'
+import StressTestExtras from '@/components/result/extras/StressTestExtras'
+import ValuesTestExtras from '@/components/result/extras/ValuesTestExtras'
+import FinanceTestExtras from '@/components/result/extras/FinanceTestExtras'
 import styles from './ResultPage.module.scss'
 
 export default function ResultPage() {
@@ -80,7 +84,10 @@ export default function ResultPage() {
       <Header />
       <div className={styles.container}>
         <div className={styles.resultContainer}>
-          <h1 className={styles.title}>{resultTitle}</h1>
+          {/* 테스트 설정에 따라 제목 표시 여부 결정 */}
+          {shouldShowTitle(testId) && (
+            <h1 className={styles.title}>{resultTitle}</h1>
+          )}
           
           <BarChartSection 
             resultData={resultData} 
@@ -92,7 +99,19 @@ export default function ResultPage() {
             resultData={resultData} 
             testId={testId} 
           />
+
+          {/* 테스트별 특화 컨텐츠 */}
+          {/* {testId === 'stresscheck001test2025' && (
+            <StressTestExtras resultData={resultData} />
+          )} */}
           
+          {/* {testId === 'valuetest2025' && (
+            <ValuesTestExtras resultData={resultData} />
+          )} */}
+          
+          {testId === 'cmd9un7aq0006ut7b7p9s40q0' && (
+            <FinanceTestExtras resultData={resultData} />
+          )}
 
           <div className={styles.actions}>
             <button onClick={shareResult} className={styles.shareButton}>

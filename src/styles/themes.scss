@@ -251,7 +251,49 @@
   --gradient-background: linear-gradient(135deg, #fafefb 0%, #f4fbf2 50%, #eef7ea 100%);
 }
 
-// 10. Values 테마 (가치관 테스트용 - 지혜롭고 신뢰감 있는 느낌)
+// 10. Brown 테마 (따뜻하고 자연스러운 브라운 계열 - EDDFC8 기반)
+[data-theme="brown"] {
+  --primary-color: #eddfc8;
+  --primary-hover: #e5d1b5;
+  --primary-light: rgba(237, 223, 200, 0.15);
+  --primary-dark: #d4c2a0;
+  
+  --secondary-color: #b8956a;
+  --secondary-hover: #a68558;
+  --secondary-light: rgba(184, 149, 106, 0.15);
+  
+  --accent-color: #8b5a3c;
+  --accent-hover: #7a4e33;
+  --accent-light: rgba(139, 90, 60, 0.15);
+  
+  --background-primary: #fffcf7;
+  --background-secondary: #fef9f2;
+  --background-tertiary: #fdf5eb;
+  
+  --text-primary: #3d2914;
+  --text-secondary: #5c3e26;
+  --text-tertiary: #8b6f47;
+  
+  --border-color: rgba(237, 223, 200, 0.4);
+  --border-light: rgba(139, 90, 60, 0.1);
+  
+  --gradient-primary: linear-gradient(135deg, #eddfc8 0%, #e5d1b5 50%, #d4c2a0 100%);
+  --gradient-secondary: linear-gradient(135deg, #fffcf7 0%, #fef9f2 50%, #fdf5eb 100%);
+  --gradient-background: linear-gradient(135deg, #fffcf7 0%, #fef9f2 30%, #fdf5eb 70%, #f9f0e4 100%);
+  
+  // 브라운 테마 전용 그라데이션
+  --gradient-warm: linear-gradient(135deg, #eddfc8 0%, #d4c2a0 50%, #b8956a 100%);
+  --gradient-earth: linear-gradient(135deg, #8b5a3c 0%, #b8956a 50%, #d4c2a0 100%);
+  --gradient-coffee: linear-gradient(135deg, #6b4423 0%, #8b5a3c 50%, #b8956a 100%);
+  
+  // 특별한 그림자
+  --shadow-brown-sm: 0 2px 8px rgba(139, 90, 60, 0.1);
+  --shadow-brown-md: 0 4px 16px rgba(139, 90, 60, 0.15);
+  --shadow-brown-lg: 0 8px 32px rgba(139, 90, 60, 0.2);
+  --shadow-warm: 0 4px 20px rgba(237, 223, 200, 0.3);
+}
+
+// 11. Values 테마 (가치관 테스트용 - 지혜롭고 신뢰감 있는 느낌)
 [data-theme="values"] {
   --primary-color: #4f46e5;
   --primary-hover: #4338ca;
@@ -368,6 +410,224 @@
 
 .theme-text {
   color: var(--text-tertiary);
+}
+
+// Brown 테마 전용 컴포넌트 스타일
+[data-theme="brown"] {
+  .theme-button {
+    background: var(--gradient-warm);
+    color: var(--text-primary);
+    border: 2px solid var(--primary-color);
+    border-radius: var(--border-radius-lg);
+    padding: 14px 28px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    box-shadow: var(--shadow-brown-md);
+    position: relative;
+    overflow: hidden;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: left 0.6s ease;
+    }
+    
+    &:hover {
+      background: var(--gradient-earth);
+      color: white;
+      border-color: var(--accent-color);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-warm);
+      
+      &::before {
+        left: 100%;
+      }
+    }
+    
+    &:active {
+      transform: translateY(-1px);
+    }
+  }
+  
+  .theme-card {
+    background: var(--gradient-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-xl);
+    padding: 28px;
+    box-shadow: var(--shadow-brown-sm);
+    position: relative;
+    overflow: hidden;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--gradient-warm);
+      border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+    }
+    
+    &:hover {
+      box-shadow: var(--shadow-brown-lg);
+      transform: translateY(-6px);
+      border-color: var(--primary-color);
+      background: var(--background-primary);
+    }
+  }
+  
+  .theme-input {
+    background: var(--background-primary);
+    border: 2px solid var(--border-light);
+    border-radius: var(--border-radius-lg);
+    padding: 16px 20px;
+    color: var(--text-primary);
+    font-weight: 500;
+    
+    &:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      background: var(--background-secondary);
+      box-shadow: 0 0 0 4px var(--primary-light), var(--shadow-brown-md);
+      transform: translateY(-2px);
+    }
+    
+    &::placeholder {
+      color: var(--text-tertiary);
+      font-weight: 400;
+    }
+  }
+  
+  .theme-title {
+    background: var(--gradient-earth);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+  }
+  
+  .theme-subtitle {
+    color: var(--text-secondary);
+    font-weight: 600;
+  }
+  
+  // 브라운 테마별 특별 스타일
+  .brown-warm {
+    background: var(--gradient-warm);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .brown-earth {
+    background: var(--gradient-earth);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .brown-coffee {
+    background: var(--gradient-coffee);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  // 특별한 호버 효과
+  .brown-card {
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    &:hover {
+      transform: translateY(-8px) scale(1.02);
+    }
+    
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--gradient-warm);
+      opacity: 0;
+      border-radius: inherit;
+      transition: opacity 0.3s ease;
+      z-index: -1;
+    }
+    
+    &:hover::after {
+      opacity: 0.08;
+    }
+  }
+  
+  // 모바일 친화적 스타일
+  @media (max-width: 768px) {
+    .theme-button {
+      padding: 16px 24px;
+      font-size: 16px;
+      border-radius: var(--border-radius-md);
+      
+      &:hover {
+        transform: translateY(-2px);
+      }
+    }
+    
+    .theme-card {
+      padding: 20px;
+      border-radius: var(--border-radius-lg);
+      
+      &:hover {
+        transform: translateY(-3px);
+      }
+    }
+    
+    .theme-input {
+      padding: 14px 16px;
+      font-size: 16px; // iOS zoom 방지
+      
+      &:focus {
+        transform: translateY(-1px);
+      }
+    }
+    
+    .brown-card {
+      &:hover {
+        transform: translateY(-4px) scale(1.01);
+      }
+    }
+  }
+  
+  // 터치 디바이스 최적화
+  @media (hover: none) and (pointer: coarse) {
+    .theme-button {
+      &:active {
+        transform: scale(0.98);
+        transition: transform 0.1s ease;
+      }
+    }
+    
+    .theme-card {
+      &:active {
+        transform: scale(0.98);
+        transition: transform 0.1s ease;
+      }
+    }
+    
+    .brown-card {
+      &:active {
+        transform: scale(0.98);
+        transition: transform 0.1s ease;
+      }
+    }
+  }
 }
 
 // Values 테마 전용 컴포넌트 스타일

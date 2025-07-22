@@ -17,7 +17,7 @@ export default function ResultImages({ resultData }: ResultImagesProps) {
         <img 
           src={resultData.imageUrl || '/placeholder-result.jpg'} 
           alt="결과 이미지"
-          className={styles.resultImage}
+          className={styles.mainResultImage}
         />
       )}
       
@@ -25,7 +25,7 @@ export default function ResultImages({ resultData }: ResultImagesProps) {
         <img 
           src={resultData.textImageUrl} 
           alt="결과 텍스트 이미지"
-          className={styles.resultImage}
+          className={styles.textResultImage}
         />
       )}
     </div>

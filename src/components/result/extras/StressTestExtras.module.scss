@@ -1,0 +1,298 @@
+.stressExtras {
+  width: 100%;
+  margin-top: 40px;
+}
+
+.stressLevel {
+  background: var(--background-secondary);
+  border-radius: var(--border-radius-lg);
+  padding: 32px;
+  margin-bottom: 32px;
+  text-align: center;
+  
+  h3 {
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+  }
+}
+
+.levelContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.levelIndicator {
+  padding: 12px 24px;
+  border-radius: var(--border-radius-lg);
+  color: white;
+  font-weight: 600;
+  font-size: 1.125rem;
+  min-width: 120px;
+}
+
+.levelText {
+  display: block;
+}
+
+.resultTitle {
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.managementSection {
+  background: var(--background-secondary);
+  border-radius: var(--border-radius-lg);
+  padding: 32px;
+  margin-bottom: 32px;
+
+  h3 {
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+}
+
+.tipsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tipItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px;
+  background: var(--background-primary);
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-light);
+  transition: all var(--transition-normal);
+
+  &:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+}
+
+.tipNumber {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 0.875rem;
+  flex-shrink: 0;
+}
+
+.tipText {
+  color: var(--text-primary);
+  line-height: 1.6;
+  margin: 0;
+  flex: 1;
+}
+
+.resourcesSection {
+  margin-bottom: 32px;
+
+  h3 {
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+}
+
+.resourceCards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.resourceCard {
+  background: var(--background-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--border-radius-lg);
+  padding: 24px;
+  transition: all var(--transition-normal);
+
+  &:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-4px);
+    border-color: var(--primary-color);
+  }
+
+  h4 {
+    color: var(--text-primary);
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin: 12px 0 8px;
+  }
+
+  p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 16px;
+    color: var(--text-tertiary);
+    
+    li {
+      margin-bottom: 4px;
+      line-height: 1.4;
+    }
+  }
+}
+
+.resourceIcon {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.habitSection {
+  background: var(--background-secondary);
+  border-radius: var(--border-radius-lg);
+  padding: 32px;
+  margin-bottom: 32px;
+
+  h3 {
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+}
+
+.habitGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+}
+
+.habitCategory {
+  background: var(--background-primary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--border-radius-md);
+  padding: 20px;
+  
+  h4 {
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 16px;
+    color: var(--text-secondary);
+    
+    li {
+      margin-bottom: 6px;
+      line-height: 1.5;
+    }
+  }
+}
+
+// 모바일 반응형
+@media (max-width: 768px) {
+  .stressExtras {
+    margin-top: 24px;
+  }
+
+  .stressLevel,
+  .managementSection,
+  .habitSection {
+    padding: 24px 20px;
+    margin-bottom: 24px;
+  }
+
+  .levelContainer {
+    gap: 12px;
+  }
+
+  .levelIndicator {
+    padding: 10px 20px;
+    font-size: 1rem;
+    min-width: 100px;
+  }
+
+  .tipItem {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .tipNumber {
+    width: 28px;
+    height: 28px;
+    font-size: 0.75rem;
+  }
+
+  .resourceCards {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .resourceCard {
+    padding: 20px;
+  }
+
+  .habitGrid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .habitCategory {
+    padding: 16px;
+  }
+}
+
+// 다크 테마 지원
+[data-theme="dark"] {
+  .tipItem,
+  .resourceCard,
+  .habitCategory {
+    background: var(--background-tertiary);
+    border-color: var(--border-color);
+  }
+}
+
+// Values 테마 전용 스타일
+[data-theme="values"] {
+  .stressLevel,
+  .managementSection,
+  .habitSection {
+    background: var(--gradient-secondary);
+  }
+
+  .tipItem,
+  .habitCategory {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(5px);
+  }
+
+  .resourceCard {
+    background: var(--gradient-card);
+    backdrop-filter: blur(10px);
+  }
+}

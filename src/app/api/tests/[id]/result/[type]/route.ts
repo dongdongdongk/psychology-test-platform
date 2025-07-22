@@ -99,6 +99,7 @@ export async function POST(
     const apiResponseData = {
       id: `${testId}_${resultType}`, // 임시 ID 생성
       type: resultType,
+      resultType: resultType, // 추가: resultType도 명시적으로 설정
       title: result.title,
       description: cleanDescription,
       imageUrl: result.image_url,
