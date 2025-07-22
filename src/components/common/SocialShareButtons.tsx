@@ -71,7 +71,7 @@ export default function SocialShareButtons({
       
       // 공유 카운트는 백그라운드에서 비동기 실행
       if (onShare) {
-        onShare().catch(console.error);
+        Promise.resolve(onShare()).catch(console.error);
       }
       return;
     }
@@ -103,7 +103,7 @@ export default function SocialShareButtons({
       
       // 성공 시에만 공유 카운트 증가
       if (onShare) {
-        onShare().catch(console.error);
+        Promise.resolve(onShare()).catch(console.error);
       }
     } catch (error) {
       console.error('❌ 카카오톡 공유 실패:', error);
@@ -112,7 +112,7 @@ export default function SocialShareButtons({
       
       // 공유 카운트는 백그라운드에서 비동기 실행
       if (onShare) {
-        onShare().catch(console.error);
+        Promise.resolve(onShare()).catch(console.error);
       }
     }
   };
