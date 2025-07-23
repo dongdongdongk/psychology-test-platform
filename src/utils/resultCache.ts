@@ -79,7 +79,7 @@ export async function invalidateResultCache(responseId: string): Promise<void> {
   await prisma.userResponse.update({
     where: { id: responseId },
     data: {
-      cachedResult: null,
+      cachedResult: undefined,
       isResultCached: false
     }
   })
