@@ -1,7 +1,7 @@
-// 메인 페이지와 동일한 배경 및 레이아웃
+// About 페이지 - 깔끔하고 모던한 디자인
 .main {
   min-height: 100vh;
-  background: linear-gradient(135deg, #fafbfc 0%, #f1f5f9 50%, #e2e8f0 100%);
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
   position: relative;
   
   &::before {
@@ -26,115 +26,276 @@
 
 .contentContainer {
   width: 100%;
-  max-width: 500px;
+  max-width: 520px;
   background: linear-gradient(180deg, #ffffff 0%, #fefefe 100%);
-  border-radius: 24px;
-  box-shadow: 0 4px 20px rgba(247, 188, 183, 0.15);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
   margin-top: 12px;
   margin-bottom: 40px;
   overflow: hidden;
   backdrop-filter: blur(10px);
   position: relative;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+// 히어로 섹션
+.heroSection {
+  padding: 40px 32px 32px;
+  text-align: center;
+  background: linear-gradient(135deg, #fff 0%, #f8fafc 100%);
+  border-bottom: 1px solid rgba(247, 188, 183, 0.1);
+  position: relative;
   
   &::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent 0%, rgba(247, 188, 183, 0.2) 50%, transparent 100%);
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(247, 188, 183, 0.03) 0%, transparent 70%);
+    pointer-events: none;
   }
 }
 
-.heroSection {
-  padding: 40px 40px 32px;
-  text-align: center;
-  border-bottom: 1px solid rgba(247, 188, 183, 0.1);
+.heroBadge {
+  display: inline-block;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+  position: relative;
+  z-index: 1;
 }
 
 .heroTitle {
   color: #1e293b;
-  font-size: 28px;
-  font-weight: 800;
-  margin: 0 0 12px 0;
-  background: linear-gradient(135deg, #f7bcb7 0%, #e8958f 50%, #d97b7b 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-size: 24px;
+  font-weight: 900;
+  margin: 0 0 20px 0;
+  line-height: 1.3;
   letter-spacing: -0.02em;
-  line-height: 1.2;
-  filter: drop-shadow(0 2px 4px rgba(247, 188, 183, 0.2));
+  position: relative;
+  z-index: 1;
+  
+  // # 스타일링
+  &::before {
+    content: '';
+    display: inline;
+  }
 }
 
-.heroSubtitle {
-  font-size: 15px;
+.heroQuote {
+  font-size: 14px;
   color: #64748b;
   margin: 0;
-  font-weight: 500;
-  line-height: 1.6;
-  letter-spacing: -0.01em;
-  opacity: 0.9;
-}
-
-// 섹션 공통 스타일
-.missionSection,
-.featuresSection,
-.statsSection,
-.ctaSection {
-  padding: 32px 40px;
+  line-height: 1.7;
+  position: relative;
+  z-index: 1;
   
-  &:not(:last-child) {
-    border-bottom: 1px solid rgba(247, 188, 183, 0.1);
+  em {
+    font-style: italic;
+    color: #475569;
+    font-weight: 600;
   }
 }
 
-// 섹션 제목 스타일
-.sectionTitle {
-  font-size: 20px;
-  font-weight: 700;
-  color: #1e293b;
-  margin-bottom: 20px;
-  text-align: center;
-  background: linear-gradient(135deg, #f7bcb7 0%, #e8958f 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-// 미션 섹션
-.missionSection {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+// 브랜드 섹션
+.brandSection {
+  padding: 32px;
+  border-bottom: 1px solid rgba(247, 188, 183, 0.1);
   text-align: center;
 }
 
-.sectionContent {
-  .sectionText {
-    color: #64748b;
-    line-height: 1.6;
+.brandContent {
+  .brandText {
     font-size: 14px;
-    margin: 0;
-  }
-}
-
-.missionImage {
-  margin-top: 20px;
-  
-  .imageIcon {
-    font-size: 48px;
-    color: #f7bcb7;
-    display: flex;
-    justify-content: center;
+    color: #475569;
+    line-height: 1.7;
+    margin-bottom: 16px;
     
-    svg {
-      filter: drop-shadow(0 4px 8px rgba(247, 188, 183, 0.3));
+    strong {
+      color: #1e293b;
+      font-weight: 700;
+    }
+    
+    &:last-of-type {
+      margin-bottom: 24px;
     }
   }
 }
 
+.brandHighlight {
+  background: linear-gradient(135deg, rgba(247, 188, 183, 0.1) 0%, rgba(247, 188, 183, 0.05) 100%);
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid rgba(247, 188, 183, 0.15);
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  
+  p {
+    font-size: 14px;
+    color: #475569;
+    line-height: 1.7;
+    margin: 0;
+    
+    strong {
+      color: #1e293b;
+      font-weight: 800;
+      background: linear-gradient(135deg, #f7bcb7 0%, #e8958f 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  }
+}
+
+.brandIcon {
+  color: #f7bcb7;
+  font-size: 20px;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+// 콘텐츠 섹션
+.contentSection {
+  padding: 40px 32px;
+  text-align: center;
+  border-bottom: 1px solid rgba(247, 188, 183, 0.1);
+}
+
+.contentTitle {
+  font-size: 22px;
+  font-weight: 900;
+  color: #1e293b;
+  line-height: 1.4;
+  margin-bottom: 32px;
+  
+  .highlight {
+    background: linear-gradient(135deg, #f7bcb7 0%, #e8958f 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 900;
+  }
+}
+
+.contentGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.contentItem {
+  background: rgba(247, 188, 183, 0.03);
+  padding: 24px 20px;
+  border-radius: 16px;
+  border: 1px solid rgba(247, 188, 183, 0.1);
+  text-align: center;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(247, 188, 183, 0.15);
+  }
+  
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 12px 0 8px 0;
+  }
+  
+  p {
+    font-size: 13px;
+    color: #64748b;
+    line-height: 1.5;
+    margin: 0;
+  }
+}
+
+.contentIcon {
+  font-size: 24px;
+  color: #f7bcb7;
+  margin-bottom: 4px;
+}
+
+// 통계 섹션
+.statsSection {
+  padding: 40px 32px;
+  border-bottom: 1px solid rgba(247, 188, 183, 0.1);
+}
+
+.sectionTitle {
+  font-size: 20px;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.statCard {
+  background: linear-gradient(135deg, rgba(247, 188, 183, 0.05) 0%, rgba(247, 188, 183, 0.02) 100%);
+  padding: 24px 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(247, 188, 183, 0.1);
+  text-align: center;
+  position: relative;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(247, 188, 183, 0.1);
+  }
+  
+  .statNote {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 10px;
+    color: #94a3b8;
+    font-weight: 600;
+  }
+}
+
+.statNumber {
+  font-size: 28px;
+  font-weight: 900;
+  color: #1e293b;
+  margin-bottom: 4px;
+  line-height: 1;
+  
+  .statUnit {
+    font-size: 16px;
+    font-weight: 700;
+    margin-left: 2px;
+  }
+}
+
+.statLabel {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
 // 특징 섹션
+.featuresSection {
+  padding: 40px 32px;
+  border-bottom: 1px solid rgba(247, 188, 183, 0.1);
+}
+
 .featuresGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -144,223 +305,145 @@
 
 .feature {
   text-align: center;
-  padding: 20px 12px;
+  padding: 24px 16px;
   border-radius: 16px;
   background: rgba(247, 188, 183, 0.03);
   border: 1px solid rgba(247, 188, 183, 0.1);
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   
   &:hover {
-    background: rgba(247, 188, 183, 0.08);
     transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(247, 188, 183, 0.12);
   }
 }
 
 .featureIcon {
-  font-size: 28px;
-  margin-bottom: 12px;
+  font-size: 24px;
   color: #f7bcb7;
-  display: flex;
-  justify-content: center;
-  
-  svg {
-    filter: drop-shadow(0 2px 4px rgba(247, 188, 183, 0.3));
-  }
+  margin-bottom: 12px;
 }
 
 .featureTitle {
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 700;
   color: #1e293b;
-  margin: 0 0 8px 0;
+  margin-bottom: 8px;
 }
 
 .featureText {
-  font-size: 13px;
+  font-size: 12px;
   color: #64748b;
-  line-height: 1.4;
+  line-height: 1.5;
   margin: 0;
-}
-
-// 통계 섹션
-.statsGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  margin-top: 24px;
-}
-
-.stat {
-  text-align: center;
-  padding: 20px 12px;
-  border-radius: 16px;
-  background: linear-gradient(135deg, rgba(247, 188, 183, 0.1) 0%, rgba(247, 188, 183, 0.05) 100%);
-  border: 1px solid rgba(247, 188, 183, 0.2);
-}
-
-.statNumber {
-  font-size: 24px;
-  font-weight: 800;
-  color: #f7bcb7;
-  margin-bottom: 4px;
-}
-
-.statLabel {
-  font-size: 13px;
-  color: #64748b;
-  font-weight: 500;
 }
 
 // CTA 섹션
 .ctaSection {
+  padding: 40px 32px;
   text-align: center;
-  background: linear-gradient(135deg, rgba(247, 188, 183, 0.08) 0%, rgba(247, 188, 183, 0.03) 100%);
+  border-bottom: 1px solid rgba(247, 188, 183, 0.1);
 }
 
 .ctaContent {
   .ctaTitle {
-    font-size: 22px;
-    font-weight: 700;
+    font-size: 20px;
+    font-weight: 800;
     color: #1e293b;
-    margin: 0 0 12px 0;
-    background: linear-gradient(135deg, #f7bcb7 0%, #e8958f 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    margin-bottom: 12px;
   }
   
   .ctaText {
     font-size: 14px;
     color: #64748b;
-    margin: 0 0 24px 0;
-    line-height: 1.5;
+    margin-bottom: 24px;
+    line-height: 1.6;
   }
 }
 
 .ctaButton {
+  display: inline-block;
   background: linear-gradient(135deg, #f7bcb7 0%, #e8958f 100%);
   color: white;
-  padding: 14px 28px;
-  border-radius: 20px;
+  padding: 16px 36px;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 700;
   text-decoration: none;
-  font-weight: 600;
-  font-size: 15px;
-  display: inline-block;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(247, 188, 183, 0.3);
+  box-shadow: 0 6px 20px rgba(247, 188, 183, 0.25);
+  transition: all 0.2s ease;
   
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(247, 188, 183, 0.4);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 28px rgba(247, 188, 183, 0.35);
+    }
   }
 }
 
-// 모바일 반응형
-@media (max-width: 768px) {
-  .contentWrapper {
-    padding: 0 16px;
-  }
+// 푸터 섹션
+.footerSection {
+  padding: 24px 32px;
+  text-align: center;
+  background: rgba(247, 188, 183, 0.02);
+}
+
+.footerText {
+  font-size: 11px;
+  color: #94a3b8;
+  line-height: 1.5;
+  margin: 0;
   
+  strong {
+    color: #64748b;
+    font-weight: 700;
+  }
+}
+
+// 반응형
+@media (max-width: 480px) {
   .contentContainer {
-    margin-top: 16px;
+    margin: 8px 0 20px 0;
   }
   
-  .heroSection {
-    padding: 32px 24px 24px;
+  .heroSection,
+  .brandSection,
+  .contentSection,
+  .statsSection,
+  .featuresSection,
+  .ctaSection {
+    padding-left: 24px;
+    padding-right: 24px;
   }
   
   .heroTitle {
-    font-size: 24px;
+    font-size: 22px;
   }
   
-  .heroSubtitle {
-    font-size: 14px;
-  }
-  
-  .missionSection,
-  .featuresSection,
-  .statsSection,
-  .ctaSection {
-    padding: 24px 24px;
-  }
-  
-  .sectionTitle {
-    font-size: 18px;
-  }
-  
-  .featuresGrid,
-  .statsGrid {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-  
-  .feature,
-  .stat {
-    padding: 16px;
-  }
-  
-  .featureIcon {
-    font-size: 24px;
-  }
-  
-  .featureTitle {
-    font-size: 15px;
-  }
-  
-  .featureText {
-    font-size: 12px;
-  }
-  
-  .statNumber {
+  .contentTitle {
     font-size: 20px;
   }
   
-  .statLabel {
-    font-size: 12px;
-  }
-  
-  .ctaContent .ctaTitle {
-    font-size: 20px;
-  }
-  
-  .ctaContent .ctaText {
-    font-size: 13px;
-  }
-  
-  .ctaButton {
-    padding: 12px 24px;
-    font-size: 14px;
-  }
-}
-
-// 작은 화면 (스마트폰)
-@media (max-width: 480px) {
-  .heroSection {
-    padding: 24px 20px 20px;
-  }
-  
-  .missionSection,
-  .featuresSection,
-  .statsSection,
-  .ctaSection {
-    padding: 20px 20px;
-  }
-  
-  .featuresGrid,
   .statsGrid {
     gap: 12px;
   }
   
-  .feature,
-  .stat {
-    padding: 12px;
+  .statCard {
+    padding: 20px 12px;
   }
   
-  .missionImage .imageIcon {
-    font-size: 40px;
+  .statNumber {
+    font-size: 24px;
+    
+    .statUnit {
+      font-size: 14px;
+    }
   }
   
-  .featureIcon {
-    font-size: 20px;
+  .featuresGrid {
+    gap: 16px;
+  }
+  
+  .feature {
+    padding: 20px 12px;
   }
 }

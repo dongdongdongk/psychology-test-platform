@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { calculateStressDetailedScores, calculateGeneralScore, calculateGeneralDetailedScores, isStressTest } from '@/utils/scoreCalculator'
+import { getCachedResult, cacheTestResult } from '@/utils/resultCache'
 
 // 공통 함수들은 utils/scoreCalculator.ts에서 import
 
@@ -51,42 +52,55 @@ export async function POST(
       )
     }
 
-    // JSONB에서 점수 계산 및 상세 점수 정보
+    // 캐시된 결과 확인
     let totalScore = 0
     let detailedScores: any = null
     let actualResponseData = responseData
     
-    // responseId가 있으면 DB에서 해당 응답 데이터 조회
     if (responseId) {
-      console.log('responseId로 DB에서 조회:', responseId)
-      const userResponse = await prisma.userResponse.findUnique({
-        where: { id: responseId },
-        select: { responseData: true }
-      })
+      // 1. 먼저 캐시된 결과 확인
+      const cachedResult = await getCachedResult(responseId)
       
-      if (userResponse && userResponse.responseData) {
-        // DB에서 저장된 구조: {answers: {...}, metadata: {...}}
-        // answers 부분만 추출하여 사용
-        const dbData = userResponse.responseData as any
-        actualResponseData = dbData.answers || dbData
-        console.log('DB에서 조회한 응답 데이터:', actualResponseData)
+      if (cachedResult) {
+        console.log('캐시된 결과 사용:', responseId)
+        totalScore = cachedResult.totalScore || 0
+        detailedScores = cachedResult.detailedScores
       } else {
-        console.log('responseId에 해당하는 응답을 찾을 수 없음:', responseId)
+        console.log('캐시된 결과 없음, 새로 계산:', responseId)
+        
+        // 2. DB에서 응답 데이터 조회
+        const userResponse = await prisma.userResponse.findUnique({
+          where: { id: responseId },
+          select: { responseData: true }
+        })
+        
+        if (userResponse && userResponse.responseData) {
+          // DB에서 저장된 구조: {answers: {...}, metadata: {...}}
+          const dbData = userResponse.responseData as any
+          actualResponseData = dbData.answers || dbData
+          
+          // 3. 결과 계산 및 캐싱
+          if (isStressTest(testId, test.title)) {
+            detailedScores = calculateStressDetailedScores(actualResponseData, test, testId)
+            totalScore = detailedScores.total
+          } else {
+            totalScore = calculateGeneralScore(actualResponseData, resultType)
+            detailedScores = calculateGeneralDetailedScores(actualResponseData)
+          }
+          
+          // 4. 계산된 결과를 캐시에 저장
+          await cacheTestResult(responseId, testId, actualResponseData, test, resultType)
+          console.log('결과 캐싱 완료:', responseId)
+        }
       }
-    }
-    
-    if (actualResponseData) {
-      // 스트레스 테스트인 경우 특별한 영역별 상세 점수 계산
+    } else if (actualResponseData) {
+      // responseId가 없는 경우 (즉시 계산, 캐싱 안함)
       if (isStressTest(testId, test.title)) {
         detailedScores = calculateStressDetailedScores(actualResponseData, test, testId)
         totalScore = detailedScores.total
       } else {
-        // 일반 테스트: 타입별 점수 합산
         totalScore = calculateGeneralScore(actualResponseData, resultType)
-        
-        // 모든 테스트는 ABCD 점수를 가지므로 항상 계산
         detailedScores = calculateGeneralDetailedScores(actualResponseData)
-        console.log('일반 테스트 ABCD 점수 계산:', detailedScores)
       }
     }
 
