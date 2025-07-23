@@ -4,12 +4,13 @@ import { calculateStressDetailedScores, calculateGeneralScore, calculateGeneralD
 interface CacheableResult {
   totalScore?: number
   resultType: string
-  detailedScores?: any
+  detailedScores?: Record<string, any>
   enableRadarChart?: boolean
   enableBarChart?: boolean
   testTitle?: string
   testId: string
   responseId: string
+  [key: string]: any // 인덱스 시그니처 추가로 Prisma JSON 타입과 호환
 }
 
 export async function cacheTestResult(
