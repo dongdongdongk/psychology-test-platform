@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://play.roono.net/sitemap.xml
+
+# Block admin pages
+Disallow: /admin/
+Disallow: /api/admin/
