@@ -359,14 +359,14 @@ export default function FinanceTestExtras({ resultData }: FinanceTestExtrasProps
           </div>
           
           <div className={styles.motivationQuote}>
-            <div className={styles.quoteIcon}>💡</div>
+            {/* <div className={styles.quoteIcon}></div> */}
             <blockquote>
               "재정적 자유는 꿈이 아닌 계획입니다. 
               지금 시작하는 작은 습관들이 미래의 큰 자산이 됩니다."
             </blockquote>
           </div>
 
-          <div className={styles.actionButtons}>
+          {/* <div className={styles.actionButtons}>
             <div className={styles.actionButton}>
               <FaBook />
               <span>금융 교육 시작하기</span>
@@ -379,7 +379,7 @@ export default function FinanceTestExtras({ resultData }: FinanceTestExtrasProps
               <FaChartLine />
               <span>투자 공부하기</span>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

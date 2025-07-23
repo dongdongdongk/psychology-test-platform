@@ -43,15 +43,17 @@ model Admin {
 }
 
 model UserResponse {
-  id           String   @id @default(cuid()) @db.VarChar(50)
-  testId       String   @map("test_id") @db.VarChar(50)
-  responseData Json     @map("response_data")
-  resultType   String?  @map("result_type") @db.VarChar(100)
-  ipAddress    String?  @map("ip_address") @db.Inet
-  userAgent    String?  @map("user_agent")
-  sessionId    String?  @map("session_id") @db.VarChar(100)
-  createdAt    DateTime @default(now()) @map("created_at")
-  test         Test     @relation(fields: [testId], references: [id])
+  id              String   @id @default(cuid()) @db.VarChar(50)
+  testId          String   @map("test_id") @db.VarChar(50)
+  responseData    Json     @map("response_data")
+  resultType      String?  @map("result_type") @db.VarChar(100)
+  cachedResult    Json?    @map("cached_result")
+  isResultCached  Boolean  @default(false) @map("is_result_cached")
+  ipAddress       String?  @map("ip_address") @db.Inet
+  userAgent       String?  @map("user_agent")
+  sessionId       String?  @map("session_id") @db.VarChar(100)
+  createdAt       DateTime @default(now()) @map("created_at")
+  test            Test     @relation(fields: [testId], references: [id])
 
   @@index([testId])
   @@map("user_responses")

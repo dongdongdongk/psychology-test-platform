@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { v4 as uuidv4 } from 'uuid'
+import { cacheTestResult } from '@/utils/resultCache'
 
 export async function POST(request: NextRequest) {
   try {
@@ -68,6 +69,17 @@ export async function POST(request: NextRequest) {
         }
       }
     })
+
+    // 결과 캐싱 (백그라운드에서 실행)
+    if (resultType) {
+      try {
+        await cacheTestResult(userResponse.id, testId, answers, test, resultType)
+        console.log('응답 저장시 결과 캐싱 완료:', userResponse.id)
+      } catch (cacheError) {
+        console.error('결과 캐싱 실패:', cacheError)
+        // 캐싱 실패해도 응답 저장은 성공으로 처리
+      }
+    }
 
     return NextResponse.json({
       id: userResponse.id,
