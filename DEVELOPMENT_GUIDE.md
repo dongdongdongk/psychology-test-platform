@@ -1206,6 +1206,37 @@ console.log('캐시된 결과 없음, 새로 계산:', responseId); // 캐시 �
 3. **초기 캐싱**: 첫 사용자는 여전히 계산 시간 필요
 4. **에러 핸들링**: 캐싱 실패가 핵심 기능을 방해하지 않도록 설계
 
+### 🔧 타입 안전성 해결
+
+#### TypeScript와 Prisma JSON 타입 호환성 문제
+
+**문제**: `CacheableResult` 인터페이스가 Prisma의 JSON 타입과 호환되지 않는 오류 발생
+```typescript
+Type 'CacheableResult' is not assignable to type 'InputJsonValue'
+Index signature for type 'string' is missing in type 'CacheableResult'
+```
+
+**해결책**: 인덱스 시그니처 추가로 타입 호환성 확보
+```typescript
+interface CacheableResult {
+  totalScore?: number
+  resultType: string
+  detailedScores?: Record<string, any>  // any 대신 Record 사용
+  enableRadarChart?: boolean
+  enableBarChart?: boolean
+  testTitle?: string
+  testId: string
+  responseId: string
+  [key: string]: any  // 🔑 핵심: 인덱스 시그니처로 Prisma JSON 호환
+}
+```
+
+**장점**:
+- `as any` 타입 캐스팅 불필요
+- 컴파일 타임 타입 체크 유지
+- Prisma JSONB 컬럼과 자연스러운 호환
+- 런타임 오류 방지
+
 이 캐싱 시스템으로 공유 기능의 성능 문제가 완전히 해결되었고, 향후 대용량 트래픽에도 안정적으로 대응할 수 있게 되었습니다.
 
 이 가이드를 따라 개발하면 일관성 있고 확장 가능한 심리 테스트 플랫폼을 구축할 수 있습니다.
