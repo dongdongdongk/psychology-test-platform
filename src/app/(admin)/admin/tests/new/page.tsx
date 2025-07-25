@@ -139,6 +139,12 @@ export default function NewTestPage() {
               <option value="vibrant">Vibrant - 밝고 활기찬 스타일</option>
               <option value="minimal">Minimal - 심플하고 미니멀한 스타일</option>
               <option value="retro">Retro - 복고풍 스타일</option>
+              <option value="medical">Medical - 병원 같은 깔끔하고 신뢰감 있는 스타일</option>
+              <option value="soft">Soft - 부드럽고 온화한 파스텔 스타일</option>
+              <option value="green">Green - 자연스럽고 편안한 녹색 스타일</option>
+              <option value="brown">Brown - 따뜻하고 자연스러운 브라운 스타일</option>
+              <option value="values">Values - 가치관 테스트용 지혜롭고 신뢰감 있는 스타일</option>
+              <option value="blackwhite">Black & White - 블랙과 화이트의 세련된 테마</option>
             </select>
             <p className={styles.help}>
               테스트 페이지에 적용될 디자인 테마를 선택하세요.

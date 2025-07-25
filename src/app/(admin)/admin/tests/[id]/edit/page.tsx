@@ -615,6 +615,7 @@ export default function EditTestPage() {
               <option value="green">Green - 자연스럽고 편안한 녹색 스타일</option>
               <option value="brown">Brown - 따뜻하고 자연스러운 브라운 스타일</option>
               <option value="values">Values - 가치관 테스트용 지혜롭고 신뢰감 있는 스타일</option>
+              <option value="blackwhite">Black & White - 블랙과 화이트의 세련된 테마</option>
             </select>
           </div>
 
