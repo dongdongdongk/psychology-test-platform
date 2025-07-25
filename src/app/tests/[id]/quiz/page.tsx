@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useParams, useRouter } from 'next/navigation'
+import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { useTheme } from '@/hooks/useTheme'
 import Header from '@/components/common/Header'
 import PageLoader from '@/components/common/PageLoader'
@@ -11,7 +11,9 @@ import styles from './QuizPage.module.scss'
 export default function QuizPage() {
   const params = useParams()
   const router = useRouter()
+  const searchParams = useSearchParams()
   const testId = params.id as string
+  const isAdminPreview = searchParams.get('admin') === 'true'
   const [testData, setTestData] = useState<Test | null>(null)
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [answers, setAnswers] = useState<Record<string, string | string[]>>({})
@@ -29,7 +31,11 @@ export default function QuizPage() {
 
   const fetchTestData = async () => {
     try {
-      const response = await fetch(`/api/tests/${testId}`)
+      const url = isAdminPreview 
+        ? `/api/tests/${testId}/questions?admin=true`
+        : `/api/tests/${testId}/questions`
+      
+      const response = await fetch(url)
       if (!response.ok) {
         throw new Error('테스트 데이터를 불러올 수 없습니다')
       }

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { cookies } from 'next/headers'
 
 // 테스트 질문 목록 조회
 export async function GET(
@@ -8,6 +9,16 @@ export async function GET(
 ) {
   try {
     const testId = params.id
+    const { searchParams } = new URL(request.url)
+    const isAdmin = searchParams.get('admin') === 'true'
+    
+    // 관리자 권한 확인
+    let hasAdminAccess = false
+    if (isAdmin) {
+      const cookieStore = cookies()
+      const adminSession = cookieStore.get('admin-session')
+      hasAdminAccess = !!adminSession
+    }
 
     // 테스트 존재 확인
     const test = await prisma.test.findUnique({
@@ -27,7 +38,8 @@ export async function GET(
       )
     }
 
-    if (!test.isActive) {
+    // 관리자가 아닌 경우에만 활성화 상태 확인
+    if (!test.isActive && !hasAdminAccess) {
       return NextResponse.json(
         { error: '비활성화된 테스트입니다.' },
         { status: 403 }

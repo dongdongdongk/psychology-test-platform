@@ -210,12 +210,12 @@ export default function AdminTestsPage() {
 
                 <div className={styles.cardFooter}>
                   <a
-                    href={`/tests/${test.id}`}
+                    href={`/tests/${test.id}/quiz?admin=true`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={styles.viewButton}
                   >
-                    테스트 보기
+                    테스트 미리보기
                   </a>
                 </div>
               </div>
