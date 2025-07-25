@@ -1,5 +1,5 @@
 // 테마 프리셋 시스템 - CSS 변수 기반
-// 9개 테마: cute, modern, dark, vibrant, minimal, retro, medical, soft, values
+// 12개 테마: cute, modern, dark, vibrant, minimal, retro, medical, soft, values, green, brown, blackwhite
 
 // 공통 기본 변수
 :root {
@@ -844,6 +844,161 @@
     }
     
     .values-card {
+      &:active {
+        transform: scale(0.98);
+        transition: transform 0.1s ease;
+      }
+    }
+  }
+}
+
+// 12. Black & White 테마
+[data-theme="blackwhite"] {
+  --primary-color: #000000;
+  --primary-hover: #333333;
+  --primary-light: rgba(0, 0, 0, 0.05);
+  --primary-dark: #000000;
+  
+  --secondary-color: #666666;
+  --secondary-hover: #4a4a4a;
+  --secondary-light: rgba(102, 102, 102, 0.1);
+  
+  --background-primary: #ffffff;
+  --background-secondary: #f8f9fa;
+  --background-tertiary: #e9ecef;
+  
+  --text-primary: #000000;
+  --text-secondary: #333333;
+  --text-tertiary: #666666;
+  
+  --border-color: rgba(0, 0, 0, 0.1);
+  --border-light: rgba(0, 0, 0, 0.05);
+  
+  --gradient-primary: linear-gradient(135deg, #000000 0%, #333333 50%, #000000 100%);
+  --gradient-background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 50%, #e9ecef 100%);
+  
+  // 블랙앤화이트 전용 변수
+  --accent-black: #000000;
+  --accent-gray: #808080;
+  --accent-light-gray: #cccccc;
+  --accent-white: #ffffff;
+  
+  // 특별한 그라데이션
+  --gradient-monochrome: linear-gradient(135deg, #ffffff 0%, #000000 100%);
+  --gradient-elegant: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #dee2e6 100%);
+  
+  // 그림자 효과
+  --shadow-elegant: 0 4px 20px rgba(0, 0, 0, 0.1);
+  --shadow-monochrome: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+// Black & White 테마 전용 컴포넌트 스타일
+[data-theme="blackwhite"] {
+  .theme-button {
+    background: var(--accent-white);
+    color: var(--accent-black);
+    border: 2px solid var(--accent-black);
+    border-radius: var(--border-radius-md);
+    padding: 12px 24px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    box-shadow: var(--shadow-elegant);
+    position: relative;
+    overflow: hidden;
+    transition: all var(--transition-normal);
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--accent-black);
+      transition: left 0.4s ease;
+      z-index: -1;
+    }
+    
+    &:hover {
+      color: var(--accent-white);
+      border-color: var(--accent-black);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-monochrome);
+      
+      &::before {
+        left: 0;
+      }
+    }
+    
+    &:active {
+      transform: translateY(0);
+    }
+  }
+  
+  .theme-card {
+    background: var(--gradient-elegant);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-elegant);
+    transition: all var(--transition-normal);
+    
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-monochrome);
+      background: var(--accent-white);
+      border-color: var(--accent-black);
+    }
+  }
+  
+  .theme-input {
+    border: 2px solid var(--border-color);
+    background: var(--accent-white);
+    color: var(--accent-black);
+    
+    &:focus {
+      border-color: var(--accent-black);
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+      transform: translateY(-1px);
+    }
+  }
+  
+  // 특별한 패턴 효과
+  .blackwhite-pattern {
+    background-image: 
+      repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 10px,
+        rgba(0, 0, 0, 0.03) 10px,
+        rgba(0, 0, 0, 0.03) 20px
+      );
+  }
+  
+  // Typography 강화
+  .theme-title {
+    background: var(--gradient-monochrome);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  
+  .theme-subtitle {
+    color: var(--text-secondary);
+    font-weight: 500;
+    letter-spacing: 0.3px;
+  }
+  
+  // 터치 디바이스 최적화
+  @media (hover: none) and (pointer: coarse) {
+    .theme-button {
+      &:active {
+        transform: scale(0.95);
+        transition: transform 0.1s ease;
+      }
+    }
+    
+    .theme-card {
       &:active {
         transform: scale(0.98);
         transition: transform 0.1s ease;
