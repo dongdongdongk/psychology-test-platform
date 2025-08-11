@@ -1,10 +1,10 @@
 export interface Test {
   id: string
   title: string
-  description?: string
+  description?: string | null
   category: string
-  thumbnailUrl?: string
-  detailImageUrl?: string
+  thumbnailUrl?: string | null
+  detailImageUrl?: string | null
   styleTheme?: string
   isActive: boolean
   completionCount?: number

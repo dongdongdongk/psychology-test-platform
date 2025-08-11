@@ -1,32 +1,17 @@
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useMemo } from 'react'
 import { Test } from '@/types'
-import axios from 'axios'
 import styles from './TestList.module.scss'
 
-export default function TestList() {
-  const [tests, setTests] = useState<Test[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+interface TestListProps {
+  initialTests: Test[]
+}
+
+export default function TestList({ initialTests }: TestListProps) {
+  const [tests] = useState<Test[]>(initialTests)
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('전체')
-
-  useEffect(() => {
-    fetchTests()
-  }, [])
-
-  const fetchTests = async () => {
-    try {
-      const response = await axios.get('/api/tests')
-      setTests(response.data)
-    } catch (err) {
-      setError('테스트 목록을 불러오는데 실패했습니다.')
-      console.error(err)
-    } finally {
-      setLoading(false)
-    }
-  }
 
   // 카테고리 목록 추출
   const categories = useMemo(() => {
@@ -53,13 +38,6 @@ export default function TestList() {
     }
   }
 
-  if (loading) {
-    return <div className={styles.loading}>테스트 목록을 불러오는 중...</div>
-  }
-
-  if (error) {
-    return <div className={styles.error}>{error}</div>
-  }
 
   if (tests.length === 0) {
     return (
