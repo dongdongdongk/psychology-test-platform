@@ -2,7 +2,7 @@ import { Suspense } from 'react'
 import { Metadata } from 'next'
 import Header from '@/components/common/Header'
 import TestList from '@/components/TestList'
-import HeroSlider from '@/components/HeroSlider'
+import HeroSection from '@/components/HeroSection'
 import StructuredData from '@/components/StructuredData'
 import { prisma } from '@/lib/prisma'
 import { retryDbOperation } from '@/lib/db-retry'
@@ -66,7 +66,7 @@ export default async function HomePage() {
           <div className={styles.contentContainer}>
             <div className={styles.heroSection}>
               <div className={styles.heroContainer}>
-                <HeroSlider tests={tests} />
+                <HeroSection />
               </div>
             </div>
             
@@ -76,22 +76,20 @@ export default async function HomePage() {
                 <p className={styles.sectionDescription}>"1분이면 충분해요. 무료 심리테스트로 하루에 소소한 의미를 더해보세요."</p>
               </div>
               
-              {/* SEO를 위한 정적 콘텐츠 추가 */}
-              <div className={styles.staticContent}>
-                <h2>다양한 무료 심리테스트 모음</h2>
-                <p>
-                  루노에서 제공하는 무료 심리테스트로 자신의 성격, 연애 스타일, 적성 등을 알아보세요. 
-                  MBTI부터 재미있는 성격 테스트까지, 1분 만에 완료할 수 있는 간단하고 정확한 테스트들이 준비되어 있습니다.
-                </p>
-                {tests.length > 0 && (
-                  <ul className={styles.testPreview}>
-                    {tests.slice(0, 3).map((test) => (
-                      <li key={test.id}>
-                        <strong>{test.title}</strong> - {test.description}
-                      </li>
-                    ))}
-                  </ul>
-                )}
+              {/* SEO를 위한 정적 콘텐츠 - 드롭다운 형식 */}
+              <div className={styles.seoDropdown}>
+                <details className={styles.dropdownContainer}>
+                  <summary className={styles.dropdownSummary}>
+                    심리테스트 소개
+                    <span className={styles.dropdownIcon}>▼</span>
+                  </summary>
+                  <div className={styles.dropdownContent}>
+                    <p>
+                      루노에서 제공하는 무료 심리테스트로 자신의 성격, 연애 스타일, 적성 등을 알아보세요. 
+                      MBTI부터 재미있는 성격 테스트까지, 1분 만에 완료할 수 있는 간단하고 정확한 테스트들이 준비되어 있습니다.
+                    </p>
+                  </div>
+                </details>
               </div>
               
               <TestList initialTests={tests} />
