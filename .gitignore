@@ -20,6 +20,7 @@ dist/
 .env.development.local
 .env.test.local
 .env.production.local
+.env.backup
 
 # Debug
 npm-debug.log*
@@ -51,3 +52,8 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+
+# Documentation files (except CLAUDE.md and README.md)
+*.md
+!CLAUDE.md
+!README.md
